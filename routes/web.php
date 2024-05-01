@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPasienController;
+use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,16 +21,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// admin
 Route::middleware(['auth','role:admin'])->group(function () {
     Route::prefix('dashboard')->group(function () {
+        // Dashboard
         Route::get('/',[DashboardController::class,'index'])->name('dashboard');
+        // petugas
+        Route::group(['prefix' => 'master-data'], function () {
+            Route::post('petugas/update-status',[PetugasController::class,'updateStatus'])->name('petugas.update-status');
+            Route::resource('petugas', PetugasController::class);
+        });
+
     });
 });
 // pasien
 Route::middleware(['auth','role:pasien'])->group(function () {
     Route::prefix('dashboard-pasien')->group(function () {
         // dashboard
-        Route::get('/',[DashboardPasienController::class,'index'])->name('dashboard');
+        Route::get('/',[DashboardPasienController::class,'index'])->name('dashboard.pasien');
         // list ketentuan umum
         Route::get('ketentuan-umum',[DashboardPasienController::class,'ketentuan'])->name('pasien.ketentuan');
         // jenis pembayaran

@@ -5,4 +5,13 @@
     html,body{
         font-family: "Plus Jakarta Sans", sans-serif;
     }
+    body{
+        @apply overflow-y-hidden;
+    }
+}
+.active{
+    @apply bg-blue-900 text-white;
+}
+.active-dropdown{
+    @apply bg-blue-950 text-white;
 }
