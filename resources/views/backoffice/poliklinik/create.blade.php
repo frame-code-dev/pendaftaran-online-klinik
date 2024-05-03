@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="p-4 sm:ml-64 pt-20 h-full">
+    <div class="p-4 sm:ml-64 pt-20 h-screen">
         <section class="p-5 overflow-y-auto mt-5">
             <div class="head lg:flex grid grid-cols-1 justify-between w-full">
                 <div class="heading flex-auto">
@@ -26,7 +26,7 @@
                             <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                             </svg>
-                            <a href="{{ route('petugas.index') }}" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">List Petugas</a>
+                            <a href="{{ route('poliklinik.index') }}" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">List Poliklinik</a>
                             </div>
                         </li>
                         <li aria-current="page">
@@ -42,32 +42,15 @@
                 </div>
             </div>
             <div class="card bg-white p-5 mt-4 border rounded-md w-full relative">
-                <form action="{{ route('petugas.store') }}" method="POST" class="w-full mx-auto space-y-4" enctype="multipart/form-data">
+                <form action="{{ route('poliklinik.store') }}" method="POST" class="w-full mx-auto space-y-4" enctype="multipart/form-data">
                     @csrf
                     <div>
-                        <x-label-default for="" value="Nama Petugas">Nama Petugas</x-label-default>
-                        <x-input-default name="name" type="text" value="{{ old('name') }}" placeholder="Masukkan Nama Petugas"></x-input-default>
+                        <x-label-default for="" value="Nama Poliklinik"></x-label-default>
+                        <x-input-default name="name" type="text" value="{{ old('name') }}" placeholder="Masukkan Nama Poliklinik"></x-input-default>
                     </div>
                     <div>
-                        <x-label-default for="" value="Username">Username</x-label-default>
-                        <x-input-default name="username" type="text" value="{{ old('username') }}" placeholder="Masukkan Username"></x-input-default>
-                    </div>
-                    <div>
-                        <x-label-default for="" value="Email Petugas">Email</x-label-default>
-                        <x-input-default name="email" type="email" value="{{ old('email') }}" placeholder="Masukkan Email"></x-input-default>
-                    </div>
-                    <div>
-                        <x-label-default for="" value="Password">Password</x-label-default>
-                        <x-input-default name="password" type="password" value="{{ old('password') }}" placeholder="Masukkan Password"></x-input-default>
-                    </div>
-                    <div>
-                        <x-label-default>Hak Akses</x-label-default>
-                        <select name="hak_akses" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="">
-                            <option value="0">Pilih Hak Akses</option>
-                            <option value="admin">Admin</option>
-                            <option value="petugas-klinik">Petugas Klinik</option>
-                            <option value="petugas-pendaftaran">Petugas Pendaftaran</option>
-                        </select>
+                        <x-label-default for="" value="Keterangan">Keterangan</x-label-default>
+                        <x-input-textarea id="keterangan" rows="5" name="keterangan" type="text" value="{{ old('keterangan') }}" placeholder="Masukkan Keterangan"></x-input-textarea>
                     </div>
                     <div>
                         <x-label-default>Gambar</x-label-default>

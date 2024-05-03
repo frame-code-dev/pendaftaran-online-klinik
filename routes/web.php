@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPasienController;
+use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PetugasController;
+use App\Http\Controllers\PoliklinikController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,8 +30,14 @@ Route::middleware(['auth','role:admin'])->group(function () {
         Route::get('/',[DashboardController::class,'index'])->name('dashboard');
         // petugas
         Route::group(['prefix' => 'master-data'], function () {
+            // petugas
             Route::post('petugas/update-status',[PetugasController::class,'updateStatus'])->name('petugas.update-status');
             Route::resource('petugas', PetugasController::class);
+            // poliklinik
+            Route::resource('poliklinik',PoliklinikController::class);
+            // dokter
+            Route::post('dokter/update-status',[DokterController::class,'updateStatus'])->name('dokter.update-status');
+            Route::resource('dokter', DokterController::class);
         });
 
     });
