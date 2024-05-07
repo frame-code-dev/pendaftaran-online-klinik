@@ -60,8 +60,8 @@
                             </select>
                         </div>
                         <div>
-                            <x-label-default for="" value="Tanggal Lahir">Tanggal Lahir</x-label-default>
-                            <input type="text" datepicker datepicker-format="mm-dd-yyyy" value="{{ $data->tanggal }}" name="tgl_lahir" id="tgl_lahir" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Masukkan Tanggal Lahir">
+                            <x-label-default for="" value="Tanggal">Tanggal</x-label-default>
+                            <input type="text" datepicker datepicker-format="yyyy-mm-dd" value="{{ $data->tanggal }}" name="tgl_lahir" id="tgl_lahir" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Masukkan Tanggal Lahir">
                         </div>
                     </div>
                     <div>

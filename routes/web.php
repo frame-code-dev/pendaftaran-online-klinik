@@ -3,6 +3,9 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPasienController;
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\ImportDataController;
+use App\Http\Controllers\JadwalDokterController;
+use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\PoliklinikController;
 use App\Http\Controllers\ProfileController;
@@ -38,6 +41,11 @@ Route::middleware(['auth','role:admin'])->group(function () {
             // dokter
             Route::post('dokter/update-status',[DokterController::class,'updateStatus'])->name('dokter.update-status');
             Route::resource('dokter', DokterController::class);
+            // jadwal dokter
+            Route::get('jadwal-dokter/cek-dokter',[JadwalDokterController::class,'cekDokter'])->name('jadwal-dokter.cek-dokter');
+            Route::resource('jadwal-dokter',JadwalDokterController::class);
+            // pasien
+            Route::resource('pasien', PasienController::class);
         });
 
     });
@@ -63,5 +71,8 @@ Route::middleware('auth','role:admin')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('import',[ImportDataController::class,'index']);
+
 
 require __DIR__.'/auth.php';

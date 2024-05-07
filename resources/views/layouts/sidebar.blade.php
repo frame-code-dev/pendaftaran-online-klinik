@@ -39,7 +39,7 @@
                        </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                        <a href="{{ route('jadwal-dokter.index') }}" class="{{ Request::segment(3) == 'jadwal-dokter' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
                             <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
                             </svg>
@@ -55,18 +55,83 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                        <a href="{{ route('pasien.index') }}" class="{{ Request::segment(3) == 'pasien  ' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
                             <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
                             </svg>
                             Data Pasien
                         </a>
                     </li>
+                </ul>
+            </li>
+            <li>
+                <button type="button" class="flex items-center w-full p-2 text-base text-white transition duration-75 rounded-lg group hover:bg-blue-900 dark:text-white dark:hover:bg-gray-700" aria-controls="transaksi-data" data-collapse-toggle="transaksi-data">
+                    <svg class="flex-shrink-0 w-5 h-5 text-white transition duration-75 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15v4m6-6v6m6-4v4m6-6v6M3 11l6-5 6 5 5.5-5.5"/>
+                    </svg>
 
-
+                    <span class="flex-1 text-sm ms-3 text-left rtl:text-right whitespace-nowrap">Transaksi</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                </button>
+                <ul id="transaksi-data" class=" py-2 space-y-2 bg-blue-900 rounded mt-3 {{ Request::segment(2) == 'transaksi' ? 'block' : 'hidden' }}">
+                    <li class="">
+                         <a href="#" class="{{ Request::segment(3) == 'petugas' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                            <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
+                            </svg>
+                           History Transaksi
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ Request::segment(3) == 'dokter' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                           <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
+                           </svg>
+                           Verifikasi
+                       </a>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ Request::segment(3) == 'jadwal-dokter' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                            <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
+                            </svg>
+                            Antrian Poliklinik
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <button type="button" class="flex items-center w-full p-2 text-base text-white transition duration-75 rounded-lg group hover:bg-blue-900 dark:text-white dark:hover:bg-gray-700" aria-controls="laporan-data" data-collapse-toggle="laporan-data">
+                    <svg class="flex-shrink-0 w-5 h-5 text-white transition duration-75 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-3 5h3m-6 0h.01M12 16h3m-6 0h.01M10 3v4h4V3h-4Z"/>
+                    </svg>
+                    <span class="flex-1 text-sm ms-3 text-left rtl:text-right whitespace-nowrap">Laporan</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                </button>
+                <ul id="laporan-data" class=" py-2 space-y-2 bg-blue-900 rounded mt-3 {{ Request::segment(2) == 'transaksi' ? 'block' : 'hidden' }}">
+                    <li class="">
+                         <a href="#" class="{{ Request::segment(3) == 'petugas' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                            <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
+                            </svg>
+                            Laporan Kunjungan Pasien Pendaftaran Online
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="{{ Request::segment(3) == 'dokter' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                           <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
+                           </svg>
+                           Laporan Kunjungan Pasien BPJS Umum
+                       </a>
+                    </li>
 
                 </ul>
-             </li>
+            </li>
 
         </ul>
     </div>

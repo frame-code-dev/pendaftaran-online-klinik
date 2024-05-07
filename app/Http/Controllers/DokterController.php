@@ -139,13 +139,11 @@ class DokterController extends Controller
         }
         try {
             DB::beginTransaction();
-            $date = DateTime::createFromFormat('m-d-Y', $request->tgl_lahir)->format('Y-m-d');
-
             $jam_kerja = $request->dari.'-'.$request->sampai;
             $dokter = Dokter::find($id);
             $dokter->poliklinik_id = $request->poliklinik;
             $dokter->name = $request->name;
-            $dokter->tanggal = $date;
+            $dokter->tanggal = $request->tgl_lahir;
             $dokter->jam_praktek = $jam_kerja;
             $dokter->kuota = $request->has('kuota') ? $request->kuota : 0;
             $dokter->jenis_kelamin = $request->jenis_kelamin;
@@ -164,7 +162,6 @@ class DokterController extends Controller
             toast('Berhasil mengganti data.','success');
             return redirect()->route('dokter.index');
         }catch (Exception $e){
-            return $e;
             DB::rollBack();
             alert()->error('Terjadi kesalahan eror!', $e->getMessage());
             return redirect()->route('dokter.index');

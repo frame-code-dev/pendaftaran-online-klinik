@@ -29,4 +29,8 @@ class Dokter extends Model
     public function poliklinik() {
         return $this->belongsTo(Poliklinik::class,'poliklinik_id','id');
     }
+
+    public function jadwal()  {
+        return $this->hasMany(JadwalDokter::class,'dokter_id','id');
+    }
 }

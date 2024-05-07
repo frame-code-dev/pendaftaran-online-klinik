@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card bg-white p-5 mt-4 border rounded-md w-full relative">
+            <div class="card bg-white p-5 mt-4 border rounded-md w-full relative overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400" id="datatable">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -56,7 +56,7 @@
                                                 <a href="{{ route('poliklinik.show',$item->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white show-data">Show</a>
                                             </li>
                                             <li>
-                                                <a href="{{ route('poliklinik.edit',$item->id) }}" data-modal-target="edit-modal" data-modal-toggle="edit-modal" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white edit-data">Edit</a>
+                                                <a href="{{ route('poliklinik.edit',$item->id) }}" class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white edit-data">Edit</a>
                                             </li>
                                             <li>
                                                 <a href="{{ route('poliklinik.destroy', $item->id) }}" data-confirm-delete="true" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
