@@ -13,16 +13,16 @@
         <hr>
     </div>
     <h4 class="text-center font-bold my-4">LOGIN</h4>
-    <form method="POST" class="w-full max-w-full" action="{{ route('login') }}">
+    <form method="POST" class="w-full max-w-full" action="{{ route('pasien.login.store') }}">
         @csrf
         <!-- Email Address -->
         <div class="md:flex md:items-center mb-6">
             <div class="md:w-1/4">
-              <x-input-label for="email" :value="__('Email')" />
+              <x-input-label for="NIK" :value="__('NIK')" />
 
             </div>
             <div class="md:w-full">
-              <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+              <x-text-input id="nik" class="block mt-1 w-full" type="text" name="nik" :value="old('nik')" required autofocus autocomplete="Masukkan NIK" />
               <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
         </div>
@@ -30,15 +30,11 @@
         <!-- Password -->
         <div class="md:flex md:items-center mb-6">
             <div class="md:w-1/4">
-                <x-input-label for="password" :value="__('Password')" />
+                <x-input-label for="Tanggal Lahir" :value="__('Tanggal Lahir')" />
 
             </div>
             <div class="md:w-full">
-                <x-text-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
-
+                <input type="text" datepicker datepicker-format="mm-dd-yyyy" name="tgl_lahir" id="tgl_lahir" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Masukkan Tanggal Lahir">
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
         </div>
@@ -55,21 +51,6 @@
                 <span>Login</span>
             </x-primary-button>
         </div>
-        <div class="flex-row text-center items-center justify-center mt-4 space-y-2">
-            <div>
-                <a class="underline text-sm text-blue-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('register') }}">
-                    {{ __('Daftar Sekarang !') }}
-                </a>
-            </div>
-            <div>
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-blue-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        {{ __('Lupa Password?') }}
-                    </a>
-                @endif
-            </div>
 
-
-        </div>
     </form>
 </x-guest-layout>

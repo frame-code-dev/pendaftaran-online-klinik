@@ -5,7 +5,10 @@ use App\Http\Controllers\DashboardPasienController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\ImportDataController;
 use App\Http\Controllers\JadwalDokterController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\Pasien\Auth\AuthController;
 use App\Http\Controllers\PasienController;
+use App\Http\Controllers\PendaftaranPasienOfflineController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\PoliklinikController;
 use App\Http\Controllers\ProfileController;
@@ -22,9 +25,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 // admin
 Route::middleware(['auth','role:admin'])->group(function () {
@@ -46,24 +46,37 @@ Route::middleware(['auth','role:admin'])->group(function () {
             Route::resource('jadwal-dokter',JadwalDokterController::class);
             // pasien
             Route::resource('pasien', PasienController::class);
+            // pendaftaran pasien offline
+            Route::get('pendaftaran-pasien-offline/{id}',[PendaftaranPasienOfflineController::class,'index'])->name('pendaftaran-offline.index');
+            Route::post('pendaftaran-pasien-offline/store',[PendaftaranPasienOfflineController::class,'store'])->name('pendaftaran-offline.store');
+        });
+
+        Route::group(['prefix' => 'laporan'], function () {
+            Route::get('laporan-kunjungan-jenis',[LaporanController::class,'LaporanJenis'])->name('laporan.kunjungan-jenis');
         });
 
     });
 });
 // pasien
-Route::middleware(['auth','role:pasien'])->group(function () {
-    Route::prefix('dashboard-pasien')->group(function () {
-        // dashboard
-        Route::get('/',[DashboardPasienController::class,'index'])->name('dashboard.pasien');
-        // list ketentuan umum
-        Route::get('ketentuan-umum',[DashboardPasienController::class,'ketentuan'])->name('pasien.ketentuan');
-        // jenis pembayaran
-        Route::get('jenis-pembayaran',[DashboardPasienController::class,'jenisPembayaran'])->name('pasien.jenis-pembayaran');
-        // list poliklinik
-        Route::get('list-poliklinik',[DashboardPasienController::class,'listPoliklinik'])->name('pasien.list-poliklinik');
-        // list dokter
-        Route::get('list-dokter',[DashboardPasienController::class,'listDokter'])->name('pasien.list-dokter');
-    });
+Route::group(['prefix' => 'auth'], function () {
+    Route::get('login',[AuthController::class,'login'])->name('pasien.login');
+    Route::post('login/store',[AuthController::class,'store'])->name('pasien.login.store');
+});
+Route::get('/',[DashboardPasienController::class,'index'])->name('dashboard.pasien');
+Route::prefix('dashboard-pasien')->group(function () {
+    // dashboard
+    // list ketentuan umum
+    Route::get('ketentuan-umum',[DashboardPasienController::class,'ketentuan'])->name('pasien.ketentuan');
+    // jenis pembayaran
+    Route::get('jenis-pembayaran',[DashboardPasienController::class,'jenisPembayaran'])->name('pasien.jenis-pembayaran');
+    Route::post('jenis-pembayaran-bpjs/store',[DashboardPasienController::class,'jenisPembayaranBpjsStore'])->name('pasien.jenis-pembayaran-bpjs.store');
+    Route::get('jenis-pembayaran-bpjs',[DashboardPasienController::class,'jenisPembayaranBpjs'])->name('pasien.jenis-pembayaran-bpjs');
+    // list poliklinik
+    Route::get('list-poliklinik/search',[DashboardPasienController::class,'listPoliklinik'])->name('pasien.list-poliklinik.search');
+    Route::get('list-poliklinik',[DashboardPasienController::class,'listPoliklinik'])->name('pasien.list-poliklinik');
+    // list dokter
+    Route::get('list-dokter/search/{id}',[DashboardPasienController::class,'listDokter'])->name('pasien.list-dokter.search');
+    Route::get('list-dokter/{id}',[DashboardPasienController::class,'listDokter'])->name('pasien.list-dokter');
 });
 
 Route::middleware('auth','role:admin')->group(function () {
@@ -73,6 +86,8 @@ Route::middleware('auth','role:admin')->group(function () {
 });
 
 Route::get('import',[ImportDataController::class,'index']);
+// API
+Route::get('pendaftaran-pasien-offline/list-dokter',[PendaftaranPasienOfflineController::class,'dokter'])->name('pendaftaran-offline.list-dokter');
 
 
 require __DIR__.'/auth.php';
