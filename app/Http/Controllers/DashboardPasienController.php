@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\EstimasiWaktuLayanan;
+use App\Helpers\KodeUnikGenerator;
+use App\Helpers\NomorAntrianGenerator;
 use App\Models\Dokter;
+use App\Models\Pasien;
 use App\Models\PendaftaranPasien;
 use App\Models\Poliklinik;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class DashboardPasienController extends Controller
 {
@@ -74,7 +82,7 @@ class DashboardPasienController extends Controller
             alert()->html('Terjadi kesalahan eror!', $html, 'error')->autoClose(5000);
             return redirect()->route('pasien.jenis-pembayaran-bpjs');
         }
-        Session::put('no_bpjs',$request->get('bpjs'));
+        Session::put('no_bpjs',$request->get('no_bpjs'));
         if ($request->has('file_input') || $request->file('file_input') != null) {
             $file = $request->file('file_input');
             $filename = $request->get('no_bpjs').'.'.$file->extension();
@@ -100,19 +108,139 @@ class DashboardPasienController extends Controller
         }
         $param['poli'] = Poliklinik::find($id);
         Session::put('poliklinik',$id);
+        $tanggal_kunjungan = $request->has('tanggal') ? $request->tanggal : date('Y-m-d');
+        $hari_kunjungan = $request->has('tanggal') ? strtolower(Carbon::parse($request->tanggal)->translatedFormat('l')) : null;
+        Session::put('tanggal_kunjungan',$tanggal_kunjungan);
         Session::put('poliklinik',$param['poli']);
+        $jenis_pembayaran = Session::has('jenis-pembayaran') ? Session::get('jenis-pembayaran') : 'umum';
         $search = $request->get('search');
-        $param['data'] = Dokter::with('poliklinik','user')->when($search,function($query) use ($search) {
+        $param['data'] = Dokter::with('poliklinik','user','jadwal')->when($search,function($query) use ($search) {
             $query->where('name','like','%'.$search.'%')
                  ->orWhere('name','like','%'.$search.'%');
-        })->where('poliklinik_id',$id)->latest()->get();
+        })
+        ->whereHas('jadwal', function ($query) use ($hari_kunjungan,$jenis_pembayaran) {
+            if ($hari_kunjungan != null) {
+                $hari_kunjungan = $hari_kunjungan;
+                if ($hari_kunjungan == 'jumat') {
+                    $hari_kunjungan = 'jumaat';
+                }
+                $query->where($hari_kunjungan,'!=',null)
+                    ->where('status',$jenis_pembayaran);
+            }else{
+                $query->where('status',$jenis_pembayaran);
+            }
+        })
+        ->where('poliklinik_id',$id)->latest()->get();
         $param['data']->transform(function ($value) {
-            $current_kuota_online = PendaftaranPasien::where('dokter_id',$value->id)->where('status_pendaftaran','proses')->where('jenis_pendaftaran','online')->count();
+            $current_kuota_online = PendaftaranPasien::where('dokter_id',$value->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')->count();
             $current_kuota_offline = PendaftaranPasien::where('dokter_id',$value->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','offline')->count();
             $current_kuota = $current_kuota_offline + $current_kuota_online;
-            $value->kuota_terisi = $value->kuota - $current_kuota;
+            $result = $value->kuota - $current_kuota;
+            $value->kuota_terisi = $result <= 0 ? 0 : $result;
             return $value;
         });
         return view('pasien.pendaftaran.dokter',$param);
     }
+
+    public function konfirmasiPendaftaran($id){
+        // data pendaftaran pasien
+        $dokter_id = $id;
+        // Check Kuota
+        $current_kuota_online = PendaftaranPasien::where('dokter_id',$dokter_id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')->count();
+        $current_kuota_offline = PendaftaranPasien::where('dokter_id',$dokter_id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','offline')->count();
+        $current_kuota = $current_kuota_offline + $current_kuota_online;
+        $param['dokter'] = Dokter::with('poliklinik')->find($dokter_id);
+        $sisa_kuota = $param['dokter']->kuota - $current_kuota;
+        if ($sisa_kuota <= 0) {
+            toast('Kuota penuh mencoba menambahkan data.','error');
+            return redirect()->route('pasien.list-dokter',[$param['dokter']->poliklinik_id]);
+        }
+        $tanggal_kunjungan_pasien = Session::get('tanggal_kunjungan') != null ? Session::get('tanggal_kunjungan') : date('Y-m-d');
+        $jenis_pembayaran = Session::has('jenis-pembayaran') ? Session::get('jenis-pembayaran') : 'umum';
+        $data_pasien_id = Session::get('user')->id;
+        // data pendaftaran pasien
+        $param['title'] = 'Konfirmasi Pembayaran';
+        // 1 Data Pasien
+        // 2 Nama Dokter
+        // 3 klinik
+        // 4 jenis jenisPembayaran
+        // 5 tanggal kunjungan
+        $param['data_pasien'] = Pasien::find($data_pasien_id);
+        $param['jenis_pembayaran'] = $jenis_pembayaran;
+        $param['tanggal_kunjungan'] = $tanggal_kunjungan_pasien;
+        $param['simple'] = QrCode::size(120)->generate('https://www.binaryboxtuts.com/');
+        $param['kodeUnik'] = KodeUnikGenerator::generate();
+        return view('pasien.pendaftaran.konfirmasi-pendaftaran',$param);
+    }
+
+    public function konfirmasiPendaftaranStore($id){
+        // data pendaftaran pasien
+        $poliklinik_id = Session::get('poliklinik') != null ? Session::get('poliklinik')->id : null;
+        $dokter_id = $id;
+        $tanggal_kunjungan_pasien = Session::get('tanggal_kunjungan') != null ? Session::get('tanggal_kunjungan') : date('Y-m-d');
+        $jenis_pembayaran = Session::has('jenis-pembayaran') ? Session::get('jenis-pembayaran') : 'umum';
+        $no_bpjs = Session::has('jenis-pembayaran') ? Session::get('no_bpjs') : null;
+        $file_bpjs = Session::has('jenis-pembayaran') ? Session::get('file-bpjs') : null;
+        $data_pasien_id = Session::get('user')->id;
+        // data pendaftaran pasien
+        $param['title'] = 'Konfirmasi Pembayaran';
+        // 1 Data Pasien
+        // 2 Nama Dokter
+        // 3 klinik
+        // 4 jenis jenisPembayaran
+        // 5 tanggal kunjungan
+        $param['data_pasien'] = Pasien::find($data_pasien_id);
+        $param['dokter'] = Dokter::with('poliklinik')->find($dokter_id);
+        $param['jenis_pembayaran'] = $jenis_pembayaran;
+        $param['tanggal_kunjungan'] = $tanggal_kunjungan_pasien;
+        $param['simple'] = QrCode::size(120)->generate('https://www.binaryboxtuts.com/');
+        $param['noAntrian'] = NomorAntrianGenerator::generate();
+        $tanggalKunjungan = Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d');
+        $nomorAntrian = $param['noAntrian']; // Nomor antrian
+        $param['kodeUnik'] = KodeUnikGenerator::generate();
+        Session::put('kodeUnik',$param['kodeUnik']);
+        $estimasiWaktu = EstimasiWaktuLayanan::estimasi($tanggalKunjungan, $nomorAntrian); // Tanggal kunjungan (format: YYYY-MM-DD)
+        $param['estimasi_waktu'] = $estimasiWaktu->format('H:i:s');
+        try {
+            DB::beginTransaction();
+            $pendaftaran = new PendaftaranPasien;
+            $pendaftaran->kode_pendaftaran = $param['kodeUnik'];
+            $pendaftaran->no_kartu = $no_bpjs;
+            $pendaftaran->no_antrian = $nomorAntrian;
+            $pendaftaran->jenis_pembayaran = $jenis_pembayaran;
+            $pendaftaran->dokter_id = $dokter_id;
+            $pendaftaran->pasien_id = $data_pasien_id;
+            $pendaftaran->tanggal_kunjungan = $tanggal_kunjungan_pasien;
+            $pendaftaran->estimasi_dilayani = $estimasiWaktu->format('H:i:s');
+            $pendaftaran->status_pendaftaran = 'pending';
+            $pendaftaran->jenis_pendaftaran = 'online';
+            $pendaftaran->poliklinik_id = $poliklinik_id;
+            $pendaftaran->gambar = $file_bpjs;
+            $pendaftaran->save();
+            DB::commit();
+            return $param;
+            // $param['data'] = PendaftaranPasien::find($pendaftaran->id);
+        //     return redirect()->route('dashboard.pasien');
+        } catch (Exception $th) {
+            return $th;
+            DB::rollBack();
+            alert()->error('Terjadi kesalahan eror!', $th->getMessage());
+            return redirect()->route('dashboard.pasien');
+
+        }
+    }
+
+    public function cetakQrcode($id){
+        $noBooking = $id;
+
+        $qrCode = QrCode::format('png')->size(500)->generate($noBooking);
+
+        // Simpan QR Code ke dalam folder public/qrcodes
+        $path = public_path('qrcodes/'.$noBooking.'.png');
+        file_put_contents($path, $qrCode);
+
+        return response()->download($path);
+    }
+
+
 }

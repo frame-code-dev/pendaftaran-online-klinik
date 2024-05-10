@@ -16,7 +16,7 @@
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center mt-10">BPJS</h5>
                     </div>
                 </a>
-                <a href="#">
+                <a href="{{ route('pasien.list-poliklinik') }}">
                     <div class="max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative h-full hover:border-2 hover:border-blue-600 p-5">
                         <img class=" mx-auto h-64 rounded-lg" src="{{ asset('img/image 20.png') }}" alt="" />
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center mt-10">UMUM</h5>

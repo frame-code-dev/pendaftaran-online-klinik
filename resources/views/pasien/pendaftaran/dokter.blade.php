@@ -1,4 +1,59 @@
 <x-app-layout>
+    @push('js')
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            var today = new Date();
+            var maxDate = new Date();
+            maxDate.setDate(today.getDate() + 7); // 6 days from today
+            var disabledDates = []; // array to store disabled dates
+
+            // Loop to disable weekends (Saturday and Sunday)
+            for (var i = 0; i < 7; i++) {
+                var tempDate = new Date();
+                tempDate.setDate(today.getDate() + i);
+                if (tempDate.getDay() === 0 || tempDate.getDay() === 6) {
+                    disabledDates.push(tempDate);
+                }
+            }
+
+            $("#datepicker").datepicker({
+                dateFormat: "yy-mm-dd",
+                defaultDate: today,
+                minDate: today,
+                maxDate: maxDate,
+                beforeShowDay: function(date) {
+                    var day = date.getDay();
+                    // Disable weekends
+                    if (day === 0 || day === 6) {
+                        return [false];
+                    }
+                    // Disable past and future dates
+                    if (date < today || date > maxDate) {
+                        return [false];
+                    }
+                    // Disable specific dates in disabledDates array
+                    for (var i = 0; i < disabledDates.length; i++) {
+                        if (date.getTime() === disabledDates[i].getTime()) {
+                            return [false];
+                        }
+                    }
+                    return [true];
+                },
+                onSelect: function() {
+                    selectedDate = $.datepicker.formatDate("yy-mm-dd", $(this).datepicker('getDate'));
+                    console.log(selectedDate);
+                    $("#datepicker").val(selectedDate);
+                    window.location.href = window.location.pathname + '?tanggal=' + selectedDate;
+
+
+                }
+            });
+        });
+    </script>
+    @endpush
     <div class="p-4 sm:ml-64 mt-20 h-fit">
         <div class=" max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-auto ">
             <div class="bg-blue-800 p-4 rounded-t-lg flex content-center gap-2">
@@ -50,7 +105,14 @@
                     <div class="w-1/2 p-5 flex content-end end-0 align-bottom justify-end">
                         <div class="w-1/2">
                             <x-label-default for="" value="Tanggal Kunjungan">Tanggal Kunjungan</x-label-default>
-                            <input type="text" datepicker datepicker-format="mm-dd-yyyy" name="tgl_kunjungan" id="tgl_kunjungan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Masukkan Tanggal Kunjungan">
+                            <input type="text"
+                                value="{{ Carbon\Carbon::parse(request('tanggal'))->format('Y-m-d') }}"
+
+                                name="tgl_kunjungan"
+                                id="datepicker"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Masukkan Tanggal Kunjungan"
+                            >
                         </div>
                         <div class="align-bottom self-end ms-2">
                             <x-primary-button type="submit">Check Tanggal Kunjungan</x-primary-button>
@@ -59,31 +121,30 @@
                 </div>
                 <hr>
                 <div class="w-full grid grid-cols-3 gap-5 ">
-                    @forelse  ($data as $item)
-                        <div class="max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                            <a href="#">
-                                <img class="rounded-full bg-cover w-fit mx-auto p-4" src="{{ $item->gambar != null ? asset('storage/dokter/'.$item->gambar) : 'https://flowbite.com/docs/images/examples/image-2@2x.jpg' }}" alt="" />
-                            </a>
-                            <div class="p-5 text-center">
-                                <a href="#">
-                                    <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ ucwords($item->name) }}</h5>
-                                </a>
-                                <hr>
-                                <p class="mt-3 font-normal text-gray-700 dark:text-gray-400">Klinik {{ ucwords($item->poliklinik->name) }}</p>
-                                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                                    tgl: {{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}, jam praktek {{ $item->jam_praktek }} WIB
-                                </p>
-                                <hr>
-                                <div class="mt-3">
-                                    <span class="bg-blue-100 text-blue-800 text-xs font-bold inline-flex items-center px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
-                                        <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"/>
-                                        </svg>
-                                        Sisa Kuota : {{ $item->kuota_terisi }}
-                                    </span>
+                    @forelse ($data as $item)
+                        <a href="{{ route('pasien.konfirmasi-pendaftaran',$item->id) }}" class="">
+                            <div class="max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:border-2 hover:border-blue-600">
+                                    <img class="rounded-full bg-cover w-fit mx-auto p-4" src="{{ $item->gambar != null ? asset('storage/dokter/'.$item->gambar) : 'https://flowbite.com/docs/images/examples/image-2@2x.jpg' }}" alt="" />
+                                <div class="p-5 text-center">
+                                        <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ ucwords($item->name) }}</h5>
+                                    <hr>
+                                    <p class="mt-3 font-normal text-gray-700 dark:text-gray-400">Klinik {{ ucwords($item->poliklinik->name) }}</p>
+                                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                        tgl: {{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}, jam praktek {{ $item->jam_praktek }} WIB
+                                    </p>
+                                    <hr>
+                                    <div class="mt-3">
+                                        <span class="bg-blue-100 text-blue-800 text-xs font-bold inline-flex items-center px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">
+                                            <svg class="w-2.5 h-2.5 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z"/>
+                                            </svg>
+                                            Sisa Kuota : {{ $item->kuota_terisi }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
+
                     @empty
                         <div class="col-span-1">
                             <span class="text-center text-red-300">Tidak ada data</span>

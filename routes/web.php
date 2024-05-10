@@ -77,6 +77,11 @@ Route::prefix('dashboard-pasien')->group(function () {
     // list dokter
     Route::get('list-dokter/search/{id}',[DashboardPasienController::class,'listDokter'])->name('pasien.list-dokter.search');
     Route::get('list-dokter/{id}',[DashboardPasienController::class,'listDokter'])->name('pasien.list-dokter');
+    // konfirmasi pembayaran
+    Route::get('konfirmasi-pendaftaran/{id}',[DashboardPasienController::class,'konfirmasiPendaftaran'])->name('pasien.konfirmasi-pendaftaran');
+    Route::get('konfirmasi-pendaftaran/store/{id}',[DashboardPasienController::class,'konfirmasiPendaftaranStore'])->name('pasien.konfirmasi-pendaftaran.store');
+    // cetak qrcode
+    Route::get('generate-qrcode/{id}',[DashboardPasienController::class,'cetakQrcode'])->name('pasien.qrcode');
 });
 
 Route::middleware('auth','role:admin')->group(function () {
