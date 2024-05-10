@@ -6,6 +6,7 @@ use App\Http\Controllers\DokterController;
 use App\Http\Controllers\ImportDataController;
 use App\Http\Controllers\JadwalDokterController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\ListJadwalDokterController;
 use App\Http\Controllers\Pasien\Auth\AuthController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PendaftaranPasienOfflineController;
@@ -82,6 +83,10 @@ Route::prefix('dashboard-pasien')->group(function () {
     Route::get('konfirmasi-pendaftaran/store/{id}',[DashboardPasienController::class,'konfirmasiPendaftaranStore'])->name('pasien.konfirmasi-pendaftaran.store');
     // cetak qrcode
     Route::get('generate-qrcode/{id}',[DashboardPasienController::class,'cetakQrcode'])->name('pasien.qrcode');
+
+    // List Jadwal Dokter
+    Route::get('list-jadwal-dokter/search',[ListJadwalDokterController::class,'index'])->name('pasien.list-jadwal-dokter.search');
+    Route::get('list-jadwal-dokter',[ListJadwalDokterController::class,'index'])->name('pasien.list-jadwal-dokter');
 });
 
 Route::middleware('auth','role:admin')->group(function () {

@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </a>
-            <a href="#">
+            <a href="{{ route('pasien.list-jadwal-dokter') }}">
                 <div class="max-w-lg bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 relative mt-40 h-full hover:border-2 hover:border-blue-600">
                     <div class="absolute top-36 left-1/2 transform -translate-x-1/2 -translate-y-full w-11/12 p-5 border z-50 bg-white">
                         <img class="mx-auto h-64 rounded-lg" src="{{ asset('img/Group 812.png') }}" alt="" />
