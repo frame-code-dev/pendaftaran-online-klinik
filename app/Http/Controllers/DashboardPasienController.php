@@ -68,6 +68,9 @@ class DashboardPasienController extends Controller
     }
 
     public function jenisPembayaranBpjsStore(Request $request) {
+        if (Session::get('user') == null) {
+            return view('pasien.auth.login');
+        }
         $validateData = Validator::make($request->all(),[
             'no_bpjs' => 'required',
             'file_input' => 'required',
@@ -134,15 +137,20 @@ class DashboardPasienController extends Controller
         $param['data']->transform(function ($value) {
             $current_kuota_online = PendaftaranPasien::where('dokter_id',$value->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')->count();
             $current_kuota_offline = PendaftaranPasien::where('dokter_id',$value->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','offline')->count();
-            $current_kuota = $current_kuota_offline + $current_kuota_online;
-            $result = $value->kuota - $current_kuota;
-            $value->kuota_terisi = $result <= 0 ? 0 : $result;
+            if ($value->kuota != 0) {
+                $current_kuota = $current_kuota_offline + $current_kuota_online;
+                $result = $value->kuota - $current_kuota;
+                $value->kuota_terisi = $result <= 0 ? 0 : $result;
+            }
             return $value;
         });
         return view('pasien.pendaftaran.dokter',$param);
     }
 
     public function konfirmasiPendaftaran($id){
+        if (Session::get('user') == null) {
+            return view('pasien.auth.login');
+        }
         // data pendaftaran pasien
         $dokter_id = $id;
         // Check Kuota
@@ -150,10 +158,12 @@ class DashboardPasienController extends Controller
         $current_kuota_offline = PendaftaranPasien::where('dokter_id',$dokter_id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','offline')->count();
         $current_kuota = $current_kuota_offline + $current_kuota_online;
         $param['dokter'] = Dokter::with('poliklinik')->find($dokter_id);
-        $sisa_kuota = $param['dokter']->kuota - $current_kuota;
-        if ($sisa_kuota <= 0) {
-            toast('Kuota penuh mencoba menambahkan data.','error');
-            return redirect()->route('pasien.list-dokter',[$param['dokter']->poliklinik_id]);
+        if ($param['dokter']->kuota != 0) {
+            $sisa_kuota = $param['dokter']->kuota - $current_kuota;
+            if ($sisa_kuota <= 0) {
+                toast('Kuota penuh mencoba menambahkan data.','error');
+                return redirect()->route('pasien.list-dokter',[$param['dokter']->poliklinik_id]);
+            }
         }
         $tanggal_kunjungan_pasien = Session::get('tanggal_kunjungan') != null ? Session::get('tanggal_kunjungan') : date('Y-m-d');
         $jenis_pembayaran = Session::has('jenis-pembayaran') ? Session::get('jenis-pembayaran') : 'umum';
@@ -174,6 +184,9 @@ class DashboardPasienController extends Controller
     }
 
     public function konfirmasiPendaftaranStore($id){
+        if (Session::get('user') == null) {
+            return view('pasien.auth.login');
+        }
         // data pendaftaran pasien
         $poliklinik_id = Session::get('poliklinik') != null ? Session::get('poliklinik')->id : null;
         $dokter_id = $id;
@@ -235,7 +248,10 @@ class DashboardPasienController extends Controller
     public function cetakQrcode($id){
         $noBooking = Session::get('kodeUnik');
 
-        $qrCode = QrCode::format('png')->size(500)->generate($noBooking);
+        $qrCode = QrCode::format('png')
+                        ->backgroundColor(255, 255, 255)
+                        ->margin(1)
+                        ->size(500)->generate($noBooking);
 
         // Simpan QR Code ke dalam folder public/qrcodes
         $path = public_path('qrcodes/'.$noBooking.'.png');

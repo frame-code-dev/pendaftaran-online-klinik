@@ -13,6 +13,7 @@ use App\Http\Controllers\PendaftaranPasienOfflineController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\PoliklinikController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfilePasienController;
 use App\Http\Controllers\TransaksHistoryController;
 use App\Http\Controllers\TransaksiAntrianKlinikController;
 use App\Http\Controllers\TransaksiVerifikasiController;
@@ -89,6 +90,7 @@ Route::middleware(['auth'])->group(function () {
 Route::group(['prefix' => 'auth'], function () {
     Route::get('login',[AuthController::class,'login'])->name('pasien.login');
     Route::post('login/store',[AuthController::class,'store'])->name('pasien.login.store');
+    Route::get('pasien/logout',[AuthController::class,'logout'])->name('pasien.login.logout');
 });
 Route::get('/',[DashboardPasienController::class,'index'])->name('dashboard.pasien');
 Route::prefix('dashboard-pasien')->group(function () {
@@ -110,13 +112,15 @@ Route::prefix('dashboard-pasien')->group(function () {
     Route::get('konfirmasi-pendaftaran/store/{id}',[DashboardPasienController::class,'konfirmasiPendaftaranStore'])->name('pasien.konfirmasi-pendaftaran.store');
     // cetak qrcode
     Route::get('generate-qrcode/{id}',[DashboardPasienController::class,'cetakQrcode'])->name('pasien.qrcode');
-
     // List Jadwal Dokter
     Route::get('list-jadwal-dokter/search',[ListJadwalDokterController::class,'index'])->name('pasien.list-jadwal-dokter.search');
     Route::get('list-jadwal-dokter',[ListJadwalDokterController::class,'index'])->name('pasien.list-jadwal-dokter');
+    // Profile
+    Route::post('profile-pasien',[ProfilePasienController::class,'update'])->name('profile-pasien.update');
+    Route::get('profile-pasien',[ProfilePasienController::class,'index'])->name('profile-pasien.edit');
 });
 
-Route::middleware('auth','role:admin')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

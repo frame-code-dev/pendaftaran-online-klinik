@@ -114,9 +114,7 @@
                                 placeholder="Masukkan Tanggal Kunjungan"
                             >
                         </div>
-                        <div class="align-bottom self-end ms-2">
-                            <x-primary-button type="submit">Check Tanggal Kunjungan</x-primary-button>
-                        </div>
+
                     </div>
                 </div>
                 <hr>

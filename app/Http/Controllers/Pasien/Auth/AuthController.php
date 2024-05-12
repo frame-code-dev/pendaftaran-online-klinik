@@ -51,4 +51,10 @@ class AuthController extends Controller
             return redirect()->route('pasien.login');
         }
     }
+
+    public function logout() {
+        Session::forget('user');
+        Session::flush();
+        return redirect()->route('pasien.login');
+    }
 }

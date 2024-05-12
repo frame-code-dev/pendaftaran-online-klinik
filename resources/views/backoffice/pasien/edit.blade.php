@@ -50,7 +50,9 @@
         var urlKabupaten = "https://ibnux.github.io/data-indonesia/kabupaten/";
         var urlKecamatan = "https://ibnux.github.io/data-indonesia/kecamatan/";
         var urlKelurahan = "https://ibnux.github.io/data-indonesia/kelurahan/";
-
+        let provinsi_id = `{{ $data->provinsi_id }}`
+        let kabupaten_id = `{{ $data->kabupaten_id }}`
+        let kecamatan_id = `{{ $data->kecamatan_id }}`
         function clearOptions(id) {
             console.log("on clearOptions :" + id);
 
@@ -78,6 +80,10 @@
                 width: '100%',
                 data: data
             })
+
+            if (provinsi_id) {
+                $("#select2-provinsi").val(provinsi_id).trigger('change');
+            }
         });
 
         var selectProv = $('#select2-provinsi');
@@ -112,6 +118,10 @@
                         width: '100%',
                         data: data
                     })
+
+                    if (kabupaten_id) {
+                        $("#select2-kabupaten").val(kabupaten_id).trigger('change');
+                    }
                 })
             }
         });
@@ -147,6 +157,10 @@
                         width: '100%',
                         data: data
                     })
+
+                    if (kecamatan_id) {
+                        $("#select2-kecamatan").val(kecamatan_id).trigger('change');
+                    }
                 })
             }
         });
@@ -195,48 +209,49 @@
                 </div>
             </div>
             <div class="card bg-white p-5 mt-4 border rounded-md w-full relative">
-                <form action="{{ route('pasien.store') }}" method="POST" class="w-full mx-auto space-y-4" enctype="multipart/form-data">
+                <form action="{{ route('pasien.update',$data->id) }}" method="POST" class="w-full mx-auto space-y-4" enctype="multipart/form-data">
+                    @method('PUT')
                     @csrf
                     <div class="grid grid-cols-4 gap-3">
                         <div class="col-span-2">
                             <x-label-default for="" >No. RM <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="no_rm" type="text" value="{{ old('no_rm') }}" placeholder="Masukkan No. RM"></x-input-default>
+                            <x-input-default name="no_rm" type="text" value="{{ old('no_rm',$data->no_rm) }}" placeholder="Masukkan No. RM"></x-input-default>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">NIK <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="nik" type="text" value="{{ old('nik') }}" placeholder="Masukkan NIK"></x-input-default>
+                            <x-input-default name="nik" type="text" value="{{ old('nik',$data->nik) }}" placeholder="Masukkan NIK"></x-input-default>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Nama Lengkap <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="nama" type="text" value="{{ old('nama') }}" placeholder="Masukkan Nama Lengkap"></x-input-default>
+                            <x-input-default name="nama" type="text" value="{{ old('nama',$data->name) }}" placeholder="Masukkan Nama Lengkap"></x-input-default>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Jenis Kelamin <span class="me-2 text-red-500">*</span></x-label-default>
                             <select id="jenis_kelamin" name="jenis_kelamin" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="0" {{ old('jenis_kelamin') == "0" ? 'selected' : '' }}>Pilih Jenis Kelamin</option>
-                                <option value="l" {{ old('jenis_kelamin') == "l" ? 'selected' : '' }}>Laki-Laki</option>
-                                <option value="p" {{ old('jenis_kelamin') == "p" ? 'selected' : '' }}>Perempuan</option>
+                                <option value="0" {{ old('jenis_kelamin',$data->jenis_kelamin) == "0" ? 'selected' : '' }}>Pilih Jenis Kelamin</option>
+                                <option value="l" {{ old('jenis_kelamin',$data->jenis_kelamin) == "l" ? 'selected' : '' }}>Laki-Laki</option>
+                                <option value="p" {{ old('jenis_kelamin',$data->jenis_kelamin) == "p" ? 'selected' : '' }}>Perempuan</option>
                             </select>
                         </div>
                         <div class="col-span-4">
                             <x-label-default for="">Alamat <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-textarea rows="4" name="alamat" type="text" value="{{ old('alamat') }}" placeholder="Masukkan Alamat">{{ old('alamat') }}</x-input-textarea>
+                            <x-input-textarea rows="4" name="alamat" type="text" value="{{ old('alamat') }}" placeholder="Masukkan Alamat">{{ old('alamat',$data->alamat) }}</x-input-textarea>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">RT <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="rt" type="text" value="{{ old('rt') }}" placeholder="Masukkan RT"></x-input-default>
+                            <x-input-default name="rt" type="text" value="{{ old('rt',$data->rt) }}" placeholder="Masukkan RT"></x-input-default>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">RW <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="rw" type="text" value="{{ old('rw') }}" placeholder="Masukkan RW"></x-input-default>
+                            <x-input-default name="rw" type="text" value="{{ old('rw',$data->rw) }}" placeholder="Masukkan RW"></x-input-default>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Tempat Lahir <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="tempat_lahir" type="text" value="{{ old('tempat_lahir') }}" placeholder="Masukkan Tempat Lahir"></x-input-default>
+                            <x-input-default name="tempat_lahir" type="text" value="{{ old('tempat_lahir',$data->tempat_lahir) }}" placeholder="Masukkan Tempat Lahir"></x-input-default>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Tanggal Lahir <span class="me-2 text-red-500">*</span></x-label-default>
-                            <input type="text" datepicker datepicker-format="mm-dd-yyyy" name="tgl_lahir" id="tgl_lahir" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Masukkan Tanggal Lahir">
+                            <input type="text" datepicker datepicker-format="mm-dd-yyyy" value="{{ \Carbon\Carbon::parse($data->tanggal_lahir)->translatedFormat('m-d-Y') }}" name="tgl_lahir" id="tgl_lahir" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Masukkan Tanggal Lahir">
                         </div>
                         <div>
                             <x-label-default for="">Provinsi <span class="me-2 text-red-500">*</span></x-label-default>
@@ -252,54 +267,54 @@
                         </div>
                         <div>
                             <x-label-default for="" >Desa/Kelurahan <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="desa" type="text" value="{{ old('desa') }}" placeholder="Masukkan Desa/Kelurahan"></x-input-default>
+                            <x-input-default name="desa" type="text" value="{{ old('desa',$data->desa_id) }}" placeholder="Masukkan Desa/Kelurahan"></x-input-default>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="" >Agama <span class="me-2 text-red-500">*</span></x-label-default>
                             <select id="agama" name="agama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="0">Pilih Agama</option>
-                                <option value="islam">Islam</option>
-                                <option value="kristen">Kristen</option>
-                                <option value="katolik">Katolik</option>
-                                <option value="hindu">Hindu</option>
-                                <option value="buddha">Buddha </option>
-                                <option value="khonghucu">Khonghucu</option>
+                                <option value="islam" {{ $data->agama == 'islam' ? 'selected' : '' }}>Islam</option>
+                                <option value="kristen" {{ $data->agama == 'kristen' ? 'selected' : '' }}>Kristen</option>
+                                <option value="katolik" {{ $data->agama == 'katolik' ? 'selected' : '' }}>Katolik</option>
+                                <option value="hindu" {{ $data->agama == 'hindu' ? 'selected' : '' }}>Hindu</option>
+                                <option value="buddha" {{ $data->agama == 'buddha' ? 'selected' : '' }}>Buddha </option>
+                                <option value="khonghucu" {{ $data->agama == 'khonghucu' ? 'selected' : '' }}>Khonghucu</option>
                             </select>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Status Kawin <span class="me-2 text-red-500">*</span></x-label-default>
                             <select id="status_kawin" name="status_kawin" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="0" {{ old('status_nasabah') == '0' ? 'selected' : '' }}>Pilih Status</option>
-                                <option value="1" {{ old('status_nasabah') == '1' ? 'selected' : ''}}>Belum Menikah</option>
-                                <option value="2" {{ old('status_nasabah') == '2' ? 'selected' : ''}}>Menikah</option>
-                                <option value="3" {{ old('status_nasabah') == '3' ? 'selected' : ''}}>Duda</option>
-                                <option value="4" {{ old('status_nasabah') == '4' ? 'selected' : ''}}>Janda</option>
+                                <option value="0" {{ old('status_nasabah',$data->status_kawin) == '0' ? 'selected' : '' }}>Pilih Status</option>
+                                <option value="1" {{ old('status_nasabah',$data->status_kawin) == '1' ? 'selected' : ''}}>Belum Menikah</option>
+                                <option value="2" {{ old('status_nasabah',$data->status_kawin) == '2' ? 'selected' : ''}}>Menikah</option>
+                                <option value="3" {{ old('status_nasabah',$data->status_kawin) == '3' ? 'selected' : ''}}>Duda</option>
+                                <option value="4" {{ old('status_nasabah',$data->status_kawin) == '4' ? 'selected' : ''}}>Janda</option>
                             </select>
                         </div>
                         <div>
                             <x-label-default for="">Pendidikan <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="pendidikan" type="text" value="{{ old('pendidikan') }}" placeholder="Masukkan Pendidikan"></x-input-default>
+                            <x-input-default name="pendidikan" type="text" value="{{ old('pendidikan',$data->pendidikan) }}" placeholder="Masukkan Pendidikan"></x-input-default>
 
                         </div>
                         <div>
                             <x-label-default for="" >Pekerjaan <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="pekerjaan" type="text" value="{{ old('pekerjaan') }}" placeholder="Masukkan Pekerjaan"></x-input-default>
+                            <x-input-default name="pekerjaan" type="text" value="{{ old('pekerjaan',$data->pekerjaan) }}" placeholder="Masukkan Pekerjaan"></x-input-default>
                         </div>
                         <div>
                             <x-label-default for="" >Suku <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="suku" type="text" value="{{ old('suku') }}" placeholder="Masukkan Suku"></x-input-default>
+                            <x-input-default name="suku" type="text" value="{{ old('suku',$data->suku) }}" placeholder="Masukkan Suku"></x-input-default>
                         </div>
                         <div>
                             <x-label-default for="" >Bahasa <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="bahasa" type="text" value="{{ old('bahasa') }}" placeholder="Masukkan Bahasa"></x-input-default>
+                            <x-input-default name="bahasa" type="text" value="{{ old('bahasa',$data->bahasa) }}" placeholder="Masukkan Bahasa"></x-input-default>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">No. Handphone <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="no_hp" type="text" value="{{ old('no_hp') }}" placeholder="Masukkan No. Handphone"></x-input-default>
+                            <x-input-default name="no_hp" type="text" value="{{ old('no_hp',$data->no_hp) }}" placeholder="Masukkan No. Handphone"></x-input-default>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Nama Orang Tua/ Penanggung Jawab <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="nama_ortu" type="text" value="{{ old('nama_ortu') }}" placeholder="Masukkan Orang Tua/ Penanggung Jawab"></x-input-default>
+                            <x-input-default name="nama_ortu" type="text" value="{{ old('nama_ortu',$data->nama_ortu) }}" placeholder="Masukkan Orang Tua/ Penanggung Jawab"></x-input-default>
                         </div>
                     </div>
                     <hr>

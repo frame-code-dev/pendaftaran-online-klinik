@@ -73,7 +73,7 @@
                         <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             <td width="20%" class="p-4">Alamat</td>
                             <td width="1%">:</td>
-                            <td class="font-bold">{{ $data->alamat }} <br> {{ $data->provinsi->name }}, {{ $data->kabupaten->name }}, {{ $data->kecamatan->name }}</td>
+                            <td class="font-bold">{{ $data->alamat }}</td>
                         </tr>
 
                         <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">

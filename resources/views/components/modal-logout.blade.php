@@ -13,14 +13,21 @@
                 </svg>
                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah Anda Yakin Keluar ?</h3>
                 <div class="flex items-center justify-center">
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button :href="route('logout')"
-                        onclick="event.preventDefault();
-                                    this.closest('form').submit();" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
+                    @if (Auth::user() != null)
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
+                            Ya, Tentu Saja
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('pasien.login.logout') }}"
+                                class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
                         Ya, Tentu Saja
-                        </button>
-                    </form>
+                        </a>
+                    @endif
 
                     <button data-modal-hide="popup-modal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Tidak, Batal</button>
                 </div>

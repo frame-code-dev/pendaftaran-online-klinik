@@ -1,6 +1,49 @@
 <x-app-layout>
     @push('js')
         <script>
+            var urlProvinsi = "https://ibnux.github.io/data-indonesia/provinsi.json";
+            var urlKabupaten = "https://ibnux.github.io/data-indonesia/kabupaten/";
+            var urlKecamatan = "https://ibnux.github.io/data-indonesia/kecamatan/";
+
+            let user_provinsi_id = `{{ Session::get('user')->provinsi_id }}`; // Ubah nama variabel menjadi user_provinsi_id
+            let user_kabupaten_id = `{{ Session::get('user')->kabupaten_id }}`; // Ubah nama variabel menjadi user_provinsi_id
+            let user_kecamatan_id = `{{ Session::get('user')->kecamatan_id }}`; // Ubah nama variabel menjadi user_provinsi_id
+
+            $.getJSON(urlProvinsi, function (res) {
+                let provinsi_name;
+                let selected_provinsi_id; // Ubah nama variabel menjadi selected_provinsi_id
+                res = $.map(res, function (obj) {
+                    if (obj.id == user_provinsi_id) {
+                        obj.text = obj.nama;
+                        provinsi_name = obj.text;
+                        selected_provinsi_id = obj.id; // Simpan id provinsi yang sesuai dengan id dari sesi pengguna
+                        $('#provinsi').html(provinsi_name);
+                    }
+                    return obj; // Perlu mengembalikan objek dalam fungsi map
+                });
+                $.getJSON(urlKabupaten + selected_provinsi_id + ".json", function(res) {
+                    let kabupaten_id;
+                    res = $.map(res, function (obj) {
+                        if (obj.id == user_kabupaten_id) {
+                            obj.text = obj.nama;
+                            kabupaten_id = obj.id;
+                            $('#kabupaten').html(obj.text); // Tampilkan nama kabupaten yang sesuai
+                        }
+                        return obj;
+                    });
+                    $.getJSON(urlKecamatan + kabupaten_id + ".json", function(res) {
+                        res = $.map(res, function (obj) {
+                            if (obj.id == user_kecamatan_id) {
+                                obj.text = obj.nama;
+                                $('#kecamatan').html(obj.text);
+                            }
+                            return obj;
+                        })
+                    })
+                });
+            });
+        </script>
+        <script>
             // update status
             $('#btn-konfirmasi').on('click', function() {
                 var id = $(this).data('id');
@@ -76,7 +119,7 @@
                             <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <td width="20%" class="p-4">Alamat</td>
                                 <td width="1%">:</td>
-                                <td class="font-bold">{{ $data_pasien->alamat }} <br> {{ $data_pasien->provinsi->name }}, {{ $data_pasien->kabupaten->name }}, {{ $data_pasien->kecamatan->name }}</td>
+                                <td class="font-bold">{{ $data_pasien->alamat }} <br><span id="provinsi">-</span>,<span id="kabupaten"></span> <span id="kecamatan"></span></td>
                             </tr>
 
                             <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -191,7 +234,7 @@
                 </div>
                 <!-- Modal footer -->
                 <div class="flex justify-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <a href="{{route('pasien.qrcode',Session::get('kodeUnik'))}}" download id="cetakQrCodeButton" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Cetak QRCode</a>
+                    <a href="{{route('pasien.qrcode',Session::has('kodeUnik') ? Session::get('kodeUnik') : 1)}}" download id="cetakQrCodeButton" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Cetak QRCode</a>
                 </div>
             </div>
         </div>
