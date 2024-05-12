@@ -23,14 +23,16 @@
                         </svg>
                     </button>
                     <ul id="master-data" class=" py-2 space-y-2 bg-blue-900 rounded mt-3 {{ Request::segment(2) == 'master-data' ? 'block' : 'hidden' }}">
-                        <li class="">
-                            <a href="{{ route('petugas.index') }}" class="{{ Request::segment(3) == 'petugas' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
-                                <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
-                                </svg>
-                                Data Petugas
-                            </a>
-                        </li>
+                        @if (Auth::user()->hasRole('admin'))
+                            <li class="">
+                                <a href="{{ route('petugas.index') }}" class="{{ Request::segment(3) == 'petugas' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                                    <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
+                                    </svg>
+                                    Data Petugas
+                                </a>
+                            </li>
+                        @endif
                         <li>
                             <a href="{{ route('dokter.index') }}" class="{{ Request::segment(3) == 'dokter' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
                             <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -93,14 +95,16 @@
                             Verifikasi
                         </a>
                         </li>
-                        <li>
-                            <a href="{{ route('antrian-klinik.index') }}" class="{{ Request::segment(3) == 'antrian-klinik' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
-                                <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
-                                </svg>
-                                Antrian Poliklinik
-                            </a>
-                        </li>
+                        @if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('petugas-klinik'))
+                            <li>
+                                <a href="{{ route('antrian-klinik.index') }}" class="{{ Request::segment(3) == 'antrian-klinik' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                                    <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
+                                    </svg>
+                                    Antrian Poliklinik
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </li>
                 <li>

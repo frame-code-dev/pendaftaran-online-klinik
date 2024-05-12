@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 
 
 // admin
-Route::middleware(['auth','role:admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::prefix('dashboard')->group(function () {
         // Dashboard
         Route::get('/',[DashboardController::class,'index'])->name('dashboard');
