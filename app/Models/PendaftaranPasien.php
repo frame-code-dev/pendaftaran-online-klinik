@@ -22,6 +22,7 @@ class PendaftaranPasien extends Model
         'jenis_pendaftaran',
         'poliklinik_id',
         'gambar',
+        'status_verifikasi',
     ];
     public function dokter()  {
         return $this->belongsTo(Dokter::class, 'dokter_id');

@@ -78,7 +78,7 @@
                     </button>
                     <ul id="transaksi-data" class=" py-2 space-y-2 bg-blue-900 rounded mt-3 {{ Request::segment(2) == 'transaksi' ? 'block' : 'hidden' }}">
                         <li class="">
-                            <a href="#" class="{{ Request::segment(3) == 'petugas' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                            <a href="{{ route('history-transaksi.index') }}" class="{{ Request::segment(3) == 'history-transaksi' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
                                 <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
                                 </svg>
@@ -86,7 +86,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="{{ Request::segment(3) == 'dokter' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                            <a href="{{ route('verifikasi.index') }}" class="{{ Request::segment(3) == 'verifikasi' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
                             <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
                             </svg>
@@ -94,7 +94,7 @@
                         </a>
                         </li>
                         <li>
-                            <a href="#" class="{{ Request::segment(3) == 'jadwal-dokter' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                            <a href="{{ route('antrian-klinik.index') }}" class="{{ Request::segment(3) == 'antrian-klinik' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
                                 <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
                                 </svg>
@@ -115,7 +115,7 @@
                     </button>
                     <ul id="laporan-data" class=" py-2 space-y-2 bg-blue-900 rounded mt-3 {{ Request::segment(2) == 'laporan' ? 'block' : 'hidden' }}">
                         <li class="">
-                             <a href="#" class="{{ Request::segment(3) == 'petugas' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
+                             <a href="{{ route('laporan.kunjungan-pasien.index') }}" class="{{ Request::segment(3) == 'laporan-kunjungan-pasien' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
                                 <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 16 4-4-4-4"/>
                                 </svg>

@@ -55,7 +55,7 @@
                 <span>Login</span>
             </x-primary-button>
         </div>
-        <div class="flex-row text-center items-center justify-center mt-4 space-y-2">
+        {{-- <div class="flex-row text-center items-center justify-center mt-4 space-y-2">
             <div>
                 <a class="underline text-sm text-blue-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('register') }}">
                     {{ __('Daftar Sekarang !') }}
@@ -70,6 +70,6 @@
             </div>
 
 
-        </div>
+        </div> --}}
     </form>
 </x-guest-layout>

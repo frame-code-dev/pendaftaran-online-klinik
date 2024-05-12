@@ -194,11 +194,10 @@ class DashboardPasienController extends Controller
         $param['jenis_pembayaran'] = $jenis_pembayaran;
         $param['tanggal_kunjungan'] = $tanggal_kunjungan_pasien;
         $param['simple'] = QrCode::size(120)->generate('https://www.binaryboxtuts.com/');
-        $param['noAntrian'] = NomorAntrianGenerator::generate();
         $tanggalKunjungan = Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d');
+        $param['noAntrian'] = NomorAntrianGenerator::generate($tanggalKunjungan);
         $nomorAntrian = $param['noAntrian']; // Nomor antrian
         $param['kodeUnik'] = KodeUnikGenerator::generate();
-        Session::put('kodeUnik',$param['kodeUnik']);
         $estimasiWaktu = EstimasiWaktuLayanan::estimasi($tanggalKunjungan, $nomorAntrian); // Tanggal kunjungan (format: YYYY-MM-DD)
         $param['estimasi_waktu'] = $estimasiWaktu->format('H:i:s');
         try {
@@ -218,6 +217,9 @@ class DashboardPasienController extends Controller
             $pendaftaran->gambar = $file_bpjs;
             $pendaftaran->save();
             DB::commit();
+            $param['current_pendaftaran'] = PendaftaranPasien::find($pendaftaran->id)->kode_pendaftaran;
+            Session::put('kodeUnik',$param['current_pendaftaran']);
+
             return $param;
             // $param['data'] = PendaftaranPasien::find($pendaftaran->id);
         //     return redirect()->route('dashboard.pasien');
@@ -231,7 +233,7 @@ class DashboardPasienController extends Controller
     }
 
     public function cetakQrcode($id){
-        $noBooking = $id;
+        $noBooking = Session::get('kodeUnik');
 
         $qrCode = QrCode::format('png')->size(500)->generate($noBooking);
 
