@@ -27,6 +27,7 @@ class DashboardPasienController extends Controller
      * @return Some_Return_Value
      */
     public function index()  {
+        
         if (Session::get('user') == null) {
             return view('pasien.auth.login');
         }
