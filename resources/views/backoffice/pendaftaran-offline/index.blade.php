@@ -1,6 +1,47 @@
 <x-app-layout>
     @push('js')
         <script>
+            var urlProvinsi = "https://ibnux.github.io/data-indonesia/provinsi.json";
+            var urlKabupaten = "https://ibnux.github.io/data-indonesia/kabupaten/";
+            var urlKecamatan = "https://ibnux.github.io/data-indonesia/kecamatan/";
+
+            let user_provinsi_id = `{{ $data->provinsi_id }}`; // Ubah nama variabel menjadi user_provinsi_id
+            let user_kabupaten_id = `{{ $data->kabupaten_id }}`; // Ubah nama variabel menjadi user_provinsi_id
+            let user_kecamatan_id = `{{ $data->kecamatan_id }}`; // Ubah nama variabel menjadi user_provinsi_id
+
+            $.getJSON(urlProvinsi, function (res) {
+                let provinsi_name;
+                let selected_provinsi_id; // Ubah nama variabel menjadi selected_provinsi_id
+                res = $.map(res, function (obj) {
+                    if (obj.id == user_provinsi_id) {
+                        obj.text = obj.nama;
+                        provinsi_name = obj.text;
+                        selected_provinsi_id = obj.id; // Simpan id provinsi yang sesuai dengan id dari sesi pengguna
+                        $('#provinsi').html(provinsi_name);
+                    }
+                    return obj; // Perlu mengembalikan objek dalam fungsi map
+                });
+                $.getJSON(urlKabupaten + selected_provinsi_id + ".json", function(res) {
+                    let kabupaten_id;
+                    res = $.map(res, function (obj) {
+                        if (obj.id == user_kabupaten_id) {
+                            obj.text = obj.nama;
+                            kabupaten_id = obj.id;
+                            $('#kabupaten').html(obj.text); // Tampilkan nama kabupaten yang sesuai
+                        }
+                        return obj;
+                    });
+                    $.getJSON(urlKecamatan + kabupaten_id + ".json", function(res) {
+                        res = $.map(res, function (obj) {
+                            if (obj.id == user_kecamatan_id) {
+                                obj.text = obj.nama;
+                                $('#kecamatan').html(obj.text);
+                            }
+                            return obj;
+                        })
+                    })
+                });
+            });
             $(document).ready(function() {
                 let url = `{{ route('pendaftaran-offline.list-dokter') }}`
                 $('#poliklinik').on('change', function() {
@@ -90,7 +131,8 @@
                                         :
                                     </div>
                                     <div class="font-bold">
-                                        {{ $data->alamat }} <br> {{ $data->provinsi->name }}, {{ $data->kabupaten->name }}, {{ $data->kecamatan->name }}
+                                        {{ $data->alamat }} <br>
+                                        <span id="provinsi">-</span>,<span id="kabupaten"></span> <span id="kecamatan"></span>
                                     </div>
                                 </div>
                             </div>
