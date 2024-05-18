@@ -81,14 +81,23 @@
                             <tr class="border-b dark:border-gray-700">
                                 <td class="px-4 py-3">{{ $loop->iteration }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->tanggal_kunjungan }}</td>
-                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->no_kartu != null ? ucwords($item->no_kartu) : '-' }}</td>
+                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->pasien->no_rm }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->pasien->name) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->jenis_pembayaran) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->poliklinik->name) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->dokter->name) }}</td>
-                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->estimasi_dilayani }}</td>
-                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->no_antrian }}</td>
-                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->status_pendaftaran) }}</td>
+                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->dokter->jam_praktek }}</td>
+                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->no_antrian != null ? $item->no_antrian : '-' }}</td>
+                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    @if ($item->status_pendaftaran == 'proses' || $item->status_pendaftaran == 'pending')
+                                        <span class="font-bold p-3 text-yellow-500 bg-yellow-50">{{ ucwords($item->status_pendaftaran) }}</span>
+                                    @elseif($item->status_pendaftaran == 'selesai')
+                                        <span class="font-bold p-3 text-green-500 bg-green-50">{{ ucwords($item->status_pendaftaran) }}</span>
+                                    @else
+                                        <span class="font-bold p-3 text-red-500 bg-red-50">{{ ucwords($item->status_pendaftaran) }}</span>
+
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

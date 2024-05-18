@@ -152,6 +152,11 @@ class DashboardPasienController extends Controller
         if (Session::get('user') == null) {
             return view('pasien.auth.login');
         }
+        $cek_pendaftaran = PendaftaranPasien::where('poliklinik_id',Session::get('poliklinik')->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')->whereDate('created_at',Carbon::now())->count();
+        if ($cek_pendaftaran > 0) {
+            toast('Tidak Bisa Melakukan Pendaftaran yang sama.','error');
+            return redirect()->route('pasien.list-poliklinik',['id' => Session::get('poliklinik')->id]);
+        }
         // data pendaftaran pasien
         $dokter_id = $id;
         // Check Kuota
@@ -209,7 +214,7 @@ class DashboardPasienController extends Controller
         $param['tanggal_kunjungan'] = $tanggal_kunjungan_pasien;
         $param['simple'] = QrCode::size(120)->generate('https://www.binaryboxtuts.com/');
         $tanggalKunjungan = Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d');
-        $param['noAntrian'] = NomorAntrianGenerator::generate($tanggalKunjungan);
+        $param['noAntrian'] = NomorAntrianGenerator::generate($tanggalKunjungan,$dokter_id);
         $nomorAntrian = $param['noAntrian']; // Nomor antrian
         $param['kodeUnik'] = KodeUnikGenerator::generate();
         $estimasiWaktu = EstimasiWaktuLayanan::estimasi($tanggalKunjungan, $nomorAntrian); // Tanggal kunjungan (format: YYYY-MM-DD)
@@ -219,7 +224,7 @@ class DashboardPasienController extends Controller
             $pendaftaran = new PendaftaranPasien;
             $pendaftaran->kode_pendaftaran = $param['kodeUnik'];
             $pendaftaran->no_kartu = $no_bpjs;
-            $pendaftaran->no_antrian = $nomorAntrian;
+            $pendaftaran->no_antrian = $param['dokter']->kuota != null ? $nomorAntrian : null;
             $pendaftaran->jenis_pembayaran = $jenis_pembayaran;
             $pendaftaran->dokter_id = $dokter_id;
             $pendaftaran->pasien_id = $data_pasien_id;

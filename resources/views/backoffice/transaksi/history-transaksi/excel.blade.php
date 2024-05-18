@@ -73,6 +73,9 @@
                     <hr>
                 </div>
                 <div class="table-responsive">
+                    <div class="mt-5">
+                        <h4 class="fw-bold">Periode : {{ $start.' - '.$end }}</h4>
+                    </div>
                     <table id="customers" border="1">
                         <thead>
                             <tr>
@@ -99,7 +102,7 @@
                                     <td >{{ ucwords($item->poliklinik->name) }}</td>
                                     <td >{{ ucwords($item->dokter->name) }}</td>
                                     <td >{{ $item->estimasi_dilayani }}</td>
-                                    <td >{{ $item->no_antrian }}</td>
+                                    <td >{{ $item->no_antrian != null ? $item->no_antrian : '-' }}</td>
                                     <td >{{ ucwords($item->status_pendaftaran) }}</td>
                                 </tr>
                             @endforeach

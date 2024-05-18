@@ -37,7 +37,7 @@ class LaporanController extends Controller
                         ->when($request->get('pembayaran'), function ($query) use ($jenis) {
                             $query->where('jenis_pembayaran', $jenis);
                         })
-        ->latest()->get();
+                        ->latest()->get();
         $param['count_umum'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
                             ->when($request->get('start'), function ($query) use ($start, $end) {
                                 $query->whereBetween('created_at', [$start, $end]);
@@ -46,6 +46,8 @@ class LaporanController extends Controller
                             ->when($request->get('start'), function ($query) use ($start, $end) {
                                 $query->whereBetween('created_at', [$start, $end]);
                             })->where('jenis_pembayaran','bpjs')->count();
+        $param['start'] = $start;
+        $param['end'] = $end;
         return view('backoffice.laporan.laporan-jenis-pdf',$param);
     }
 
@@ -85,7 +87,9 @@ class LaporanController extends Controller
                         ->when($request->get('poliklinik'), function ($query) use ($poliklinik) {
                             $query->where('poliklinik_id', $poliklinik);
                         })
-                        ->latest()->get();
+                        ->where('jenis_pendaftaran','online')
+                        ->latest()
+                        ->get();
         $param['poliklinik'] = Poliklinik::latest()->get();
         return view('backoffice.laporan.laporan-kunjungan',$param);
     }
@@ -102,16 +106,21 @@ class LaporanController extends Controller
                         ->when($request->get('poliklinik'), function ($query) use ($poliklinik) {
                             $query->where('poliklinik_id', $poliklinik);
                         })
-                        ->latest()->get();
+                        ->where('jenis_pendaftaran','online')
+                        ->latest()
+                        ->get();
         $param['count_pendaftaran_online'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
-                            ->when($request->get('start'), function ($query) use ($start, $end) {
-                                $query->whereBetween('created_at', [$start, $end]);
-                            })
-                            ->when($request->get('poliklinik'), function ($query) use ($poliklinik) {
-                                $query->where('poliklinik_id', $poliklinik);
-                            })
-                            ->where('status_pendaftaran','online')->count();
-
+                                        ->when($request->get('start'), function ($query) use ($start, $end) {
+                                            $query->whereBetween('created_at', [$start, $end]);
+                                        })
+                                        ->when($request->get('poliklinik'), function ($query) use ($poliklinik) {
+                                            $query->where('poliklinik_id', $poliklinik);
+                                        })
+                                        ->where('jenis_pendaftaran','online')
+                                        ->latest()
+                                        ->count();
+        $param['start'] = $start;
+        $param['end'] = $end;
         return view('backoffice.laporan.laporan-kunjungan-pdf',$param);
     }
 
@@ -127,8 +136,11 @@ class LaporanController extends Controller
                         ->when($request->get('poliklinik'), function ($query) use ($poliklinik) {
                             $query->where('poliklinik_id', $poliklinik);
                         })
-                    ->latest()->get();
-
+                        ->where('jenis_pendaftaran','online')
+                        ->latest()
+                        ->get();
+        $param['start'] = $start;
+        $param['end'] = $end;
         return view('backoffice.laporan.laporan-kunjungan-excel',$param);
     }
 

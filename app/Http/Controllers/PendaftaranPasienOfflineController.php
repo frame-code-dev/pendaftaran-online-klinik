@@ -45,16 +45,16 @@ class PendaftaranPasienOfflineController extends Controller
             // mendaptkan kode unik
             $kodeUnik = KodeUnikGenerator::generate();
             // mendapatkan no antrian
-            $noAntrian = NomorAntrianGenerator::generate();
+            $noAntrian = NomorAntrianGenerator::generate(null,$request->get('dokter'));
             // mendapatkan estimasi waktu
             $tanggalKunjungan = Carbon::now();
             $nomorAntrian = $noAntrian; // Nomor antrian
             $estimasiWaktu = EstimasiWaktuLayanan::estimasi($tanggalKunjungan, $nomorAntrian); // Tanggal kunjungan (format: YYYY-MM-DD)
-
+            $param['dokter'] = Dokter::with('poliklinik')->find($request->get('dokter'));
             $pendaftaran = new PendaftaranPasien;
             $pendaftaran->kode_pendaftaran = $kodeUnik;
             $pendaftaran->no_kartu = $request->get('cara_pembayaran') == 'bpjs' ? $request->get('no_bpjs') : null;
-            $pendaftaran->no_antrian = $noAntrian;
+            $pendaftaran->no_antrian = $param['dokter']->kuota != null ? $noAntrian : null;
             $pendaftaran->jenis_pembayaran = $request->get('cara_pembayaran');
             $pendaftaran->dokter_id = $request->get('dokter');
             $pendaftaran->pasien_id = $request->get('id');
@@ -67,7 +67,7 @@ class PendaftaranPasienOfflineController extends Controller
             $pendaftaran->save();
             DB::commit();
             toast('Berhasil mendaftarkan kunjungan pasien.','success');
-            return redirect()->route('pasien.index');
+            return redirect()->route('cetak-antrian',["id" => $pendaftaran->id]);
         } catch (Exception $th) {
             DB::rollBack();
             alert()->error('Terjadi kesalahan eror!', $th->getMessage());

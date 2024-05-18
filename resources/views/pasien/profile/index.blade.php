@@ -31,7 +31,7 @@
                             </div>
                             <div class="">
                                 <x-label-default for="" >NIK</x-label-default>
-                                <x-input-default readonly name="nik" type="text" value="{{ old('nik',$pasien->nik) }}" class="bg-gray-300" placeholder="Masukkan No. RM"></x-input-default>
+                                <x-input-default readonly name="nik" type="text" value="{{ old('nik',$pasien->nik) }}" class="bg-gray-100" placeholder="Masukkan No. RM"></x-input-default>
                             </div>
                             <div class="">
                                 <x-label-default for="">Nama Lengkap</x-label-default>

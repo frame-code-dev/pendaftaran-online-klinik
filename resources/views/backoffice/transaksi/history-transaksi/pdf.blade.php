@@ -123,7 +123,7 @@
                         <button onclick="history.back()" class="btn btn-primary no-print"></i> Kembali</button>
                     </div>
                     <div class="mt-5">
-                        <h4 class="fw-bold">Periode</h4>
+                        <h4 class="fw-bold">Periode : {{ $start.' - '.$end }}</h4>
                     </div>
                     <table id="customers">
                         <thead>
@@ -145,13 +145,13 @@
                                 <tr>
                                     <td class="px-4 py-3">{{ $loop->iteration }}</td>
                                     <td >{{ $item->tanggal_kunjungan }}</td>
-                                    <td >{{ $item->no_kartu != null ? ucwords($item->no_kartu) : '-' }}</td>
+                                    <td >{{ $item->pasien->no_rm }}</td>
                                     <td >{{ ucwords($item->pasien->name) }}</td>
                                     <td >{{ ucwords($item->jenis_pembayaran) }}</td>
                                     <td >{{ ucwords($item->poliklinik->name) }}</td>
                                     <td >{{ ucwords($item->dokter->name) }}</td>
-                                    <td >{{ $item->estimasi_dilayani }}</td>
-                                    <td >{{ $item->no_antrian }}</td>
+                                    <td >{{ $item->dokter->jam_praktek }}</td>
+                                    <td >{{ $item->no_antrian != null ? $item->no_antrian : '-' }}</td>
                                     <td >{{ ucwords($item->status_pendaftaran) }}</td>
                                 </tr>
                             @endforeach

@@ -8,21 +8,21 @@ use Carbon\Carbon;
 
 class NomorAntrianGenerator
 {
-    public static function generate($date = null)
+    public static function generate($date = null, $dokter_id)
     {
         // Mendapatkan jumlah antrian yang sudah ada dalam database untuk status online
         $jumlahAntrianOnline = 0;
         $jumlahAntrianOffline = 0;
         if ($date != null) {
-            $jumlahAntrianOnline = PendaftaranPasien::where('jenis_pendaftaran', 'online')->where('tanggal_kunjungan', $date)->count();
+            $jumlahAntrianOnline = PendaftaranPasien::where('no_antrian','!=',null )->where('jenis_pendaftaran', 'online')->where('tanggal_kunjungan', $date)->count();
 
             // Mendapatkan jumlah antrian yang sudah ada dalam database untuk jenis_pendaftaran offline
-            $jumlahAntrianOffline = PendaftaranPasien::where('jenis_pendaftaran', 'offline')->where('tanggal_kunjungan', $date)->count();
+            $jumlahAntrianOffline = PendaftaranPasien::where('no_antrian','!=',null)->where('jenis_pendaftaran', 'offline')->where('tanggal_kunjungan', $date)->count();
         }else{
-            $jumlahAntrianOnline = PendaftaranPasien::where('jenis_pendaftaran', 'online')->latest()->count();
+            $jumlahAntrianOnline = PendaftaranPasien::where('no_antrian','!=',null)->where('jenis_pendaftaran', 'online')->latest()->count();
 
             // Mendapatkan jumlah antrian yang sudah ada dalam database untuk jenis_pendaftaran offline
-            $jumlahAntrianOffline = PendaftaranPasien::where('jenis_pendaftaran', 'offline')->latest()->count();
+            $jumlahAntrianOffline = PendaftaranPasien::where('no_antrian','!=',null)->where('jenis_pendaftaran', 'offline')->latest()->count();
         }
         // Menentukan nomor antrian berdasarkan status yang didahulukan (online atau offline)
         if ($jumlahAntrianOnline > $jumlahAntrianOffline) {

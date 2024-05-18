@@ -26,7 +26,7 @@
                             <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
                             </svg>
-                            <a href="{{ route('petugas.index') }}" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">List Petugas</a>
+                            <a href="{{ route('dokter.index') }}" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">List Dokter</a>
                             </div>
                         </li>
                         <li aria-current="page">
@@ -49,21 +49,16 @@
                         <x-label-default for="" value="Nama Dokter">Nama Dokter</x-label-default>
                         <x-input-default name="name" type="text" value="{{ old('name',$data->name) }}" placeholder="Masukkan Nama Dokter"></x-input-default>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <x-label-default for="" value="Nama Poliklinik">Nama Poliklinik</x-label-default>
-                            <select id="poliklinik" name="poliklinik" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="0">Pilih Poliklinik</option>
-                                @foreach ($poliklinik as $item)
-                                    <option value="{{ $item->id }}" {{ $data->poliklinik_id == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <x-label-default for="" value="Tanggal">Tanggal</x-label-default>
-                            <input type="text" datepicker datepicker-format="yyyy-mm-dd" value="{{ $data->tanggal }}" name="tgl_lahir" id="tgl_lahir" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Masukkan Tanggal Lahir">
-                        </div>
+                    <div>
+                        <x-label-default for="" value="Nama Poliklinik">Nama Poliklinik</x-label-default>
+                        <select id="poliklinik" name="poliklinik" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="0">Pilih Poliklinik</option>
+                            @foreach ($poliklinik as $item)
+                                <option value="{{ $item->id }}" {{ $data->poliklinik_id == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
+
                     <div>
                         <x-label-default for="" value="Jam Praktek">Jam Praktek</x-label-default>
                         @php

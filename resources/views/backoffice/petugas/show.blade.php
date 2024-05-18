@@ -60,11 +60,6 @@
                                     <td class="font-bold">{{ $petugas->email }}</td>
                                 </tr>
                                 <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <td width="20%" class="p-4">Username</td>
-                                    <td width="1%">:</td>
-                                    <td class="font-bold">{{ ucwords($petugas->username) }}</td>
-                                </tr>
-                                <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <td width="20%" class="p-4">Status Petugas</td>
                                     <td width="1%">:</td>
                                     <td class="font-bold">

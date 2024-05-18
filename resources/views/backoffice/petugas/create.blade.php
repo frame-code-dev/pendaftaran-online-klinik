@@ -1,4 +1,25 @@
 <x-app-layout>
+    @push('js')
+    <script>
+        const passwordToggle = document.querySelector('.js-password-toggle')
+
+            passwordToggle.addEventListener('change', function() {
+            const password = document.querySelector('.js-password'),
+                passwordLabel = document.querySelector('.js-password-label')
+
+            if (password.type === 'password') {
+                password.type = 'text'
+                passwordLabel.innerHTML = 'hide'
+            } else {
+                password.type = 'password'
+                passwordLabel.innerHTML = 'show'
+            }
+
+            password.focus()
+        })
+
+    </script>
+    @endpush
     <div class="p-4 sm:ml-64 pt-20 h-full">
         <section class="p-5 overflow-y-auto mt-5">
             <div class="head lg:flex grid grid-cols-1 justify-between w-full">
@@ -48,17 +69,20 @@
                         <x-label-default for="" value="Nama Petugas">Nama Petugas</x-label-default>
                         <x-input-default name="name" type="text" value="{{ old('name') }}" placeholder="Masukkan Nama Petugas"></x-input-default>
                     </div>
-                    <div>
-                        <x-label-default for="" value="Username">Username</x-label-default>
-                        <x-input-default name="username" type="text" value="{{ old('username') }}" placeholder="Masukkan Username"></x-input-default>
-                    </div>
+
                     <div>
                         <x-label-default for="" value="Email Petugas">Email</x-label-default>
                         <x-input-default name="email" type="email" value="{{ old('email') }}" placeholder="Masukkan Email"></x-input-default>
                     </div>
                     <div>
                         <x-label-default for="" value="Password">Password</x-label-default>
-                        <x-input-default name="password" type="password" value="{{ old('password') }}" placeholder="Masukkan Password"></x-input-default>
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 right-0 flex items-center px-2">
+                                <input class="hidden js-password-toggle" id="toggle" type="checkbox" />
+                                <label class="bg-gray-300 hover:bg-gray-400 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label" for="toggle">show</label>
+                            </div>
+                            <x-input-default name="password" type="password" value="{{ old('password') }}" class="js-password" placeholder="Masukkan Password"></x-input-default>
+                        </div>
                     </div>
                     <div>
                         <x-label-default>Hak Akses</x-label-default>

@@ -70,13 +70,6 @@
                                     <td class="font-bold">{{ $data->jam_praktek }}</td>
                                 </tr>
                                 <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    <td width="20%" class="p-4">Tanggal Lahir : </td>
-                                    <td width="1%">:</td>
-                                    <td class="font-bold">
-                                        {{ \Carbon\Carbon::parse($data->tgl_lahir)->translatedFormat('d F Y') }}
-                                    </td>
-                                </tr>
-                                <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <td width="20%" class="p-4">Status Dokter</td>
                                     <td width="1%">:</td>
                                     <td class="font-bold">
