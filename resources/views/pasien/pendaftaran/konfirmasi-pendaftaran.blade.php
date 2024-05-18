@@ -58,7 +58,8 @@
                         $('#jenis_pembayaran').text(data.jenis_pembayaran);
                         $('#poliklinik').text(data.dokter.poliklinik.name);
                         $('#dokter').text(data.dokter.name);
-                        $('#no_antrian').text(data.noAntrian);
+                        let no_antrian = data.dokter.kuota != null ? data.noAntrian : '-';
+                        $('#no_antrian').text(no_antrian);
                         $('#estimasi_dilayani').text(data.estimasi_waktu);
                         $('#kode_booking').text(data.kodeUnik);
                         $('#qrcode').text(data.kodeUnik);
@@ -70,14 +71,21 @@
         <script>
             document.getElementById('cetakQrCodeButton').addEventListener('click', function(event) {
                 // Jika download selesai, arahkan kembali ke halaman dashboard
-                window.location.href = "{{ route('dashboard.pasien') }}";
+                setTimeout(function() {
+                    window.location.href = "{{ route('dashboard.pasien') }}";
+                }, 5000); // 5000 milliseconds = 5 seconds
 
             });
         </script>
     @endpush
     <div class="p-5 sm:ml-64 mt-20 h-fit">
         <div class="block max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-auto ">
-            <div class="bg-blue-800 p-4 rounded-t-lg">
+            <div class="bg-blue-800 p-4 rounded-t-lg flex content-center gap-2">
+                <a href="{{ route('pasien.list-dokter',Session::get('poliklinik')->id) }}">
+                    <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                      </svg>
+                </a>
                 <h4 class="mb-2 text-lg font-semibold text-white dark:text-white">Konfirmasi Pendaftaran</h4>
             </div>
             <div class="p-5 space-y-4">
@@ -123,10 +131,10 @@
                             </tr>
 
                             <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <td width="20%" class="p-4">Tanggal Dibuat : </td>
+                                <td width="20%" class="p-4">No. HP : </td>
                                 <td width="1%">:</td>
                                 <td class="font-bold">
-                                    {{ \Carbon\Carbon::parse($data_pasien->created_at)->translatedFormat('d F Y H:i:s') }}
+                                    {{ $data_pasien->no_hp }}
                                 </td>
                             </tr>
                         </tbody>
@@ -164,9 +172,13 @@
 
                 </div>
 
-                <div class="flex justify-end">
-                    <x-primary-button type="button" id="btn-konfirmasi" data-id="{{ $dokter->id }}" data-modal-target="static-modal" data-modal-toggle="static-modal">Konfirmasi</x-primary-button>
-                    {{-- <x-a-primary-button href="{{ route('pasien.jenis-pembayaran') }}">Daftar Kunjungan</x-a-primary-button> --}}
+                <div class="flex justify-end content-center items-center">
+                    <div>
+                        <x-primary-button type="button" id="btn-konfirmasi" data-id="{{ $dokter->id }}" data-modal-target="static-modal" data-modal-toggle="static-modal">Konfirmasi Pendaftaran</x-primary-button>
+                    </div>
+                    <div>
+                        <a href="{{ route('dashboard.pasien') }}" class="bg-white text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-3 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Batal Konfirmasi</a>
+                    </div>
                 </div>
             </div>
         </div>

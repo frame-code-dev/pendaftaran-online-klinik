@@ -88,7 +88,7 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr>
-                                    <td class="px-4 py-3">{{ $item->no_antrian }}</td>
+                                    <td class="px-4 py-3">{{ $item->no_antrian != null ? $item->no_antrian : '-' }}</td>
                                     <td >{{ $item->tanggal_kunjungan }}</td>
                                     <td >{{ $item->no_kartu != null ? ucwords($item->no_kartu) : '-' }}</td>
                                     <td >{{ ucwords($item->pasien->name) }}</td>

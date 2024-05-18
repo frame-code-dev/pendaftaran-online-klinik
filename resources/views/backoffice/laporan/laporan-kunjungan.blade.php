@@ -76,6 +76,7 @@
                             <th scope="col" class="px-4 py-3">Kunjungan</th>
                             <th scope="col" class="px-4 py-3">No. RM</th>
                             <th scope="col" class="px-4 py-3">Nama Pasien</th>
+                            <th scope="col" class="px-4 py-3">Jenis Kelamin</th>
                             <th scope="col" class="px-4 py-3">Dokter</th>
                         </tr>
                     </thead>
@@ -86,6 +87,7 @@
                                 <td class="px-4 py-3">{{ $item->tanggal_kunjungan }}</td>
                                 <td class="px-4 py-3">{{ $item->pasien->no_rm }}</td>
                                 <td class="px-4 py-3">{{ $item->pasien->name }}</td>
+                                <td class="px-4 py-3">{{ $item->pasien->jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan'  }}</td>
                                 <td class="px-4 py-3">{{ $item->dokter->name }}</td>
                             </tr>
                         @endforeach

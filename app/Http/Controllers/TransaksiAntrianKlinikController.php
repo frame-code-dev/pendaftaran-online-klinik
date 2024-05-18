@@ -12,6 +12,7 @@ class TransaksiAntrianKlinikController extends Controller
 {
     public function index(Request $request) {
         $dokter = $request->get('dokter');
+        $tanggal = Carbon::parse($request->tanggal)->format('Y-m-d');
         $poliklinik = $request->get('poliklinik');
         $param['title'] = 'Antrian Poliklinik';
         $param['dokter'] = Dokter::latest()->get();
@@ -23,27 +24,23 @@ class TransaksiAntrianKlinikController extends Controller
                     ->when($request->get('poliklinik'), function ($query) use ($poliklinik) {
                         $query->where('poliklinik_id', $poliklinik);
                     })
-                    ->orderBy('no_antrian','ASC')->get();
+                    ->when($request->get('tanggal'),function($query) use ($tanggal) {
+                        $query->whereDate('tanggal_kunjungan',$tanggal);
+                    })
+                    ->orderBy('created_at','DESC')->get();
         return view('backoffice.transaksi.antrian.index',$param);
     }
 
-    public function updateManual($id) {
+    public function updateManual($id,Request $request) {
         $pendaftaran = PendaftaranPasien::find($id);
         if ($pendaftaran->status_pendaftaran == 'selesai') {
             toast('Pendaftaran sudah diverifikasi','error');
             return redirect()->route('antrian-klinik.index');
         }else{
-            if (Carbon::parse($pendaftaran->tanggal_kunjungan)->format('Y-m-d') == Carbon::now()->format('Y-m-d')) {
-                PendaftaranPasien::find($id)->update([
-                    'status_verifikasi' => 'selesai',
-                ]);
-            }else{
-                PendaftaranPasien::find($id)->update([
-                    'status_verifikasi' => 'sudah-verifikasi',
-                    'status_pendaftaran' => 'batal',
-                ]);
-            }
-            toast('Pendaftaran diverifikasi','success');
+            PendaftaranPasien::find($id)->update([
+                'status_pendaftaran' => $request->get('status'),
+            ]);
+            toast('Berhasil mengubah status pendaftaran','success');
             return redirect()->route('antrian-klinik.index');
         }
     }

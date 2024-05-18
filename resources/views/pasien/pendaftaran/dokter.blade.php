@@ -60,7 +60,7 @@
                 <nav class="flex" aria-label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <li class="inline-flex items-center ">
-                            <a href="#" class=" text-sm inline-flex items-center font-medium text-white hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                            <a href="{{ route('pasien.list-poliklinik') }}" class=" text-sm inline-flex items-center font-medium text-white hover:text-white dark:text-gray-400 dark:hover:text-white">
                                 <svg class="w-3 h-3 me-2.5 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
                                 </svg>
@@ -107,7 +107,6 @@
                             <x-label-default for="" value="Tanggal Kunjungan">Tanggal Kunjungan</x-label-default>
                             <input type="text"
                                 value="{{ Carbon\Carbon::parse(request('tanggal'))->format('Y-m-d') }}"
-
                                 name="tgl_kunjungan"
                                 id="datepicker"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"

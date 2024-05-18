@@ -46,7 +46,6 @@ class DokterController extends Controller
         $validateData = Validator::make($request->all(),[
             'name' => 'required',
             'poliklinik' => 'required|not_in:0',
-            'tgl_lahir' => 'required',
             'dari' => 'required',
             'sampai' => 'required',
             'jenis_kelamin' => 'required|not_in:0',
@@ -64,15 +63,14 @@ class DokterController extends Controller
         }
         try {
             DB::beginTransaction();
-            $date = DateTime::createFromFormat('m-d-Y', $request->tgl_lahir)->format('Y-m-d');
 
             $jam_kerja = $request->dari.'-'.$request->sampai;
             $dokter = new Dokter;
             $dokter->poliklinik_id = $request->poliklinik;
             $dokter->name = $request->name;
-            $dokter->tanggal = $date;
+            $dokter->tanggal = Carbon::now();
             $dokter->jam_praktek = $jam_kerja;
-            $dokter->kuota = $request->has('kuota') ? $request->kuota : 0;
+            $dokter->kuota = $request->has('kuota') ? $request->kuota : null;
             $dokter->jenis_kelamin = $request->jenis_kelamin;
             $dokter->user_id = Auth::user()->id;
             if ($request->has('file_input') || $request->file('file_input') != null) {
@@ -86,7 +84,6 @@ class DokterController extends Controller
             toast('Berhasil menambahkan data.','success');
             return redirect()->route('dokter.index');
         }catch (Exception $e){
-            return $e;
             DB::rollBack();
             alert()->error('Terjadi kesalahan eror!', $e->getMessage());
             return redirect()->route('dokter.index');
@@ -122,7 +119,6 @@ class DokterController extends Controller
         $validateData = Validator::make($request->all(),[
             'name' => 'required',
             'poliklinik' => 'required|not_in:0',
-            'tgl_lahir' => 'required',
             'dari' => 'required',
             'sampai' => 'required',
             'jenis_kelamin' => 'required|not_in:0',
@@ -143,9 +139,8 @@ class DokterController extends Controller
             $dokter = Dokter::find($id);
             $dokter->poliklinik_id = $request->poliklinik;
             $dokter->name = $request->name;
-            $dokter->tanggal = $request->tgl_lahir;
             $dokter->jam_praktek = $jam_kerja;
-            $dokter->kuota = $request->has('kuota') ? $request->kuota : 0;
+            $dokter->kuota = $request->has('kuota') ? $request->kuota : null;
             $dokter->jenis_kelamin = $request->jenis_kelamin;
             $dokter->user_id = Auth::user()->id;
             if ($request->has('file_input') || $request->file('file_input') != null) {

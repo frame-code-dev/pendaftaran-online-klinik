@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CetakAntrianController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardPasienController;
 use App\Http\Controllers\DokterController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ListJadwalDokterController;
 use App\Http\Controllers\Pasien\Auth\AuthController;
 use App\Http\Controllers\PasienController;
+use App\Http\Controllers\PasienHistoryTransaksiController;
 use App\Http\Controllers\PendaftaranPasienOfflineController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\PoliklinikController;
@@ -54,6 +56,9 @@ Route::middleware(['auth'])->group(function () {
             // pendaftaran pasien offline
             Route::get('pendaftaran-pasien-offline/{id}',[PendaftaranPasienOfflineController::class,'index'])->name('pendaftaran-offline.index');
             Route::post('pendaftaran-pasien-offline/store',[PendaftaranPasienOfflineController::class,'store'])->name('pendaftaran-offline.store');
+            // pendaftaran online - cetak antrian
+            Route::get('cetak-antrian',[CetakAntrianController::class,'index'])->name('cetak-antrian');
+            Route::get('cetak-antrian/{id}',[CetakAntrianController::class,'pdf'])->name('cetak-antrian.pdf');
         });
         Route::group(['prefix' => 'transaksi'], function () {
             // History Transaksi
@@ -62,6 +67,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('history-transaksi/search',[TransaksHistoryController::class,'index'])->name('history-transaksi.search');
             Route::get('history-transaksi',[TransaksHistoryController::class,'index'])->name('history-transaksi.index');
             // Verifikasi Transaksi
+            Route::post('verifikasi/scan-manual',[TransaksiVerifikasiController::class,'scanManual'])->name('verifikasi.read.manual');
             Route::get('verifikasi/read-scan',[TransaksiVerifikasiController::class,'readScan'])->name('verifikasi.read');
             Route::get('verifikasi/scan',[TransaksiVerifikasiController::class,'detail'])->name('verifikasi.detail');
             Route::get('verifikasi/update/{id}',[TransaksiVerifikasiController::class,'updateManual'])->name('verifikasi.update-manual');
@@ -78,8 +84,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('laporan-kunjungan-pasien/search',[LaporanController::class,'LaporanKunjunganPasien'])->name('laporan.kunjungan-pasien.search');
             Route::get('laporan-kunjungan-pasien',[LaporanController::class,'LaporanKunjunganPasien'])->name('laporan.kunjungan-pasien.index');
             // Laporan Kunjungan Pasien BPJS/Umum
-            Route::get('laporan-kunjungan-jenis/pdf',[LaporanController::class,'LaporanJenisExcel'])->name('laporan.kunjungan-jenis.excel');
-            Route::get('laporan-kunjungan-jenis/excel',[LaporanController::class,'LaporanJenisPdf'])->name('laporan.kunjungan-jenis.pdf');
+            Route::get('laporan-kunjungan-jenis/pdf',[LaporanController::class,'LaporanJenisPdf'])->name('laporan.kunjungan-jenis.pdf');
+            Route::get('laporan-kunjungan-jenis/excel',[LaporanController::class,'LaporanJenisExcel'])->name('laporan.kunjungan-jenis.excel');
             Route::get('laporan-kunjungan-jenis/search',[LaporanController::class,'LaporanJenis'])->name('laporan.kunjungan-jenis.search');
             Route::get('laporan-kunjungan-jenis',[LaporanController::class,'LaporanJenis'])->name('laporan.kunjungan-jenis');
         });
@@ -118,6 +124,12 @@ Route::prefix('dashboard-pasien')->group(function () {
     // Profile
     Route::post('profile-pasien',[ProfilePasienController::class,'update'])->name('profile-pasien.update');
     Route::get('profile-pasien',[ProfilePasienController::class,'index'])->name('profile-pasien.edit');
+    // History Transaksi
+    Route::get('history-transaksi/download/{id}',[PasienHistoryTransaksiController::class,'download'])->name('pasien.history-transaksi.download');
+    Route::get('history-transaksi/detail',[PasienHistoryTransaksiController::class,'detail'])->name('pasien.history-transaksi.detail');
+    Route::get('history-transaksi',[PasienHistoryTransaksiController::class,'index'])->name('pasien.history-transaksi.index');
+    // Antrian Klinik
+    Route::get('history-transaksi/update',[PasienHistoryTransaksiController::class,'updateStatus'])->name('pasien.history-transaksi.update');
 });
 
 Route::middleware('auth')->group(function () {

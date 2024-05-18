@@ -40,7 +40,6 @@
                             <th scope="col" class="px-4 py-3">Foto</th>
                             <th scope="col" class="px-4 py-3">Nama Dokter</th>
                             <th scope="col" class="px-4 py-3">Nama Poliklinik</th>
-                            <th scope="col" class="px-4 py-3">Tanggal</th>
                             <th scope="col" class="px-4 py-3">Jam Praktek</th>
                             <th scope="col" class="px-4 py-3">Kuota</th>
                             <th scope="col" class="px-4 py-3">Sisa Kuota</th>
@@ -59,9 +58,8 @@
                                 </td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->name) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->poliklinik->name) }}</td>
-                                <td class="px-4 py-3">{{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->jam_praktek }}</td>
-                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->kuota }}</td>
+                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->kuota != null ? $item->kuota : '-' }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->sisa_kuota ?? 0 }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <span data-modal-target="update-modal" data-modal-toggle="update-modal" data-id="{{ $item->id }}" class="update-modal cursor-pointer bg-{{ $item->status == 'aktif' ? 'green' : 'red' }}-100 text-{{ $item->status == 'aktif' ? 'green' : 'red' }}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-{{ $item->status == 'aktif' ? 'green' : 'red' }}-900 dark:text-{{ $item->status == 'aktif' ? 'green' : 'red' }}-300">{{ ucwords($item->status) }}</span>

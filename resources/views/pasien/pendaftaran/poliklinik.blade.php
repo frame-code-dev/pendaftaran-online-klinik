@@ -2,7 +2,7 @@
     <div class="p-4 sm:ml-64 mt-20 h-fit">
         <div class=" max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-auto ">
             <div class="bg-blue-800 p-4 rounded-t-lg flex content-center gap-2">
-                <a href="{{ route('pasien.ketentuan') }}">
+                <a href="{{ route('pasien.jenis-pembayaran') }}">
                     <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
                       </svg>

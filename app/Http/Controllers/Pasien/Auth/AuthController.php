@@ -36,7 +36,7 @@ class AuthController extends Controller
             $date = DateTime::createFromFormat('m-d-Y', $request->tgl_lahir)->format('Y-m-d');
             $user = Pasien::where('nik', $request->nik)->where('tanggal_lahir', $date)->first() ?? null;
             if ($user == null) {
-                toast('Data tidak ditemukan.','error');
+                alert('Data Tidak Ditemukan','Silahkan menuju loket untuk melakukan pendaftaran','error');
                 return redirect()->route('pasien.login');
             }else{
                 Session::put('user', $user);

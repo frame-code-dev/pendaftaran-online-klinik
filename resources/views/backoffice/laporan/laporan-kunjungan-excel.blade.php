@@ -73,6 +73,9 @@
                     <hr>
                 </div>
                 <div class="table-responsive">
+                    <div class="mt-5">
+                        <h4 class="fw-bold">Periode : {{ $start.' - '.$end }}</h4>
+                    </div>
                     <table id="customers" border="1">
                         <thead>
                             <tr>
@@ -87,7 +90,7 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr>
-                                    <td class="px-4 py-3">{{ $item->no_antrian }}</td>
+                                    <td class="px-4 py-3">{{ $item->no_antrian != null ? $item->no_antrian : '-' }}</td>
                                     <td >{{ $item->tanggal_kunjungan }}</td>
                                     <td >{{ $item->no_kartu != null ? ucwords($item->no_kartu) : '-' }}</td>
                                     <td >{{ ucwords($item->pasien->name) }}</td>

@@ -34,11 +34,13 @@
 
             </div>
             <div class="md:w-full">
-                <x-text-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
-
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 right-0 flex items-center px-2">
+                        <input class="hidden js-password-toggle" id="toggle" type="checkbox" />
+                        <label class="bg-gray-300 hover:bg-gray-400 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label" for="toggle">show</label>
+                    </div>
+                    <x-input-default name="password" type="password" value="{{ old('password') }}" class="js-password"></x-input-default>
+                </div>
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
         </div>
@@ -72,4 +74,25 @@
 
         </div> --}}
     </form>
+    @push('js')
+    <script>
+        const passwordToggle = document.querySelector('.js-password-toggle')
+
+            passwordToggle.addEventListener('change', function() {
+            const password = document.querySelector('.js-password'),
+                passwordLabel = document.querySelector('.js-password-label')
+
+            if (password.type === 'password') {
+                password.type = 'text'
+                passwordLabel.innerHTML = 'hide'
+            } else {
+                password.type = 'password'
+                passwordLabel.innerHTML = 'show'
+            }
+
+            password.focus()
+        })
+
+    </script>
+    @endpush
 </x-guest-layout>

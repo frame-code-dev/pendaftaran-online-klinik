@@ -9,6 +9,6 @@ use Maatwebsite\Excel\Facades\Excel;
 class ImportDataController extends Controller
 {
     public function index() {
-        return Excel::import(new KecamatanImport, storage_path('app/public/import/districts.csv'));
+        // return Excel::import(new KecamatanImport, storage_path('app/public/import/districts.csv'));
     }
 }
