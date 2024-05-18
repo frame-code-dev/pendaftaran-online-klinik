@@ -42,8 +42,6 @@
                     })
                 });
             });
-        </script>
-        <script>
             $(document).ready(function() {
                 let url = `{{ route('pendaftaran-offline.list-dokter') }}`
                 $('#poliklinik').on('change', function() {
@@ -165,7 +163,8 @@
                                         :
                                     </div>
                                     <div class="font-bold">
-                                        {{ $data->alamat }} <br><span id="provinsi">-</span>,<span id="kabupaten"></span> <span id="kecamatan"></span>
+                                        {{ $data->alamat }} <br>
+                                        <span id="provinsi">-</span>,<span id="kabupaten"></span> <span id="kecamatan"></span>
                                     </div>
                                 </div>
                             </div>
