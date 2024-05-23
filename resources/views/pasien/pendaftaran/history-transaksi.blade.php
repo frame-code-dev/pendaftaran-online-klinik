@@ -11,13 +11,14 @@
                         id:id
                     },
                     success:(data) => {
+                        console.log(data);
                         $('#nama_pasien').text(data.pasien.name);
                         $('#tanggal_kunjungan').text(data.tanggal_kunjungan);
                         $('#jenis_pembayaran').text(data.jenis_pembayaran);
                         $('#poliklinik').text(data.poliklinik.name);
                         $('#dokter').text(data.dokter.name);
                         $('#no_antrian').text(data.no_antrian);
-                        $('#estimasi_dilayani').text(data.dokter.jam_praktek);
+                        $('#estimasi_dilayani').text(data.estimasi_dokter);
                         $('#kode_booking').text(data.kode_pendaftaran);
                         var img = `{{ asset('') }}qrcodes/${data.kode_pendaftaran}.png`
                         $('#foto_bukti').attr("src", `${img}`);
@@ -72,7 +73,17 @@
                                     <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->jenis_pembayaran) }}</td>
                                     <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->poliklinik->name) }}</td>
                                     <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->dokter->name) }}</td>
-                                    <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->dokter->jam_praktek }}</td>
+                                    <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        @foreach ($item->jadwal_dokter as $item_jadwal)
+                                            @php
+                                                $jadwalArray = $item_jadwal->toArray();
+                                                $hari_kunjungan = strtolower(\Carbon\Carbon::parse($item->tanggal_kunjungan)->translatedFormat('l'));
+                                                $jadwalHari = $jadwalArray[$hari_kunjungan == 'jumat' ? 'jumaat' : $hari_kunjungan] ?? null;
+                                            @endphp
+                                            {{ $jadwalHari != null ? $jadwalHari : '-' }}
+                                        @endforeach
+
+                                    </td>
                                     <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->no_antrian != null ? $item->no_antrian : '-' }}</td>
                                     <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         @if ($item->status_pendaftaran == 'proses' || $item->status_pendaftaran == 'pending')
@@ -165,7 +176,7 @@
                 </div>
                 <!-- Modal footer -->
                 <div class="flex justify-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <a href="#" download="" id="cetakQrCodeButton" class="cetakQrCodeButton text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Cetak QRCode</a>
+                    <a href="#" id="cetakQrCodeButton" class="cetakQrCodeButton text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Cetak QRCode</a>
                     <a href="#" id="dibatalkan" class=" py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-red-200 hover:bg-red-100 hover:text-red-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Dibatalkan</a>
                 </div>
             </div>

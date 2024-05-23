@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JadwalDokter;
 use App\Models\PendaftaranPasien;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,6 +19,11 @@ class TransaksHistoryController extends Controller
                 $query->whereBetween('created_at', [$start, $end]);
             })
             ->orderBy('no_antrian','ASC')->get();
+        $param['data']->transform(function ($item, $key) {
+            $jadwal = JadwalDokter::where('dokter_id',$item->dokter_id)->where('status',$item->jenis_pembayaran)->get();
+            $item->jadwal_dokter = $jadwal;
+            return $item;
+        });
         return view('backoffice.transaksi.history-transaksi.index',$param);
     }
 
@@ -31,6 +37,11 @@ class TransaksHistoryController extends Controller
                 $query->whereBetween('created_at', [$start, $end]);
             })
             ->orderBy('no_antrian','ASC')->get();
+        $param['data']->transform(function ($item, $key) {
+            $jadwal = JadwalDokter::where('dokter_id',$item->dokter_id)->where('status',$item->jenis_pembayaran)->get();
+            $item->jadwal_dokter = $jadwal;
+            return $item;
+        });
         $param['start'] = $start;
         $param['end'] = $end;
         return view('backoffice.transaksi.history-transaksi.pdf',$param);
@@ -46,6 +57,11 @@ class TransaksHistoryController extends Controller
                 $query->whereBetween('created_at', [$start, $end]);
             })
             ->orderBy('no_antrian','ASC')->get();
+        $param['data']->transform(function ($item, $key) {
+            $jadwal = JadwalDokter::where('dokter_id',$item->dokter_id)->where('status',$item->jenis_pembayaran)->get();
+            $item->jadwal_dokter = $jadwal;
+            return $item;
+        });
         $param['start'] = $start;
         $param['end'] = $end;
         return view('backoffice.transaksi.history-transaksi.excel',$param);

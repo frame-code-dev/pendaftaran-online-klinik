@@ -86,18 +86,6 @@
                                         <td class="font-bold">{{ $data->jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan' }}</td>
                                     </tr>
                                     <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <td width="20%" class="p-4">Jam Praktek</td>
-                                        <td width="1%">:</td>
-                                        <td class="font-bold">{{ $data->jam_praktek }}</td>
-                                    </tr>
-                                    <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <td width="20%" class="p-4">Tanggal Lahir : </td>
-                                        <td width="1%">:</td>
-                                        <td class="font-bold">
-                                            {{ \Carbon\Carbon::parse($data->tgl_lahir)->translatedFormat('d F Y') }}
-                                        </td>
-                                    </tr>
-                                    <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <td width="20%" class="p-4">Status Dokter</td>
                                         <td width="1%">:</td>
                                         <td class="font-bold">
@@ -109,79 +97,170 @@
                             </table>
                         </div>
                         </div>
-                        <div>
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border " >
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-4 py-3">Senin</th>
-                                    <th scope="col" class="px-4 py-3">Selasa</th>
-                                    <th scope="col" class="px-4 py-3">Rabu</th>
-                                    <th scope="col" class="px-4 py-3">Kamis</th>
-                                    <th scope="col" class="px-4 py-3">Jumaat</th>
-                                    <th scope="col" class="px-4 py-3">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data->jadwal as $item)
+                        <div class="relative overflow-x-auto">
+                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border " >
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-4 py-3">Senin</th>
+                                        <th scope="col" class="px-4 py-3">Selasa</th>
+                                        <th scope="col" class="px-4 py-3">Rabu</th>
+                                        <th scope="col" class="px-4 py-3">Kamis</th>
+                                        <th scope="col" class="px-4 py-3">Jumaat</th>
+                                        <th scope="col" class="px-4 py-3">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data->jadwal as $item)
                                     <tr class="border">
-                                        <td class="px-4 py-3">
-                                            <div class="relative">
-                                                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
-                                                    </svg>
+                                        <td class="px-4 py-3 border ">
+                                            @php
+                                                $jam = explode('-',$item->senin);
+                                                $dari = $jam[0];
+                                                $sampai = $jam[1];
+                                            @endphp
+                                            <div>
+                                                <div class="flex items-center w-full">
+                                                    <div class="relative w-1/2">
+                                                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
+                                                        <input type="time" readonly value="{{ $dari }}" name="daristatus_{{ $item->status }}_senin" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                    </div>
+                                                    <span class="mx-4 text-gray-500">to</span>
+                                                    <div class="relative w-1/2">
+                                                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
+                                                        <input type="time" readonly value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_senin" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                    </div>
                                                 </div>
-                                                <input value="{{ $item->senin }}" type="time" readonly name="status_umum_senin" id="status_umum_senin" class="bg-gray-100 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3">
-                                            <div class="relative">
-                                                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
-                                                    </svg>
+                                        <td class="px-4 py-3 border ">
+                                            @php
+                                                $jam = explode('-',$item->selasa);
+                                                $dari = $jam[0];
+                                                $sampai = $jam[1];
+                                            @endphp
+                                            <div>
+                                                <div class="flex items-center w-full">
+                                                    <div class="relative w-1/2">
+                                                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
+                                                        <input type="time" readonly value="{{ $dari }}" name="daristatus_{{ $item->status }}_selasa" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                    </div>
+                                                    <span class="mx-4 text-gray-500">to</span>
+                                                    <div class="relative w-1/2">
+                                                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
+                                                        <input type="time" readonly value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_selasa" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                    </div>
                                                 </div>
-                                                <input type="time" value="{{ $item->selasa }}" readonly name="status_umum_selasa" id="status_umum_selasa" class="bg-gray-100 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3">
-                                            <div class="relative">
-                                                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
-                                                    </svg>
+                                        <td class="px-4 py-3 border ">
+                                            @php
+                                                $jam = explode('-',$item->rabu);
+                                                $dari = $jam[0];
+                                                $sampai = $jam[1];
+                                            @endphp
+                                            <div>
+                                                <div class="flex items-center w-full">
+                                                    <div class="relative w-1/2">
+                                                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
+                                                        <input type="time" readonly value="{{ $dari }}" name="daristatus_{{ $item->status }}_rabu" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                    </div>
+                                                    <span class="mx-4 text-gray-500">to</span>
+                                                    <div class="relative w-1/2">
+                                                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
+                                                        <input type="time" readonly value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_rabu" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                    </div>
                                                 </div>
-                                                <input type="time" value="{{ $item->rabu }}" readonly name="status_umum_rabu" id="status_umum_rabu" class="bg-gray-100 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3">
-                                            <div class="relative">
-                                                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
-                                                    </svg>
+                                        <td class="px-4 py-3 border ">
+                                            @php
+                                                $jam = explode('-',$item->kamis);
+                                                $dari = $jam[0];
+                                                $sampai = $jam[1];
+                                            @endphp
+                                            <div>
+                                                <div class="flex items-center w-full">
+                                                    <div class="relative w-1/2">
+                                                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
+                                                        <input type="time" readonly value="{{ $dari }}" name="daristatus_{{ $item->status }}_kamis" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                    </div>
+                                                    <span class="mx-4 text-gray-500">to</span>
+                                                    <div class="relative w-1/2">
+                                                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
+                                                        <input type="time" readonly value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_kamis" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                    </div>
                                                 </div>
-                                                <input type="time" value="{{ $item->kamis }}" readonly name="status_umum_kamis" id="status_umum_kamis" class="bg-gray-100 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3">
-                                            <div class="relative">
-                                                <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
-                                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
-                                                    </svg>
+                                        <td class="px-4 py-3 border ">
+                                            @php
+                                                $jam = explode('-',$item->jumaat);
+                                                $dari = $jam[0];
+                                                $sampai = $jam[1];
+                                            @endphp
+                                            <div>
+                                                <div class="flex items-center w-full">
+                                                    <div class="relative w-1/2">
+                                                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
+                                                        <input type="time" readonly value="{{ $dari }}" name="daristatus_{{ $item->status }}_jumaat" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                    </div>
+                                                    <span class="mx-4 text-gray-500">to</span>
+                                                    <div class="relative w-1/2">
+                                                        <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
+                                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
+                                                            </svg>
+                                                        </div>
+                                                        <input type="time" readonly value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_jumaat" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                    </div>
                                                 </div>
-                                                <input type="time" value="{{ $item->jumaat }}" readonly name="status_umum_jumaat" id="status_umum_jumaat" class="bg-gray-100 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3">
-                                            <x-input-default name="status_umum[]" type="text" value="{{ old('status',$item->status) }}" class="bg-gray-100" readonly></x-input-default>
+                                        <td class="px-4 py-3 border ">
+                                            <x-input-default name="status_{{ $item->status }}[]" type="text" value="{{ old('status',$item->status) }}" class="bg-gray-50" readonly></x-input-default>
                                         </td>
                                     </tr>
 
-                                @endforeach
-                            </tbody>
-                        </table>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             @else

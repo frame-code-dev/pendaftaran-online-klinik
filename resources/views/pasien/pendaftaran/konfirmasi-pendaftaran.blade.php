@@ -122,7 +122,7 @@
                             <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <td width="20%" class="p-4">Tanggal Lahir</td>
                                 <td width="1%">:</td>
-                                <td class="font-bold"> {{ \Carbon\Carbon::parse($data_pasien->tgl_lahir)->translatedFormat('d F Y') }}</td>
+                                <td class="font-bold"> {{ \Carbon\Carbon::parse($data_pasien->tanggal_lahir)->translatedFormat('d F Y') }}</td>
                             </tr>
                             <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <td width="20%" class="p-4">Alamat</td>
@@ -242,7 +242,9 @@
                     <div>
                         <h4 id="qrcode" class="text-xl font-bold text-center text-gray-900 dark:text-white">-</h4>
                     </div>
-
+                    <center>
+                        <small> Catatan : Harap datang 15 menit sebelum pemeriksaan</small>
+                    </center>
                 </div>
                 <!-- Modal footer -->
                 <div class="flex justify-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">

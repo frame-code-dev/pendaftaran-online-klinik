@@ -6,9 +6,11 @@ use App\Helpers\EstimasiWaktuLayanan;
 use App\Helpers\KodeUnikGenerator;
 use App\Helpers\NomorAntrianGenerator;
 use App\Models\Dokter;
+use App\Models\JadwalDokter;
 use App\Models\Pasien;
 use App\Models\PendaftaranPasien;
 use App\Models\Poliklinik;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -27,7 +29,7 @@ class DashboardPasienController extends Controller
      * @return Some_Return_Value
      */
     public function index()  {
-        
+
         if (Session::get('user') == null) {
             return view('pasien.auth.login');
         }
@@ -58,6 +60,14 @@ class DashboardPasienController extends Controller
             return view('pasien.auth.login');
         }
         Session::put('jenis-pembayaran', null);
+        // $currentTime = Carbon::now()->parse('Asia/Jakarta');
+
+        // $start = Carbon::createFromTime(7, 0, 0, 'Asia/Jakarta'); // 7 AM
+        // $end = Carbon::createFromTime(21, 0, 0, 'Asia/Jakarta'); // 9 PM
+        // if (!$currentTime->between($start, $end)) {
+        //     toast('Pendaftaran ditutup pada pukul 21.00 WIB dan akan dibuka kembali pada pukul 07.00 WIB.','error');
+        //     return redirect()->route('pasien.ketentuan');
+        // }
         return view('pasien.pendaftaran.jenis-pembayaran');
     }
     public function jenisPembayaranBpjs() {
@@ -65,6 +75,7 @@ class DashboardPasienController extends Controller
             return view('pasien.auth.login');
         }
         Session::put('jenis-pembayaran', 'bpjs');
+        // Cek jam kerja
         return view('pasien.pendaftaran.jenis-pembayaran-bpjs');
     }
 
@@ -118,6 +129,7 @@ class DashboardPasienController extends Controller
         Session::put('poliklinik',$param['poli']);
         $jenis_pembayaran = Session::has('jenis-pembayaran') ? Session::get('jenis-pembayaran') : 'umum';
         $search = $request->get('search');
+        // cek hari kunjungan
         $param['data'] = Dokter::with('poliklinik','user','jadwal')->when($search,function($query) use ($search) {
             $query->where('name','like','%'.$search.'%')
                  ->orWhere('name','like','%'.$search.'%');
@@ -135,9 +147,18 @@ class DashboardPasienController extends Controller
             }
         })
         ->where('poliklinik_id',$id)->latest()->get();
-        $param['data']->transform(function ($value) {
-            $current_kuota_online = PendaftaranPasien::where('dokter_id',$value->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')->count();
-            $current_kuota_offline = PendaftaranPasien::where('dokter_id',$value->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','offline')->count();
+        // cek kuota dokter
+        $param['data']->transform(function ($value) use ($request) {
+            $current_kuota_online = PendaftaranPasien::where('dokter_id',1)
+                                            ->where('status_pendaftaran','pending')
+                                            ->where('jenis_pendaftaran','online')
+                                            ->whereDate('tanggal_kunjungan',Carbon::parse($request->tanggal)->format('Y-m-d'))
+                                            ->count();
+            $current_kuota_offline = PendaftaranPasien::where('dokter_id',$value->id)
+                                                    ->where('status_pendaftaran','pending')
+                                                    ->where('jenis_pendaftaran','offline')
+                                                    ->whereDate('tanggal_kunjungan',Carbon::parse($request->tanggal)->format('Y-m-d'))
+                                                    ->count();
             if ($value->kuota != 0) {
                 $current_kuota = $current_kuota_offline + $current_kuota_online;
                 $result = $value->kuota - $current_kuota;
@@ -145,6 +166,8 @@ class DashboardPasienController extends Controller
             }
             return $value;
         });
+        // return $param['data'];
+        $param['hari_kunjungan'] = $request->has('tanggal') ? strtolower(Carbon::parse($request->tanggal)->translatedFormat('l')) : strtolower(Carbon::parse(now())->translatedFormat('l'));
         return view('pasien.pendaftaran.dokter',$param);
     }
 
@@ -152,26 +175,41 @@ class DashboardPasienController extends Controller
         if (Session::get('user') == null) {
             return view('pasien.auth.login');
         }
-        $cek_pendaftaran = PendaftaranPasien::where('poliklinik_id',Session::get('poliklinik')->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')->whereDate('created_at',Carbon::now())->count();
+        // berdasarkan tanggal kunjungan dan poliklinik
+        // -- Check berdasarkan tidak boleh di poliklinik yang berbeda dan dokter berbeda di tanggal kunjungan sama
+        $tanggal_kunjungan_pasien = Session::get('tanggal_kunjungan') != null ? Session::get('tanggal_kunjungan') : date('Y-m-d');
+        $cek_pendaftaran = PendaftaranPasien::where('poliklinik_id',Session::get('poliklinik')->id)
+                                        ->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')
+                                        ->whereDate('tanggal_kunjungan',Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d'))
+                                        ->count();
         if ($cek_pendaftaran > 0) {
-            toast('Tidak Bisa Melakukan Pendaftaran yang sama.','error');
+            $message = 'User Sudah Mendaftarkan di poliklinik yang sama.';
+            toast($message,'error');
             return redirect()->route('pasien.list-poliklinik',['id' => Session::get('poliklinik')->id]);
         }
         // data pendaftaran pasien
         $dokter_id = $id;
         // Check Kuota
-        $current_kuota_online = PendaftaranPasien::where('dokter_id',$dokter_id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')->count();
-        $current_kuota_offline = PendaftaranPasien::where('dokter_id',$dokter_id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','offline')->count();
+        $current_kuota_online = PendaftaranPasien::where('dokter_id',$dokter_id)
+                                                ->where('status_pendaftaran','pending')
+                                                ->where('jenis_pendaftaran','online')
+                                                ->whereDate('tanggal_kunjungan',Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d'))
+                                                ->count();
+        $current_kuota_offline = PendaftaranPasien::where('dokter_id',$dokter_id)
+                                                ->where('status_pendaftaran','pending')
+                                                ->where('jenis_pendaftaran','offline')
+                                                ->whereDate('tanggal_kunjungan',Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d'))
+                                                ->count();
         $current_kuota = $current_kuota_offline + $current_kuota_online;
         $param['dokter'] = Dokter::with('poliklinik')->find($dokter_id);
         if ($param['dokter']->kuota != 0) {
             $sisa_kuota = $param['dokter']->kuota - $current_kuota;
             if ($sisa_kuota <= 0) {
-                toast('Kuota penuh mencoba menambahkan data.','error');
+                toast('Kuota dokter habis.','error');
                 return redirect()->route('pasien.list-dokter',[$param['dokter']->poliklinik_id]);
             }
         }
-        $tanggal_kunjungan_pasien = Session::get('tanggal_kunjungan') != null ? Session::get('tanggal_kunjungan') : date('Y-m-d');
+
         $jenis_pembayaran = Session::has('jenis-pembayaran') ? Session::get('jenis-pembayaran') : 'umum';
         $data_pasien_id = Session::get('user')->id;
         // data pendaftaran pasien
@@ -253,17 +291,39 @@ class DashboardPasienController extends Controller
 
     public function cetakQrcode($id){
         $noBooking = Session::get('kodeUnik');
+        $data = PendaftaranPasien::with('pasien','dokter','poliklinik')->where('pasien_id',Session::get('user')->id)->where('kode_pendaftaran',$noBooking)->first();
+        if ($data) {
+            $hari_kunjungan = strtolower(\Carbon\Carbon::parse($data->tanggal_kunjungan)->translatedFormat('l'));
 
+            foreach ($data->jadwal as $key => $value) {
+                if ($value->status == $data->jenis_pembayaran) {
+                    $jadwalArray = $value->toArray();
+
+                    // Ubah 'Jumat' menjadi 'jumaat' agar sesuai dengan kunci di array
+                    $hari_kunjungan = ($hari_kunjungan == 'jumat') ? 'jumaat' : $hari_kunjungan;
+
+                    // Periksa apakah kunci hari ada dalam array, jika ada, set estimasi dokter
+                    if (array_key_exists($hari_kunjungan, $jadwalArray)) {
+                        $data->estimasi_dokter = $jadwalArray[$hari_kunjungan];
+                    }
+                }
+            }
+        }
+        $pdf = Pdf::loadView('pasien.pendaftaran.cetak', compact('data'));
+        $filename = $data->kode_pendaftaran.'.'.'pdf';
+        $pdf->save(storage_path('app/public/pdf/'.$filename));
         $qrCode = QrCode::format('png')
                         ->backgroundColor(255, 255, 255)
                         ->margin(1)
-                        ->size(500)->generate($noBooking);
+                        ->size(500)->generate($data->kode_pendaftaran);
+        $path = public_path('qrcodes/'.$data->kode_pendaftaran.'.png');
+                        file_put_contents($path, $qrCode);
+        return $pdf->download($filename);
 
-        // Simpan QR Code ke dalam folder public/qrcodes
-        $path = public_path('qrcodes/'.$noBooking.'.png');
-        file_put_contents($path, $qrCode);
 
-        return response()->download($path);
+        // // Simpan QR Code ke dalam folder public/qrcodes
+
+        // return response()->download($path);
     }
 
 

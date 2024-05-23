@@ -14,8 +14,6 @@ class Dokter extends Model
         'user_id',
         'name',
         'gambar',
-        'tanggal',
-        'jam_praktek',
         'kuota',
         'kuota_terisi',
         'status',

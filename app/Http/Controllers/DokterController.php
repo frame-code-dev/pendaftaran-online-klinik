@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dokter;
+use App\Models\PendaftaranPasien;
 use App\Models\Poliklinik;
 use Carbon\Carbon;
 use DateTime;
@@ -22,6 +23,16 @@ class DokterController extends Controller
     {
         $param['title'] = 'List Dokter';
         $param['data'] = Dokter::with('poliklinik','user')->latest()->get();
+        $param['data']->transform(function ($value) {
+            $current_kuota_online = PendaftaranPasien::where('dokter_id',$value->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')->count();
+            $current_kuota_offline = PendaftaranPasien::where('dokter_id',$value->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','offline')->count();
+            if ($value->kuota != 0) {
+                $current_kuota = $current_kuota_offline + $current_kuota_online;
+                $result = $value->kuota - $current_kuota;
+                $value->kuota_terisi = $result <= 0 ? 0 : $result;
+            }
+            return $value;
+        });
         $title = 'Delete Dokter!';
         $text = "Are you sure you want to delete?";
         confirmDelete($title, $text);
@@ -46,8 +57,6 @@ class DokterController extends Controller
         $validateData = Validator::make($request->all(),[
             'name' => 'required',
             'poliklinik' => 'required|not_in:0',
-            'dari' => 'required',
-            'sampai' => 'required',
             'jenis_kelamin' => 'required|not_in:0',
             'file_input' => 'required',
         ]);
@@ -64,12 +73,9 @@ class DokterController extends Controller
         try {
             DB::beginTransaction();
 
-            $jam_kerja = $request->dari.'-'.$request->sampai;
             $dokter = new Dokter;
             $dokter->poliklinik_id = $request->poliklinik;
             $dokter->name = $request->name;
-            $dokter->tanggal = Carbon::now();
-            $dokter->jam_praktek = $jam_kerja;
             $dokter->kuota = $request->has('kuota') ? $request->kuota : null;
             $dokter->jenis_kelamin = $request->jenis_kelamin;
             $dokter->user_id = Auth::user()->id;
@@ -119,8 +125,6 @@ class DokterController extends Controller
         $validateData = Validator::make($request->all(),[
             'name' => 'required',
             'poliklinik' => 'required|not_in:0',
-            'dari' => 'required',
-            'sampai' => 'required',
             'jenis_kelamin' => 'required|not_in:0',
         ]);
         if ($validateData->fails()) {
@@ -135,11 +139,9 @@ class DokterController extends Controller
         }
         try {
             DB::beginTransaction();
-            $jam_kerja = $request->dari.'-'.$request->sampai;
             $dokter = Dokter::find($id);
             $dokter->poliklinik_id = $request->poliklinik;
             $dokter->name = $request->name;
-            $dokter->jam_praktek = $jam_kerja;
             $dokter->kuota = $request->has('kuota') ? $request->kuota : null;
             $dokter->jenis_kelamin = $request->jenis_kelamin;
             $dokter->user_id = Auth::user()->id;

@@ -59,7 +59,7 @@
                         </select>
                     </div>
 
-                    <div>
+                    {{-- <div>
                         <x-label-default for="" value="Jam Praktek">Jam Praktek</x-label-default>
                         @php
                             $jam = explode('-',$data->jam_praktek);
@@ -85,7 +85,7 @@
                                 <input type="time" name="sampai" id="sampai" value="{{ $sampai }}" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div>
                         <x-label-default for="" value="Kuota">Kuota</x-label-default>
                         <x-input-default name="kuota" type="number" value="{{ old('kuota',$data->kuota) }}" placeholder="Masukkan Kuota"></x-input-default>

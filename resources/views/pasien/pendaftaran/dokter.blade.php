@@ -4,53 +4,110 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
     <script>
+
         $(function() {
             var today = new Date();
             var maxDate = new Date();
             maxDate.setDate(today.getDate() + 7); // 6 days from today
             var disabledDates = []; // array to store disabled dates
+            let url_holiday = "https://api-harilibur.vercel.app/api?year=2024"
+            var publicHolidays = []; // array to store public holidays
+            $.ajax({
+                url: url_holiday,
+                type: "GET",
+                success: function(data) {
+                    console.log(data);
+                    data.map((item) => {
+                        var parts = item.holiday_date.split("-");
+                        publicHolidays.push(new Date(parts[0], parts[1] - 1, parts[2]));
+                    })
+                    // Initialize datepicker after fetching holidays
+                    initializeDatepicker();
+                }
+            })
 
-            // Loop to disable weekends (Saturday and Sunday)
-            for (var i = 0; i < 7; i++) {
-                var tempDate = new Date();
-                tempDate.setDate(today.getDate() + i);
-                if (tempDate.getDay() === 0 || tempDate.getDay() === 6) {
-                    disabledDates.push(tempDate);
+            function initializeDatepicker() {
+                // Loop to disable weekends (Saturday and Sunday)
+                for (var i = 0; i <= 7; i++) {
+                    var tempDate = new Date();
+                    tempDate.setDate(today.getDate() + i);
+                    if (tempDate.getDay() === 0 || tempDate.getDay() === 6) {
+                        disabledDates.push(tempDate);
+                    }
+                }
+
+
+                $("#datepicker").datepicker({
+                    dateFormat: "yy-mm-dd",
+                    defaultDate: today,
+                    minDate: today,
+                    maxDate: maxDate,
+                    beforeShowDay: function(date) {
+                        var day = date.getDay();
+                        // Disable weekends
+                        if (day === 0 || day === 6) {
+                            return [false];
+                        }
+                        // Disable past and future dates
+                        if (date < today || date > maxDate) {
+                            return [false];
+                        }
+                        // Disable specific dates in disabledDates array
+                        for (var i = 0; i < disabledDates.length; i++) {
+                            if (date.getTime() === disabledDates[i].getTime()) {
+                                return [false];
+                            }
+                        }
+                        // Disable public holidays
+                        for (var i = 0; i < publicHolidays.length; i++) {
+                            if (date.getTime() === publicHolidays[i].getTime()) {
+                                return [false];
+                            }
+                        }
+                        return [true];
+                    },
+                    onSelect: function(dateText) {
+                        var selectedDate = $.datepicker.formatDate("yy-mm-dd", $(this).datepicker('getDate'));
+                        console.log(selectedDate);
+                        $("#datepicker").val(selectedDate);
+                        window.location.href = window.location.pathname + '?tanggal=' + selectedDate;
+                        checkAndHandleDate(dateText);
+
+
+                    }
+                });
+
+                $("#datepicker").on("change", function() {
+                    var inputDate = $(this).val();
+                    checkAndHandleDate(inputDate);
+                });
+            }
+
+            function checkAndHandleDate(dateText) {
+                var selectedDate = new Date(dateText);
+                var isValid = true;
+
+                // Check if the date is a weekend
+                if (selectedDate.getDay() === 0 || selectedDate.getDay() === 6) {
+                    isValid = false;
+                }
+
+                // Check if the date is a public holiday
+                for (var i = 0; i < publicHolidays.length; i++) {
+                    if (selectedDate.getTime() === publicHolidays[i].getTime()) {
+                        isValid = false;
+                    }
+                }
+                console.log(isValid);
+                if (!isValid) {
+                    window.location.href = window.location.pathname;
+                    alert("Tanggal yang dipilih tidak valid. Silakan pilih tanggal lain.");
+                    $(this).val("");
+                } else {
+                    window.location.href = window.location.pathname + '?tanggal=' + dateText;
                 }
             }
 
-            $("#datepicker").datepicker({
-                dateFormat: "yy-mm-dd",
-                defaultDate: today,
-                minDate: today,
-                maxDate: maxDate,
-                beforeShowDay: function(date) {
-                    var day = date.getDay();
-                    // Disable weekends
-                    if (day === 0 || day === 6) {
-                        return [false];
-                    }
-                    // Disable past and future dates
-                    if (date < today || date > maxDate) {
-                        return [false];
-                    }
-                    // Disable specific dates in disabledDates array
-                    for (var i = 0; i < disabledDates.length; i++) {
-                        if (date.getTime() === disabledDates[i].getTime()) {
-                            return [false];
-                        }
-                    }
-                    return [true];
-                },
-                onSelect: function() {
-                    selectedDate = $.datepicker.formatDate("yy-mm-dd", $(this).datepicker('getDate'));
-                    console.log(selectedDate);
-                    $("#datepicker").val(selectedDate);
-                    window.location.href = window.location.pathname + '?tanggal=' + selectedDate;
-
-
-                }
-            });
         });
     </script>
     @endpush
@@ -127,7 +184,19 @@
                                     <hr>
                                     <p class="mt-3 font-normal text-gray-700 dark:text-gray-400">Klinik {{ ucwords($item->poliklinik->name) }}</p>
                                     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                                        tgl: {{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}, jam praktek {{ $item->jam_praktek }} WIB
+                                        @foreach ($item->jadwal as $item_jadwal)
+                                            @php
+                                                $status = Session::has('jenis-pembayaran') ? Session::get('jenis-pembayaran') : 'umum';
+
+                                            @endphp
+                                            @if ($item_jadwal->status == $status)
+                                                @php
+                                                    $jadwalArray = $item_jadwal->toArray();
+                                                    $jadwalHari = $jadwalArray[$hari_kunjungan == 'jumat' ? 'jumaat' : $hari_kunjungan] ?? null;
+                                                @endphp
+                                                Jadwal Praktek: {{ $jadwalHari != null ? $jadwalHari : '-' }}
+                                            @endif
+                                        @endforeach
                                     </p>
                                     <hr>
                                     <div class="mt-3">

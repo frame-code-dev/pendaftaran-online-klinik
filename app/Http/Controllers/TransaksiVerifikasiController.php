@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JadwalDokter;
 use App\Models\PendaftaranPasien;
 use Carbon\Carbon;
 use Exception;
@@ -14,6 +15,11 @@ class TransaksiVerifikasiController extends Controller
         $param['data'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
                     ->orderBy('no_antrian','ASC')
                     ->where('jenis_pendaftaran','online')->get();
+        $param['data']->transform(function ($item, $key) {
+            $jadwal = JadwalDokter::where('dokter_id',$item->dokter_id)->where('status',$item->jenis_pembayaran)->get();
+            $item->jadwal_dokter = $jadwal;
+            return $item;
+        });
         return view('backoffice.transaksi.verifikasi.index',$param);
     }
 

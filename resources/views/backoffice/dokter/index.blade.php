@@ -40,7 +40,6 @@
                             <th scope="col" class="px-4 py-3">Foto</th>
                             <th scope="col" class="px-4 py-3">Nama Dokter</th>
                             <th scope="col" class="px-4 py-3">Nama Poliklinik</th>
-                            <th scope="col" class="px-4 py-3">Jam Praktek</th>
                             <th scope="col" class="px-4 py-3">Kuota</th>
                             <th scope="col" class="px-4 py-3">Sisa Kuota</th>
                             <th scope="col" class="px-4 py-3">Status</th>
@@ -58,7 +57,6 @@
                                 </td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->name) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->poliklinik->name) }}</td>
-                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->jam_praktek }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->kuota != null ? $item->kuota : '-' }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->sisa_kuota ?? 0 }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">

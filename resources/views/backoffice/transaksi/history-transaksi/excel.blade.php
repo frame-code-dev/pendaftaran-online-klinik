@@ -101,7 +101,16 @@
                                     <td >{{ ucwords($item->jenis_pembayaran) }}</td>
                                     <td >{{ ucwords($item->poliklinik->name) }}</td>
                                     <td >{{ ucwords($item->dokter->name) }}</td>
-                                    <td >{{ $item->estimasi_dilayani }}</td>
+                                    <td >
+                                        @foreach ($item->jadwal_dokter as $item_jadwal)
+                                            @php
+                                                $jadwalArray = $item_jadwal->toArray();
+                                                $hari_kunjungan = strtolower(\Carbon\Carbon::parse($item->tanggal_kunjungan)->translatedFormat('l'));
+                                                $jadwalHari = $jadwalArray[$hari_kunjungan == 'jumat' ? 'jumaat' : $hari_kunjungan] ?? null;
+                                            @endphp
+                                            {{ $jadwalHari != null ? $jadwalHari : '-' }}
+                                        @endforeach
+                                    </td>
                                     <td >{{ $item->no_antrian != null ? $item->no_antrian : '-' }}</td>
                                     <td >{{ ucwords($item->status_pendaftaran) }}</td>
                                 </tr>

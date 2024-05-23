@@ -116,7 +116,6 @@ class PetugasController extends Controller
     {
         $validateData = Validator::make($request->all(),[
             'name' => 'required',
-            'username' => 'required',
             'email' => 'required',
             'hak_akses' => 'required|not_in:0'
         ],[
@@ -137,7 +136,6 @@ class PetugasController extends Controller
             DB::beginTransaction();
             $petugas = User::find($id);
             $petugas->name = $request->name;
-            $petugas->username = $request->username;
             $petugas->email = $request->email;
             if ($request->has('password') || $request->get('password') != NULL || $request->get('password') != '') {
                 $petugas->password = Hash::make($request->password);

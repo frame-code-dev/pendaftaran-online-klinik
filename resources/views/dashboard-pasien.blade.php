@@ -1,5 +1,19 @@
 <x-app-layout>
-
+    @push('js')
+        <script>
+            let url_holiday = "https://api-harilibur.vercel.app/api?year=2024"
+            $.ajax({
+                url: url_holiday,
+                type: "GET",
+                success: function(data) {
+                    console.log(data);
+                    data.map((item) => {
+                        console.log(item.holiday_date);
+                    })
+                }
+            })
+        </script>
+    @endpush
     <div class="p-4 sm:ml-64 mt-20 h-fit">
         <div class="text-center py-10">
             <h1 class="font-bold text-3xl dark:text-white">SELAMAT DATANG DI SISTEM INFORMASI PENDAFTARAN ONLINE</h1>

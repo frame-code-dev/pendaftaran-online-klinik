@@ -35,4 +35,7 @@ class PendaftaranPasien extends Model
     public function pasien() {
         return $this->belongsTo(Pasien::class, 'pasien_id');
     }
+    public function jadwal() {
+        return $this->hasMany(JadwalDokter::class,'dokter_id','dokter_id');
+    }
 }
