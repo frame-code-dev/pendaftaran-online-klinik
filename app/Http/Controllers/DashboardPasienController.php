@@ -60,14 +60,14 @@ class DashboardPasienController extends Controller
             return view('pasien.auth.login');
         }
         Session::put('jenis-pembayaran', null);
-        // $currentTime = Carbon::now()->parse('Asia/Jakarta');
+        $currentTime = Carbon::now()->parse('Asia/Jakarta');
 
-        // $start = Carbon::createFromTime(7, 0, 0, 'Asia/Jakarta'); // 7 AM
-        // $end = Carbon::createFromTime(21, 0, 0, 'Asia/Jakarta'); // 9 PM
-        // if (!$currentTime->between($start, $end)) {
-        //     toast('Pendaftaran ditutup pada pukul 21.00 WIB dan akan dibuka kembali pada pukul 07.00 WIB.','error');
-        //     return redirect()->route('pasien.ketentuan');
-        // }
+        $start = Carbon::createFromTime(7, 0, 0, 'Asia/Jakarta'); // 7 AM
+        $end = Carbon::createFromTime(21, 0, 0, 'Asia/Jakarta'); // 9 PM
+        if (!$currentTime->between($start, $end)) {
+            toast('Pendaftaran ditutup pada pukul 21.00 WIB dan akan dibuka kembali pada pukul 07.00 WIB.','error');
+            return redirect()->route('pasien.ketentuan');
+        }
         return view('pasien.pendaftaran.jenis-pembayaran');
     }
     public function jenisPembayaranBpjs() {
