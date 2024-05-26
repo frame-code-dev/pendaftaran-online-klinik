@@ -62,6 +62,11 @@
                 <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <td width="20%" class="p-4">Estimasi Dilayanin</td>
                     <td width="1%">:</td>
+                    <td class="font-bold" id="estimasi_dilayani">{{ $data->estimasi_dilayani }}</td>
+                </tr>
+                <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <td width="20%" class="p-4">Jam Praktek</td>
+                    <td width="1%">:</td>
                     <td class="font-bold" id="estimasi_dilayani">{{ $data->estimasi_dokter }}</td>
                 </tr>
                 <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">

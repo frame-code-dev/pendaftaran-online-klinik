@@ -77,6 +77,8 @@
                             <th scope="col" class="px-4 py-3">Nama Pasien</th>
                             <th scope="col" class="px-4 py-3">Jenis Kelamin</th>
                             <th scope="col" class="px-4 py-3">Pembayaran</th>
+                            <th scope="col" class="px-4 py-3">Dokter</th>
+                            <th scope="col" class="px-4 py-3">Poliklinik</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,6 +90,8 @@
                                 <td class="px-4 py-3">{{ $item->pasien->name }}</td>
                                 <td class="px-4 py-3">{{ $item->pasien->jenis_kelamin == 'l' ? 'Laki-Laki' : 'Perempuan'  }}</td>
                                 <td class="px-4 py-3">{{ $item->jenis_pembayaran }}</td>
+                                <td class="px-4 py-3">{{ $item->dokter->name }}</td>
+                                <td class="px-4 py-3">{{ $item->poliklinik->name }}</td>
                             </tr>
                         @endforeach
                     </tbody>

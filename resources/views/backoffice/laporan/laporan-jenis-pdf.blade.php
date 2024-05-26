@@ -132,8 +132,8 @@
                                 <th>No.RM</th>
                                 <th>Nama</th>
                                 <th>Cara Bayar</th>
-                                <th>Klinik Tujuan</th>
                                 <th>Dokter</th>
+                                <th>Poliklinik</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -144,8 +144,8 @@
                                     <td >{{ $item->pasien->no_rm }}</td>
                                     <td >{{ ucwords($item->pasien->name) }}</td>
                                     <td >{{ ucwords($item->jenis_pembayaran) }}</td>
-                                    <td >{{ ucwords($item->poliklinik->name) }}</td>
                                     <td >{{ ucwords($item->dokter->name) }}</td>
+                                    <td >{{ ucwords($item->poliklinik->name) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -83,8 +83,8 @@
                                 <th>Tanggal</th>
                                 <th>No.RM</th>
                                 <th>Nama</th>
-                                <th>Klinik Tujuan</th>
                                 <th>Dokter</th>
+                                <th>Poliklinik</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,8 +94,8 @@
                                     <td >{{ $item->tanggal_kunjungan }}</td>
                                     <td > {{ $item->pasien->no_rm }}</td>
                                     <td >{{ ucwords($item->pasien->name) }}</td>
-                                    <td >{{ ucwords($item->poliklinik->name) }}</td>
                                     <td >{{ ucwords($item->dokter->name) }}</td>
+                                    <td >{{ ucwords($item->poliklinik->name) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

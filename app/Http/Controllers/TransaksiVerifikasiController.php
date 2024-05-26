@@ -13,7 +13,7 @@ class TransaksiVerifikasiController extends Controller
     public function index(Request $request) {
         $param['title']  = 'Verifikasi';
         $param['data'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
-                    ->orderBy('no_antrian','ASC')
+                    ->orderByDesc('tanggal_kunjungan')
                     ->where('jenis_pendaftaran','online')->get();
         $param['data']->transform(function ($item, $key) {
             $jadwal = JadwalDokter::where('dokter_id',$item->dokter_id)->where('status',$item->jenis_pembayaran)->get();

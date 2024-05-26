@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use stdClass;
 
 class DashboardPasienController extends Controller
 {
@@ -175,9 +176,17 @@ class DashboardPasienController extends Controller
         if (Session::get('user') == null) {
             return view('pasien.auth.login');
         }
+        // Berdasarkan hari
+        $tanggal_kunjungan_pasien = Session::get('tanggal_kunjungan') != null ? Session::get('tanggal_kunjungan') : date('Y-m-d');
+        $tanggal_kunjungan = $tanggal_kunjungan_pasien ? $tanggal_kunjungan_pasien : date('Y-m-d');
+        $hari_kunjungan = $tanggal_kunjungan ? strtolower(Carbon::parse($tanggal_kunjungan)->translatedFormat('l')) : null;
+        if ($hari_kunjungan == 'minggu' || $hari_kunjungan == 'sabtu') {
+            $message = 'Tanggal yang dipilih tidak valid. Silakan pilih tanggal lain.';
+            toast($message,'error');
+            return redirect()->route('pasien.list-poliklinik',['id' => Session::get('poliklinik')->id]);
+        }
         // berdasarkan tanggal kunjungan dan poliklinik
         // -- Check berdasarkan tidak boleh di poliklinik yang berbeda dan dokter berbeda di tanggal kunjungan sama
-        $tanggal_kunjungan_pasien = Session::get('tanggal_kunjungan') != null ? Session::get('tanggal_kunjungan') : date('Y-m-d');
         $cek_pendaftaran = PendaftaranPasien::where('poliklinik_id',Session::get('poliklinik')->id)
                                         ->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')
                                         ->whereDate('tanggal_kunjungan',Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d'))
@@ -235,6 +244,7 @@ class DashboardPasienController extends Controller
         $poliklinik_id = Session::get('poliklinik') != null ? Session::get('poliklinik')->id : null;
         $dokter_id = $id;
         $tanggal_kunjungan_pasien = Session::get('tanggal_kunjungan') != null ? Session::get('tanggal_kunjungan') : date('Y-m-d');
+
         $jenis_pembayaran = Session::has('jenis-pembayaran') ? Session::get('jenis-pembayaran') : 'umum';
         $no_bpjs = Session::has('jenis-pembayaran') ? Session::get('no_bpjs') : null;
         $file_bpjs = Session::has('jenis-pembayaran') ? Session::get('file-bpjs') : null;
@@ -250,6 +260,7 @@ class DashboardPasienController extends Controller
         $param['dokter'] = Dokter::with('poliklinik')->find($dokter_id);
         $param['jenis_pembayaran'] = $jenis_pembayaran;
         $param['tanggal_kunjungan'] = $tanggal_kunjungan_pasien;
+
         $param['simple'] = QrCode::size(120)->generate('https://www.binaryboxtuts.com/');
         $tanggalKunjungan = Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d');
         $param['noAntrian'] = NomorAntrianGenerator::generate($tanggalKunjungan,$dokter_id);
@@ -276,7 +287,18 @@ class DashboardPasienController extends Controller
             DB::commit();
             $param['current_pendaftaran'] = PendaftaranPasien::find($pendaftaran->id)->kode_pendaftaran;
             Session::put('kodeUnik',$param['current_pendaftaran']);
+            $data = JadwalDokter::where('dokter_id',$dokter_id)->where('status',$jenis_pembayaran)->get();
+            $hari_kunjungan = strtolower(\Carbon\Carbon::parse($tanggal_kunjungan_pasien)->translatedFormat('l'));
+            $jadwalArray = $data->toArray();
 
+            // Ubah 'Jumat' menjadi 'jumaat' agar sesuai dengan kunci di array
+            $hari_kunjungan = ($hari_kunjungan == 'jumat') ? 'jumaat' : $hari_kunjungan;
+            // Periksa apakah kunci hari ada dalam array, jika ada, set estimasi dokter
+            $estimasi_dokter = '';
+            foreach ($jadwalArray as $key => $value) {
+                $estimasi_dokter = $value[$hari_kunjungan];
+            }
+            $param['estimasi_dokter'] = $estimasi_dokter;
             return $param;
             // $param['data'] = PendaftaranPasien::find($pendaftaran->id);
         //     return redirect()->route('dashboard.pasien');

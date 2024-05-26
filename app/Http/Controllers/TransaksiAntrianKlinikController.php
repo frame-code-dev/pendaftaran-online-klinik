@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dokter;
+use App\Models\JadwalDokter;
 use App\Models\PendaftaranPasien;
 use App\Models\Poliklinik;
 use Carbon\Carbon;
@@ -27,7 +28,13 @@ class TransaksiAntrianKlinikController extends Controller
                     ->when($request->get('tanggal'),function($query) use ($tanggal) {
                         $query->whereDate('tanggal_kunjungan',$tanggal);
                     })
-                    ->orderBy('created_at','DESC')->get();
+                    ->orderByDesc('tanggal_kunjungan')->get();
+
+        $param['data']->transform(function ($item, $key) {
+            $jadwal = JadwalDokter::where('dokter_id',$item->dokter_id)->where('status',$item->jenis_pembayaran)->get();
+            $item->jadwal_dokter = $jadwal;
+            return $item;
+        });
         return view('backoffice.transaksi.antrian.index',$param);
     }
 

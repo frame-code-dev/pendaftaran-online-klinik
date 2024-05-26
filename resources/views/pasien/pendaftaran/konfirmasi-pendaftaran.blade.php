@@ -61,6 +61,7 @@
                         let no_antrian = data.dokter.kuota != null ? data.noAntrian : '-';
                         $('#no_antrian').text(no_antrian);
                         $('#estimasi_dilayani').text(data.estimasi_waktu);
+                        $('#jam_praktek').text(data.estimasi_dokter);
                         $('#kode_booking').text(data.kodeUnik);
                         $('#qrcode').text(data.kodeUnik);
 
@@ -228,6 +229,11 @@
                                 <td width="20%" class="p-4">Estimasi Dilayanin</td>
                                 <td width="1%">:</td>
                                 <td class="font-bold" id="estimasi_dilayani">-</td>
+                            </tr>
+                            <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td width="20%" class="p-4">Jam Praktek</td>
+                                <td width="1%">:</td>
+                                <td class="font-bold" id="jam_praktek">-</td>
                             </tr>
                             <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <td width="20%" class="p-4">Kode Booking</td>

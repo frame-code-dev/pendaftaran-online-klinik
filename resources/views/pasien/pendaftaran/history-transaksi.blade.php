@@ -18,7 +18,8 @@
                         $('#poliklinik').text(data.poliklinik.name);
                         $('#dokter').text(data.dokter.name);
                         $('#no_antrian').text(data.no_antrian);
-                        $('#estimasi_dilayani').text(data.estimasi_dokter);
+                        $('#estimasi_dilayani').text(data.estimasi_dilayani);
+                        $('#jam_praktek').text(data.estimasi_dokter);
                         $('#kode_booking').text(data.kode_pendaftaran);
                         var img = `{{ asset('') }}qrcodes/${data.kode_pendaftaran}.png`
                         $('#foto_bukti').attr("src", `${img}`);
@@ -60,6 +61,7 @@
                                 <th scope="col" class="px-4 py-3">Poliklinik</th>
                                 <th scope="col" class="px-4 py-3">Dokter</th>
                                 <th scope="col" class="px-4 py-3">Estimasi Dilayani</th>
+                                <th scope="col" class="px-4 py-3">Jam Praktek</th>
                                 <th scope="col" class="px-4 py-3">Antrian</th>
                                 <th scope="col" class="px-4 py-3">Keterangan</th>
                                 <th scope="col" class="px-4 py-3">Aksi</th>
@@ -73,6 +75,9 @@
                                     <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->jenis_pembayaran) }}</td>
                                     <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->poliklinik->name) }}</td>
                                     <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->dokter->name) }}</td>
+                                    <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {{ $item->estimasi_dilayani }}
+                                    </td>
                                     <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         @foreach ($item->jadwal_dokter as $item_jadwal)
                                             @php
@@ -157,6 +162,11 @@
                                 <td width="20%" class="p-4">Estimasi Dilayanin</td>
                                 <td width="1%">:</td>
                                 <td class="font-bold" id="estimasi_dilayani">-</td>
+                            </tr>
+                            <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                <td width="20%" class="p-4">Jam Praktek</td>
+                                <td width="1%">:</td>
+                                <td class="font-bold" id="jam_praktek">-</td>
                             </tr>
                             <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 <td width="20%" class="p-4">Kode Booking</td>

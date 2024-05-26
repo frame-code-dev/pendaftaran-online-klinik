@@ -1,4 +1,14 @@
 <x-app-layout>
+    @push('js')
+        <script>
+            $('.cek-data').on('click',function() {
+                let img = $(this).data('id');
+                console.log(img);
+                $('#skdp').attr('src',img);
+
+            })
+        </script>
+    @endpush
     <div class="p-4 sm:ml-64 pt-20 h-screen">
         <section class="p-5 overflow-y-auto mt-5">
             <div class="head lg:flex grid grid-cols-1 justify-between w-full">
@@ -37,6 +47,7 @@
                             <th scope="col" class="px-4 py-3">Poliklinik</th>
                             <th scope="col" class="px-4 py-3">Dokter</th>
                             <th scope="col" class="px-4 py-3">Estimasi Dilayani</th>
+                            <th scope="col" class="px-4 py-3">Jam Praktek</th>
                             <th scope="col" class="px-4 py-3">Antrian</th>
                             <th scope="col" class="px-4 py-3">
                                 <span class="sr-only">Actions</span>
@@ -57,7 +68,7 @@
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{  ucwords($item->jenis_pembayaran) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     @if ($item->jenis_pembayaran == 'bpjs')
-                                        <img class="h-auto max-w-12 rounded-lg" src="{{ asset('storage/files-bpjs/'.$item->gambar) }}">
+                                        <img data-modal-target="default-modal" data-modal-toggle="default-modal" data-id="{{ asset('storage/files-bpjs/'.$item->gambar) }}" class="cek-data cursor-pointer h-auto max-w-12 rounded-lg" src="{{ asset('storage/files-bpjs/'.$item->gambar) }}">
                                     @else
                                         -
                                     @endif
@@ -71,6 +82,7 @@
                                 </td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{  ucwords($item->poliklinik->name) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{  ucwords($item->dokter->name) }}</td>
+                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{  $item->estimasi_dilayani }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     @foreach ($item->jadwal_dokter as $item_jadwal)
                                         @php
@@ -101,5 +113,32 @@
                 </table>
             </div>
         </section>
+    </div>
+    <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        SKDP/Rujukan
+                    </h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5 space-y-4">
+                   <img src="" alt="" id="skdp">
+                </div>
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 </x-app-layout>

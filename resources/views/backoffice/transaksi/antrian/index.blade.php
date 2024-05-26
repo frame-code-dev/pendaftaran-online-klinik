@@ -57,6 +57,7 @@
                             <th scope="col" class="px-4 py-3">Pembayaran</th>
                             <th scope="col" class="px-4 py-3">Poliklinik</th>
                             <th scope="col" class="px-4 py-3">Dokter</th>
+                            <th scope="col" class="px-4 py-3">Jam Praktek</th>
                             <th scope="col" class="px-4 py-3">Antrian</th>
                             <th scope="col" class="px-4 py-3">Keterangan</th>
                             <th scope="col" class="px-4 py-3">
@@ -74,6 +75,16 @@
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{  ucwords($item->jenis_pembayaran) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{  ucwords($item->poliklinik->name) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{  ucwords($item->dokter->name) }}</td>
+                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    @foreach ($item->jadwal_dokter as $item_jadwal)
+                                        @php
+                                            $jadwalArray = $item_jadwal->toArray();
+                                            $hari_kunjungan = strtolower(\Carbon\Carbon::parse($item->tanggal_kunjungan)->translatedFormat('l'));
+                                            $jadwalHari = $jadwalArray[$hari_kunjungan == 'jumat' ? 'jumaat' : $hari_kunjungan] ?? null;
+                                        @endphp
+                                        {{ $jadwalHari != null ? $jadwalHari : '-' }}
+                                    @endforeach
+                                </td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->no_antrian != null ? $item->no_antrian : '-' }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     @if ($item->status_pendaftaran == 'proses' || $item->status_pendaftaran == 'pending')
