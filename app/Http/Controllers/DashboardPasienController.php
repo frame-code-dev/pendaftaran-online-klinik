@@ -286,7 +286,7 @@ class DashboardPasienController extends Controller
             $pendaftaran = new PendaftaranPasien;
             $pendaftaran->kode_pendaftaran = $param['kodeUnik'];
             $pendaftaran->no_kartu = $no_bpjs;
-            $pendaftaran->no_antrian = $param['poliklinik']->name != 'klinik integrasi' ? $nomorAntrian : null;
+            $pendaftaran->no_antrian = $param['dokter']->poliklinik->name != 'klinik integrasi' ? $nomorAntrian : null;
             $pendaftaran->jenis_pembayaran = $jenis_pembayaran;
             $pendaftaran->dokter_id = $dokter_id;
             $pendaftaran->pasien_id = $data_pasien_id;
