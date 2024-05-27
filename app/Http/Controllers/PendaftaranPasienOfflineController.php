@@ -54,7 +54,7 @@ class PendaftaranPasienOfflineController extends Controller
             $pendaftaran = new PendaftaranPasien;
             $pendaftaran->kode_pendaftaran = $kodeUnik;
             $pendaftaran->no_kartu = $request->get('cara_pembayaran') == 'bpjs' ? $request->get('no_bpjs') : null;
-            $pendaftaran->no_antrian = $param['dokter']->kuota != null ? $noAntrian : null;
+            $pendaftaran->no_antrian = $param['dokter']->poliklinik->name != 'klinik integrasi' ? $noAntrian : null;
             $pendaftaran->jenis_pembayaran = $request->get('cara_pembayaran');
             $pendaftaran->dokter_id = $request->get('dokter');
             $pendaftaran->pasien_id = $request->get('id');

@@ -15,6 +15,7 @@ class Dokter extends Model
         'name',
         'gambar',
         'kuota',
+        'kuota_bpjs',
         'kuota_terisi',
         'status',
         'jenis_kelamin'

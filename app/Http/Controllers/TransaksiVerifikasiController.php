@@ -38,18 +38,17 @@ class TransaksiVerifikasiController extends Controller
             if (!isset($pendaftaran)) {
                 return 'error';
             }
-            if ($pendaftaran->status_verifikasi != 'sudah-verifikasi') {
-                return 'error-verifikasi';
-            }
             if (Carbon::parse($pendaftaran->tanggal_kunjungan)->format('Y-m-d') == Carbon::now()->format('Y-m-d')) {
-                PendaftaranPasien::where('kode_pendaftaran',(string) $kode_pendaftaran)->update([
+                PendaftaranPasien::where('kode_pendaftaran',(string)$kode_pendaftaran)->update([
                     'status_verifikasi' => 'sudah-verifikasi',
                 ]);
+                return 'sukses';
             }else{
-                PendaftaranPasien::where('kode_pendaftaran',(string) $kode_pendaftaran)->update([
+                PendaftaranPasien::where('kode_pendaftaran',(string)$kode_pendaftaran)->update([
                     'status_verifikasi' => 'sudah-verifikasi',
                     'status_pendaftaran' => 'batal',
                 ]);
+                return 'sukses';
             }
             return 'sukses';
 

@@ -54,6 +54,12 @@ class AuthController extends Controller
 
     public function logout() {
         Session::forget('user');
+        Session::forget('tanggal_kunjungan');
+        Session::forget('poliklinik');
+        Session::forget('jenis-pembayaran');
+        Session::forget('kodeUnik');
+        Session::forget('no_bpjs');
+        Session::forget('file-bpjs');
         Session::flush();
         return redirect()->route('pasien.login');
     }

@@ -149,25 +149,28 @@ class DashboardPasienController extends Controller
         })
         ->where('poliklinik_id',$id)->latest()->get();
         // cek kuota dokter
-        $param['data']->transform(function ($value) use ($request) {
-            $current_kuota_online = PendaftaranPasien::where('dokter_id',1)
+        $param['data']->transform(function ($value) use ($request,$jenis_pembayaran) {
+            $current_kuota_online = PendaftaranPasien::where('dokter_id',$value->id)
                                             ->where('status_pendaftaran','pending')
+                                            ->where('jenis_pembayaran',$jenis_pembayaran)
                                             ->where('jenis_pendaftaran','online')
                                             ->whereDate('tanggal_kunjungan',Carbon::parse($request->tanggal)->format('Y-m-d'))
                                             ->count();
             $current_kuota_offline = PendaftaranPasien::where('dokter_id',$value->id)
                                                     ->where('status_pendaftaran','pending')
+                                                    ->where('jenis_pembayaran',$jenis_pembayaran)
                                                     ->where('jenis_pendaftaran','offline')
                                                     ->whereDate('tanggal_kunjungan',Carbon::parse($request->tanggal)->format('Y-m-d'))
                                                     ->count();
-            if ($value->kuota != 0) {
+            if ($value->kuota_umum != null || $value->kuota_bpjs != null) {
                 $current_kuota = $current_kuota_offline + $current_kuota_online;
-                $result = $value->kuota - $current_kuota;
+                $result = $jenis_pembayaran == 'umum' ? $value->kuota : $value->kuota_bpjs - $current_kuota;
                 $value->kuota_terisi = $result <= 0 ? 0 : $result;
+            }else{
+                $value->kuota_terisi = '-';
             }
             return $value;
         });
-        // return $param['data'];
         $param['hari_kunjungan'] = $request->has('tanggal') ? strtolower(Carbon::parse($request->tanggal)->translatedFormat('l')) : strtolower(Carbon::parse(now())->translatedFormat('l'));
         return view('pasien.pendaftaran.dokter',$param);
     }
@@ -180,6 +183,7 @@ class DashboardPasienController extends Controller
         $tanggal_kunjungan_pasien = Session::get('tanggal_kunjungan') != null ? Session::get('tanggal_kunjungan') : date('Y-m-d');
         $tanggal_kunjungan = $tanggal_kunjungan_pasien ? $tanggal_kunjungan_pasien : date('Y-m-d');
         $hari_kunjungan = $tanggal_kunjungan ? strtolower(Carbon::parse($tanggal_kunjungan)->translatedFormat('l')) : null;
+        $jenis_pembayaran = Session::has('jenis-pembayaran') ? Session::get('jenis-pembayaran') : 'umum';
         if ($hari_kunjungan == 'minggu' || $hari_kunjungan == 'sabtu') {
             $message = 'Tanggal yang dipilih tidak valid. Silakan pilih tanggal lain.';
             toast($message,'error');
@@ -189,6 +193,7 @@ class DashboardPasienController extends Controller
         // -- Check berdasarkan tidak boleh di poliklinik yang berbeda dan dokter berbeda di tanggal kunjungan sama
         $cek_pendaftaran = PendaftaranPasien::where('poliklinik_id',Session::get('poliklinik')->id)
                                         ->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')
+                                        ->where('pasien_id',Session::get('user')->id)
                                         ->whereDate('tanggal_kunjungan',Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d'))
                                         ->count();
         if ($cek_pendaftaran > 0) {
@@ -202,24 +207,32 @@ class DashboardPasienController extends Controller
         $current_kuota_online = PendaftaranPasien::where('dokter_id',$dokter_id)
                                                 ->where('status_pendaftaran','pending')
                                                 ->where('jenis_pendaftaran','online')
+                                                ->where('jenis_pembayaran',$jenis_pembayaran)
                                                 ->whereDate('tanggal_kunjungan',Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d'))
                                                 ->count();
         $current_kuota_offline = PendaftaranPasien::where('dokter_id',$dokter_id)
                                                 ->where('status_pendaftaran','pending')
                                                 ->where('jenis_pendaftaran','offline')
+                                                ->where('jenis_pembayaran',$jenis_pembayaran)
                                                 ->whereDate('tanggal_kunjungan',Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d'))
                                                 ->count();
         $current_kuota = $current_kuota_offline + $current_kuota_online;
         $param['dokter'] = Dokter::with('poliklinik')->find($dokter_id);
-        if ($param['dokter']->kuota != 0) {
-            $sisa_kuota = $param['dokter']->kuota - $current_kuota;
+        $jadwal_dokter =  JadwalDokter::where('dokter_id',$dokter_id)->where('status',$jenis_pembayaran)->where($hari_kunjungan,'!=','-')->first();
+        if ($jadwal_dokter == null) {
+            toast('Jam Praktek Tidak Tersedia.','error');
+            return redirect()->route('pasien.list-dokter',[$param['dokter']->poliklinik_id]);
+        }
+        $current_kuota = $jenis_pembayaran == 'umum' ? $param['dokter']->kuota : $param['dokter']->kuota_bpjs;
+
+        if ($current_kuota != 0) {
+            $sisa_kuota = $jenis_pembayaran == 'umum' ? $param['dokter']->kuota : $param['dokter']->kuota_bpjs - $current_kuota;
             if ($sisa_kuota <= 0) {
                 toast('Kuota dokter habis.','error');
                 return redirect()->route('pasien.list-dokter',[$param['dokter']->poliklinik_id]);
             }
         }
 
-        $jenis_pembayaran = Session::has('jenis-pembayaran') ? Session::get('jenis-pembayaran') : 'umum';
         $data_pasien_id = Session::get('user')->id;
         // data pendaftaran pasien
         $param['title'] = 'Konfirmasi Pembayaran';
@@ -273,7 +286,7 @@ class DashboardPasienController extends Controller
             $pendaftaran = new PendaftaranPasien;
             $pendaftaran->kode_pendaftaran = $param['kodeUnik'];
             $pendaftaran->no_kartu = $no_bpjs;
-            $pendaftaran->no_antrian = $param['dokter']->kuota != null ? $nomorAntrian : null;
+            $pendaftaran->no_antrian = $param['poliklinik']->name != 'klinik integrasi' ? $nomorAntrian : null;
             $pendaftaran->jenis_pembayaran = $jenis_pembayaran;
             $pendaftaran->dokter_id = $dokter_id;
             $pendaftaran->pasien_id = $data_pasien_id;

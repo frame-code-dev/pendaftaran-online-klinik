@@ -79,10 +79,17 @@
                             </div>
                         </div>
                     </div> --}}
-                    <div>
-                        <x-label-default for="" value="Kuota">Kuota</x-label-default>
-                        <x-input-default name="kuota" type="number" value="{{ old('kuota') }}" placeholder="Masukkan Kuota"></x-input-default>
-                        <small class="text-xs text-red-800">Kosongin jika tidak memiliki Kuota</small>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <x-label-default for="" value="Kuota Umum">Kuota Umum</x-label-default>
+                            <x-input-default name="kuota" type="number" value="{{ old('kuota') }}" placeholder="Masukkan Kuota"></x-input-default>
+                            <small class="text-xs text-red-800">Kosongin jika tidak memiliki Kuota</small>
+                        </div>
+                        <div>
+                            <x-label-default for="" value="Kuota BPJS">Kuota BPJS</x-label-default>
+                            <x-input-default name="kuota_bpjs" type="number" value="{{ old('kuota_bpjs') }}" placeholder="Masukkan Kuota"></x-input-default>
+                            <small class="text-xs text-red-800">Kosongin jika tidak memiliki Kuota</small>
+                        </div>
                     </div>
                     <div>
                         <x-label-default for="" value="Jenis Kelamin">Jenis Kelamin</x-label-default>

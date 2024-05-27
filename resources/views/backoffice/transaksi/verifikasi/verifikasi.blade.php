@@ -24,6 +24,7 @@
                     no_antrian:decodedText,
                 },
                 success:function(data){
+                    console.log(data);
                     if (data == 'error') {
                             const Toast = Swal.mixin({
                                 toast: true,
@@ -41,7 +42,9 @@
                                 icon: 'error',
                                 title: 'Kode Pendaftaran tidak ditemukan.'
                             })
-                    }else if(data = "error-verifikasi"){
+                    }else if(data = "sukses"){
+                        window.location.href = `{{ route('laporan.kunjungan-jenis') }}`;
+                    }else{
                         const Toast = Swal.mixin({
                                 toast: true,
                                 position: 'top-end',
@@ -53,13 +56,10 @@
                                     toast.addEventListener('mouseleave', Swal.resumeTimer)
                                 }
                             })
-
-                            Toast.fire({
-                                icon: 'error',
-                                title: 'Sudah melakukan verifikasi.'
-                            })
-                    }else{
-                        window.location.href = `{{ route('laporan.kunjungan-jenis') }}`;
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan.'
+                        })
                     }
                 }
             })

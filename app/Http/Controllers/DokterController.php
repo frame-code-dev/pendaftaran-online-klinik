@@ -24,12 +24,22 @@ class DokterController extends Controller
         $param['title'] = 'List Dokter';
         $param['data'] = Dokter::with('poliklinik','user')->latest()->get();
         $param['data']->transform(function ($value) {
-            $current_kuota_online = PendaftaranPasien::where('dokter_id',$value->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')->count();
-            $current_kuota_offline = PendaftaranPasien::where('dokter_id',$value->id)->where('status_pendaftaran','pending')->where('jenis_pendaftaran','offline')->count();
-            if ($value->kuota != 0) {
-                $current_kuota = $current_kuota_offline + $current_kuota_online;
-                $result = $value->kuota - $current_kuota;
-                $value->kuota_terisi = $result <= 0 ? 0 : $result;
+            if ($value->kuota != null) {
+                // KUOTA UMUM
+                $current_kuota_online_umum = PendaftaranPasien::where('dokter_id',$value->id)->where('jenis_pembayaran','umum')->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')->count();
+                $current_kuota_offline_umum = PendaftaranPasien::where('dokter_id',$value->id)->where('jenis_pembayaran','umum')->where('status_pendaftaran','pending')->where('jenis_pendaftaran','offline')->count();
+                $current_kuota_umum = $current_kuota_offline_umum + $current_kuota_online_umum;
+                $result_umum = $value->kuota - $current_kuota_umum;
+                $value->kuota_terisi_umum = $result_umum <= 0 ? 0 : $result_umum;
+
+            }
+            if ($value->kuota_bpjs != null) {
+                // KUOTA BPJS
+                $current_kuota_online_bpjs = PendaftaranPasien::where('dokter_id',$value->id)->where('jenis_pembayaran','bpjs')->where('status_pendaftaran','pending')->where('jenis_pendaftaran','online')->count();
+                $current_kuota_offline_bpjs = PendaftaranPasien::where('dokter_id',$value->id)->where('jenis_pembayaran','bpjs')->where('status_pendaftaran','pending')->where('jenis_pendaftaran','offline')->count();
+                $current_kuota_bpjs = $current_kuota_offline_bpjs + $current_kuota_online_bpjs;
+                $result_bpjs = $value->kuota_bpjs - $current_kuota_bpjs;
+                $value->kuota_terisi_bpjs = $result_bpjs <= 0 ? 0 : $result_bpjs;
             }
             return $value;
         });
@@ -77,6 +87,7 @@ class DokterController extends Controller
             $dokter->poliklinik_id = $request->poliklinik;
             $dokter->name = $request->name;
             $dokter->kuota = $request->has('kuota') ? $request->kuota : null;
+            $dokter->kuota_bpjs = $request->has('kuota_bpjs') ? $request->kuota_bpjs : null;
             $dokter->jenis_kelamin = $request->jenis_kelamin;
             $dokter->user_id = Auth::user()->id;
             if ($request->has('file_input') || $request->file('file_input') != null) {
@@ -143,6 +154,7 @@ class DokterController extends Controller
             $dokter->poliklinik_id = $request->poliklinik;
             $dokter->name = $request->name;
             $dokter->kuota = $request->has('kuota') ? $request->kuota : null;
+            $dokter->kuota_bpjs = $request->has('kuota_bpjs') ? $request->kuota_bpjs : null;
             $dokter->jenis_kelamin = $request->jenis_kelamin;
             $dokter->user_id = Auth::user()->id;
             if ($request->has('file_input') || $request->file('file_input') != null) {
