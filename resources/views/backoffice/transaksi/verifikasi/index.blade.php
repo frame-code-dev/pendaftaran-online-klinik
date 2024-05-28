@@ -96,7 +96,7 @@
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{  $item->no_antrian != null ? $item->no_antrian : '-' }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
 
-                                    <span type="button" class="text-white bg-{{ $item->status_verifikasi == 'sudah-verifikasi' ? 'green' : 'gray' }}-{{ $item->status_verifikasi == 'sudah-verifikasi' ? '700' : '500' }}
+                                    <a href="{{ $item->status_verifikasi == 'belum-verifikasi' ? route('verifikasi.update-manual',$item->id) : '#' }}" type="button" class="{{ $item->status_verifikasi == 'sudah-verifikasi' ? "cursor-not-allowed " : "cursor-pointer" }} text-white bg-{{ $item->status_verifikasi == 'sudah-verifikasi' ? 'green' : 'gray' }}-{{ $item->status_verifikasi == 'sudah-verifikasi' ? '700' : '500' }}
                                         hover:bg-{{ $item->status_verifikasi == 'sudah-verifikasi' ? 'green' : 'gray' }}-800 focus:ring-4
                                         focus:outline-none focus:ring-{{ $item->status_verifikasi == 'sudah-verifikasi' ? 'green' : 'gray' }}-300
                                         font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center
@@ -104,7 +104,7 @@
                                         dark:hover:bg-{{ $item->status_verifikasi == 'sudah-verifikasi' ? 'green' : 'gray' }}-700
                                         dark:focus:ring-{{ $item->status_verifikasi == 'sudah-verifikasi' ? 'green' : 'gray' }}-800">
                                         {{ $item->status_verifikasi == 'sudah-verifikasi' ? 'Sudah Verifikasi' : 'Belum Verifikasi' }}
-                                    </span>
+                                    </a>
                                 </td>
 
                             </tr>

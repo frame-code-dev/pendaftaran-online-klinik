@@ -69,11 +69,10 @@ class TransaksiVerifikasiController extends Controller
             }else{
                 PendaftaranPasien::find($id)->update([
                     'status_verifikasi' => 'sudah-verifikasi',
-                    'status_pendaftaran' => 'batal',
                 ]);
             }
             toast('Pendaftaran diverifikasi','success');
-            return redirect()->route('verifikasi.index');
+            return redirect()->route('laporan.kunjungan-jenis');
         }
     }
 
@@ -96,7 +95,6 @@ class TransaksiVerifikasiController extends Controller
             }else{
                 PendaftaranPasien::where('kode_pendaftaran',(string) $kode_pendaftaran)->update([
                     'status_verifikasi' => 'sudah-verifikasi',
-                    'status_pendaftaran' => 'batal',
                 ]);
             }
             toast('Pendaftaran berhasil di verifikasi.','success');

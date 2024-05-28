@@ -88,6 +88,7 @@ class LaporanController extends Controller
                             $query->where('poliklinik_id', $poliklinik);
                         })
                         ->where('jenis_pendaftaran','online')
+                        ->where('status_verifikasi','sudah-verifikasi')
                         ->latest()
                         ->get();
         $param['poliklinik'] = Poliklinik::latest()->get();
@@ -107,6 +108,7 @@ class LaporanController extends Controller
                             $query->where('poliklinik_id', $poliklinik);
                         })
                         ->where('jenis_pendaftaran','online')
+                        ->where('status_verifikasi','sudah-verifikasi')
                         ->latest()
                         ->get();
         $param['count_pendaftaran_online'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
@@ -137,6 +139,7 @@ class LaporanController extends Controller
                             $query->where('poliklinik_id', $poliklinik);
                         })
                         ->where('jenis_pendaftaran','online')
+                        ->where('status_verifikasi','sudah-verifikasi')
                         ->latest()
                         ->get();
         $param['start'] = $start;

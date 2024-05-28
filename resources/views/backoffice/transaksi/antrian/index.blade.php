@@ -1,4 +1,31 @@
 <x-app-layout>
+    @push('js')
+    <script>
+        $(document).ready(function() {
+           let url = `{{ route('pendaftaran-offline.list-dokter') }}`
+           $('#poliklinik').on('change', function() {
+               let id = $(this).val();
+               $('#dokter').empty()
+               $('#dokter').append(`<option value="0">Pilih Dokter</option>`)
+               if (id != 0 || id != '0') {
+                   $.ajax({
+                       type: "GET",
+                       url: url,
+                       data: {
+                           id:id
+                       },
+                       success: function(data) {
+                           console.log(data);
+                           $.map(data, function(obj) {
+                               $('#dokter').append(`<option value="${obj.id}">${obj.name}</option>`)
+                           })
+                       }
+                   })
+               }
+           })
+       })
+   </script>
+    @endpush
     <div class="p-4 sm:ml-64 pt-20 h-screen">
         <section class="p-5 overflow-y-auto mt-5">
             <div class="head lg:flex grid grid-cols-1 justify-between w-full">
@@ -16,22 +43,18 @@
                     <form action="{{ route('antrian-klinik.search') }}" method="GET" class="w-full mx-auto space-y-4" enctype="multipart/form-data">
                         <div class="grid grid-cols-3 gap-4">
                             <div>
-                                <x-label-default>Dokter</x-label-default>
-                                <select name="dokter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="">
-                                    <option value="">Pilih Dokter</option>
-                                    @foreach ($dokter as $item)
-
-                                        <option value="{{ $item->id }}" {{  request('dokter') == $item->id ? "selected" : "" }}>{{ $item->name }}</option>
+                                <x-label-default>Poliklinik</x-label-default>
+                                <select id="poliklinik" required name="poliklinik" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="0">Pilih Poliklinik</option>
+                                    @foreach ($poliklinik as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div>
-                                <x-label-default>Poliklinik</x-label-default>
-                                <select name="poliklinik" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="">
-                                    <option value="">Pilih Poliklinik</option>
-                                    @foreach ($poliklinik as $item)
-                                        <option value="{{ $item->id }}" {{  request('poliklinik') == $item->id ? "selected" : "" }}>{{ $item->name }}</option>
-                                    @endforeach
+                                <x-label-default>Dokter</x-label-default>
+                                <select id="dokter" required name="dokter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="0">Pilih Dokter</option>
                                 </select>
                             </div>
                             <div>
