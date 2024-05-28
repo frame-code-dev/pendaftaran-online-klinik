@@ -46,7 +46,6 @@ class TransaksiVerifikasiController extends Controller
             }else{
                 PendaftaranPasien::where('kode_pendaftaran',(string)$kode_pendaftaran)->update([
                     'status_verifikasi' => 'sudah-verifikasi',
-                    'status_pendaftaran' => 'batal',
                 ]);
                 return 'sukses';
             }
