@@ -205,10 +205,10 @@ class DashboardPasienController extends Controller
         $dokter_id = $id;
         // Check Kuota
         $current_kuota_online = PendaftaranPasien::where('dokter_id',$dokter_id)
-                                                ->where('status_pendaftaran','pending')
-                                                ->where('jenis_pendaftaran','online')
-                                                ->where('jenis_pembayaran',$jenis_pembayaran)
-                                                ->whereDate('tanggal_kunjungan',Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d'))
+                                            ->where('status_pendaftaran','pending')
+                                            ->where('jenis_pembayaran',$jenis_pembayaran)
+                                            ->where('jenis_pendaftaran','online')
+                                            ->whereDate('tanggal_kunjungan',Carbon::parse($tanggal_kunjungan_pasien)->format('Y-m-d'))
                                                 ->count();
         $current_kuota_offline = PendaftaranPasien::where('dokter_id',$dokter_id)
                                                 ->where('status_pendaftaran','pending')
@@ -218,14 +218,13 @@ class DashboardPasienController extends Controller
                                                 ->count();
         $current_kuota = $current_kuota_offline + $current_kuota_online;
         $param['dokter'] = Dokter::with('poliklinik')->find($dokter_id);
-        $jadwal_dokter =  JadwalDokter::where('dokter_id',$dokter_id)->where('status',$jenis_pembayaran)->where($hari_kunjungan,'!=','-')->first();
+        $jadwal_dokter =  JadwalDokter::where('dokter_id',$dokter_id)->where('status',$jenis_pembayaran)->where($hari_kunjungan = ($hari_kunjungan == 'jumat') ? 'jumaat' : $hari_kunjungan,'!=','-')->first();
         if ($jadwal_dokter == null) {
             toast('Jam Praktek Tidak Tersedia.','error');
             return redirect()->route('pasien.list-dokter',[$param['dokter']->poliklinik_id]);
         }
-        $current_kuota = $jenis_pembayaran == 'umum' ? $param['dokter']->kuota : $param['dokter']->kuota_bpjs;
-
-        if ($current_kuota != 0) {
+        $current_kuota_dokter = $jenis_pembayaran == 'umum' ? $param['dokter']->kuota : $param['dokter']->kuota_bpjs;
+        if ($current_kuota_dokter != 0) {
             $sisa_kuota = $jenis_pembayaran == 'umum' ? $param['dokter']->kuota : $param['dokter']->kuota_bpjs - $current_kuota;
             if ($sisa_kuota <= 0) {
                 toast('Kuota dokter habis.','error');
