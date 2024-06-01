@@ -180,9 +180,9 @@
                             <div class="max-w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 hover:border-2 hover:border-blue-600">
                                     <img class="rounded-full bg-cover w-fit mx-auto p-4" src="{{ $item->gambar != null ? asset('storage/dokter/'.$item->gambar) : 'https://flowbite.com/docs/images/examples/image-2@2x.jpg' }}" alt="" />
                                 <div class="p-5 text-center">
-                                        <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ ucwords($item->name) }}</h5>
+                                        <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ $item->name }}</h5>
                                     <hr>
-                                    <p class="mt-3 font-normal text-gray-700 dark:text-gray-400">Klinik {{ ucwords($item->poliklinik->name) }}</p>
+                                    <p class="mt-3 font-normal text-gray-700 dark:text-gray-400">{{ ucwords($item->poliklinik->name) }}</p>
                                     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                                         @foreach ($item->jadwal as $item_jadwal)
                                             @php

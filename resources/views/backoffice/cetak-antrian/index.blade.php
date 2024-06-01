@@ -53,7 +53,7 @@
                     <h1 class="font-bold sm:text-2xl text-xl mt-5">NOMOR ANTREAN</h1>
                     <h1 class="mt-5 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">{{ $data->no_antrian != null ? $data->no_antrian : "-" }}</h1>
                     <h4 class="font-bold sm:text-2xl text-xl mt-5">{{ ucwords($data->poliklinik->name) }}</h4>
-                    <h4 class="font-bold sm:text-2xl text-xl mt-5">{{ ucwords($data->dokter->name) }}</h4>
+                    <h4 class="font-bold sm:text-2xl text-xl mt-5">{{ $data->dokter->name }}</h4>
                 </div>
                 <div class="flex justify-center">
                     <a href="{{route('cetak-antrian.pdf',$data->id)}}" class="mt-5 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">

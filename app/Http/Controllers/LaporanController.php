@@ -21,6 +21,7 @@ class LaporanController extends Controller
                         ->when($request->get('pembayaran'), function ($query) use ($jenis) {
                             $query->where('jenis_pembayaran', $jenis);
                         })
+                        ->where('status_verifikasi','sudah-verifikasi')
                         ->latest()->get();
         return view('backoffice.laporan.laporan-jenis',$param);
     }
@@ -37,15 +38,20 @@ class LaporanController extends Controller
                         ->when($request->get('pembayaran'), function ($query) use ($jenis) {
                             $query->where('jenis_pembayaran', $jenis);
                         })
+                        ->where('status_verifikasi','sudah-verifikasi')
                         ->latest()->get();
         $param['count_umum'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
                             ->when($request->get('start'), function ($query) use ($start, $end) {
                                 $query->whereBetween('created_at', [$start, $end]);
-                            })->where('jenis_pembayaran','umum')->count();
+                            })
+                            ->where('status_verifikasi','sudah-verifikasi')
+                            ->where('jenis_pembayaran','umum')->count();
         $param['count_bpjs'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
                             ->when($request->get('start'), function ($query) use ($start, $end) {
                                 $query->whereBetween('created_at', [$start, $end]);
-                            })->where('jenis_pembayaran','bpjs')->count();
+                            })
+                            ->where('status_verifikasi','sudah-verifikasi')
+                            ->where('jenis_pembayaran','bpjs')->count();
         $param['start'] = $start;
         $param['end'] = $end;
         return view('backoffice.laporan.laporan-jenis-pdf',$param);
@@ -63,7 +69,9 @@ class LaporanController extends Controller
                         ->when($request->get('pembayaran'), function ($query) use ($jenis) {
                             $query->where('jenis_pembayaran', $jenis);
                         })
-                    ->latest()->get();
+                        ->where('status_verifikasi','sudah-verifikasi')
+                        ->latest()
+                        ->get();
         $param['count_umum'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
                     ->when($request->get('start'), function ($query) use ($start, $end) {
                         $query->whereBetween('created_at', [$start, $end]);
@@ -71,7 +79,10 @@ class LaporanController extends Controller
         $param['count_bpjs'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
                     ->when($request->get('start'), function ($query) use ($start, $end) {
                         $query->whereBetween('created_at', [$start, $end]);
-                    })->where('jenis_pembayaran','bpjs')->count();
+                    })
+                    ->where('status_verifikasi','sudah-verifikasi')
+                    ->where('jenis_pembayaran','bpjs')
+                    ->count();
         return view('backoffice.laporan.laporan-jenis-excel',$param);
     }
 
