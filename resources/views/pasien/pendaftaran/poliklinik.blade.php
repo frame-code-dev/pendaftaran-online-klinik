@@ -39,7 +39,7 @@
                                 <a href="{{ route('pasien.list-dokter',$item->id) }}">
                                     <h5 class="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">{{ ucwords($item->name) }}</h5>
                                 </a>
-                                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">({{ ucwords($item->keterangan) }})</p>
+                                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ ucwords($item->keterangan) }}</p>
                             </div>
                         </div>
                     @empty
