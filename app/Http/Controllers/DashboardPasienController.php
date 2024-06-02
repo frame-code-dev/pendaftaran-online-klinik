@@ -280,12 +280,18 @@ class DashboardPasienController extends Controller
         $param['kodeUnik'] = KodeUnikGenerator::generate();
         $estimasiWaktu = EstimasiWaktuLayanan::estimasi($tanggalKunjungan, $nomorAntrian); // Tanggal kunjungan (format: YYYY-MM-DD)
         $param['estimasi_waktu'] = $estimasiWaktu->format('H:i:s');
+        $set_no_antrian = null;
+        if ($param['dokter']->poliklinik->name == 'klinik Integrasi spesialis bedah mulut' || $param['dokter']->poliklinik->name == 'klinik Integrasi spesialis konservasi gigi' || $param['dokter']->poliklinik->name == 'klinik Integrasi spesialis orthodensia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Pedodonsia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Prosthodonsia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Penyakit Mulut' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Periodonsia') {
+            $set_no_antrian = null;
+        }else{
+            $set_no_antrian = $nomorAntrian;
+        }
         try {
             DB::beginTransaction();
             $pendaftaran = new PendaftaranPasien;
             $pendaftaran->kode_pendaftaran = $param['kodeUnik'];
             $pendaftaran->no_kartu = $no_bpjs;
-            $pendaftaran->no_antrian = $param['dokter']->poliklinik->name != 'klinik integrasi' ? $nomorAntrian : null;
+            $pendaftaran->no_antrian = $set_no_antrian;
             $pendaftaran->jenis_pembayaran = $jenis_pembayaran;
             $pendaftaran->dokter_id = $dokter_id;
             $pendaftaran->pasien_id = $data_pasien_id;
