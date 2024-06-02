@@ -249,7 +249,7 @@
                         <h4 id="qrcode" class="text-xl font-bold text-center text-gray-900 dark:text-white">-</h4>
                     </div>
                     <center>
-                        <small> Catatan : Harap datang 15 menit sebelum pemeriksaan</small>
+                        <small> Catatan : Harap datang 1 Jam sebelum pemeriksaan</small>
                     </center>
                 </div>
                 <!-- Modal footer -->
