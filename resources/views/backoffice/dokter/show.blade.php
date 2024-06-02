@@ -52,7 +52,7 @@
                                 <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <td width="20%" class="p-4">Nama Dokter</td>
                                     <td width="1%">:</td>
-                                    <td class="font-bold">{{ ucwords($data->name) }}</td>
+                                    <td class="font-bold">{{ $data->name }}</td>
                                 </tr>
                                 <tr class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <td width="20%" class="p-4">Poliklinik</td>

@@ -44,7 +44,7 @@
             <h1 class="font-bold sm:text-2xl text-xl mt-5">NOMOR ANTREAN</h1>
             <h1 class="mt-5 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">{{ $data->no_antrian != null ? $data->no_antrian : "-" }}</h1>
             <h4 class="font-bold sm:text-2xl text-xl mt-5">{{ ucwords($data->poliklinik->name) }}</h4>
-            <h4 class="font-bold sm:text-2xl text-xl mt-5">{{ ucwords($data->dokter->name) }}</h4>
+            <h4 class="font-bold sm:text-2xl text-xl mt-5">{{ $data->dokter->name }}</h4>
         </div>
     </section>
 </div>
