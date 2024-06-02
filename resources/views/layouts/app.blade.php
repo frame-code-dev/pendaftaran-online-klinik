@@ -60,10 +60,22 @@
         })
         // Datatable
         $('#datatable').DataTable({
+            responsive: true,
+
             "oLanguage": {
                 "sEmptyTable": "Maaf data belum tersedia."
             },
+            "columnDefs": [
+                { "sClass": "dt-body-justify", targets : [1] }
+            ]
         });
+        $(document).ready(function() {
+            $('#datatable').on('click','tbody tr button',function() {
+                let id = $(this).data('id');
+                let dropdown = $(`#${id}`);
+                dropdown.toggleClass('hidden block');
+            })
+        })
     </script>
     @stack('js')
 </html>

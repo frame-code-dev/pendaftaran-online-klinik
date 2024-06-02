@@ -9,6 +9,12 @@
                     $('#id').val(id);
                 })
             })
+            $(document).ready(function() {
+                $('.dropdown').on('click',function() {
+                    let id = $(this).data('id');
+                    console.log(id);
+                })
+            })
         </script>
     @endpush
     <div class="p-4 sm:ml-64 pt-20 h-screen">
@@ -67,7 +73,7 @@
                                     <span data-modal-target="update-modal" data-modal-toggle="update-modal" data-id="{{ $item->id }}" class="update-modal cursor-pointer bg-{{ $item->status == 'aktif' ? 'green' : 'red' }}-100 text-{{ $item->status == 'aktif' ? 'green' : 'red' }}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-{{ $item->status == 'aktif' ? 'green' : 'red' }}-900 dark:text-{{ $item->status == 'aktif' ? 'green' : 'red' }}-300">{{ ucwords($item->status) }}</span>
                                 </td>
                                 <td class="px-4 py-3 flex items-center justify-end">
-                                    <button id="{{ $item->id }}-button" data-dropdown-toggle="{{ $item->id }}-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
+                                    <button id="{{ $item->id }}-button" data-dropdown-toggle="{{ $item->id }}-dropdown" data-id="{{ $item->id }}-dropdown" class="dropdown inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                         </svg>

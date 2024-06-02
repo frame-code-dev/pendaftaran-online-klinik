@@ -1,4 +1,6 @@
 <x-app-layout>
+    @push('js')
+    @endpush
     <div class="p-4 sm:ml-64 pt-20 h-screen">
         <section class="p-5 overflow-y-auto mt-5">
             <div class="head lg:flex grid grid-cols-1 justify-between w-full">
@@ -45,7 +47,7 @@
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->keterangan) }}</td>
                                 <td class="px-4 py-3">{{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}</td>
                                 <td class="px-4 py-3 flex items-center justify-end">
-                                    <button id="{{ $item->id }}-button" data-dropdown-toggle="{{ $item->id }}-dropdown" class="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
+                                    <button id="{{ $item->id }}-button" data-dropdown-toggle="{{ $item->id }}-dropdown" data-id="{{ $item->id }}-dropdown" class="dropdown inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
                                         <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                         </svg>
