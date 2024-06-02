@@ -62,6 +62,7 @@ class PendaftaranPasienOfflineController extends Controller
             $pendaftaran->estimasi_dilayani = $estimasiWaktu->format('H:i:s');
             $pendaftaran->status_pendaftaran = 'pending';
             $pendaftaran->jenis_pendaftaran = 'offline';
+            $pendaftaran->status_verifikasi = 'sudah-verifikasi';
             $pendaftaran->poliklinik_id = $request->get('poliklinik');
             $pendaftaran->gambar = null;
             $pendaftaran->save();
