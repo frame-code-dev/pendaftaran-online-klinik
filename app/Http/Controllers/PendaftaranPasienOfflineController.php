@@ -51,10 +51,16 @@ class PendaftaranPasienOfflineController extends Controller
             $nomorAntrian = $noAntrian; // Nomor antrian
             $estimasiWaktu = EstimasiWaktuLayanan::estimasi($tanggalKunjungan, $nomorAntrian); // Tanggal kunjungan (format: YYYY-MM-DD)
             $param['dokter'] = Dokter::with('poliklinik')->find($request->get('dokter'));
+            $set_no_antrian = null;
+            if ($param['dokter']->poliklinik->name == 'klinik Integrasi spesialis bedah mulut' || $param['dokter']->poliklinik->name == 'klinik Integrasi spesialis konservasi gigi' || $param['dokter']->poliklinik->name == 'klinik Integrasi spesialis orthodensia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Pedodonsia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Prosthodonsia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Penyakit Mulut' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Periodonsia') {
+                $set_no_antrian = null;
+            }else{
+                $set_no_antrian = $nomorAntrian;
+            }
             $pendaftaran = new PendaftaranPasien;
             $pendaftaran->kode_pendaftaran = $kodeUnik;
             $pendaftaran->no_kartu = $request->get('cara_pembayaran') == 'bpjs' ? $request->get('no_bpjs') : null;
-            $pendaftaran->no_antrian = $param['dokter']->poliklinik->name != 'klinik integrasi' ? $noAntrian : null;
+            $pendaftaran->no_antrian = $set_no_antrian;
             $pendaftaran->jenis_pembayaran = $request->get('cara_pembayaran');
             $pendaftaran->dokter_id = $request->get('dokter');
             $pendaftaran->pasien_id = $request->get('id');
