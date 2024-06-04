@@ -171,7 +171,6 @@ class DashboardPasienController extends Controller
             }
             return $value;
         });
-        return $param['data'];
         $param['hari_kunjungan'] = $request->has('tanggal') ? strtolower(Carbon::parse($request->tanggal)->translatedFormat('l')) : strtolower(Carbon::parse(now())->translatedFormat('l'));
         return view('pasien.pendaftaran.dokter',$param);
     }
