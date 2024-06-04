@@ -164,13 +164,14 @@ class DashboardPasienController extends Controller
                                                     ->count();
             if ($value->kuota_umum != null || $value->kuota_bpjs != null) {
                 $current_kuota = $current_kuota_offline + $current_kuota_online;
-                $result = $jenis_pembayaran == 'umum' ? $value->kuota : $value->kuota_bpjs - $current_kuota;
+                $result = $jenis_pembayaran == 'umum' ? $value->kuota - $current_kuota : $value->kuota_bpjs - $current_kuota;
                 $value->kuota_terisi = $result <= 0 ? 0 : $result;
             }else{
                 $value->kuota_terisi = '-';
             }
             return $value;
         });
+        return $param['data'];
         $param['hari_kunjungan'] = $request->has('tanggal') ? strtolower(Carbon::parse($request->tanggal)->translatedFormat('l')) : strtolower(Carbon::parse(now())->translatedFormat('l'));
         return view('pasien.pendaftaran.dokter',$param);
     }
@@ -225,7 +226,7 @@ class DashboardPasienController extends Controller
         }
         $current_kuota_dokter = $jenis_pembayaran == 'umum' ? $param['dokter']->kuota : $param['dokter']->kuota_bpjs;
         if ($current_kuota_dokter != 0) {
-            $sisa_kuota = $jenis_pembayaran == 'umum' ? $param['dokter']->kuota : $param['dokter']->kuota_bpjs - $current_kuota;
+            $sisa_kuota = $jenis_pembayaran == 'umum' ? $param['dokter']->kuota - $current_kuota : $param['dokter']->kuota_bpjs - $current_kuota;
             if ($sisa_kuota <= 0) {
                 toast('Kuota dokter habis.','error');
                 return redirect()->route('pasien.list-dokter',[$param['dokter']->poliklinik_id]);
