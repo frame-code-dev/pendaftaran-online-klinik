@@ -85,11 +85,11 @@
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border " >
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-4 py-3">Senin</th>
+                                    <th scope="col" class="px-4 py-3 bg-gray-300">Senin</th>
                                     <th scope="col" class="px-4 py-3">Selasa</th>
-                                    <th scope="col" class="px-4 py-3">Rabu</th>
+                                    <th scope="col" class="px-4 py-3 bg-gray-300">Rabu</th>
                                     <th scope="col" class="px-4 py-3">Kamis</th>
-                                    <th scope="col" class="px-4 py-3">Jumaat</th>
+                                    <th scope="col" class="px-4 py-3 bg-gray-300">Jumaat</th>
                                     <th scope="col" class="px-4 py-3">Status</th>
                                 </tr>
                             </thead>
@@ -97,7 +97,7 @@
                                 @foreach ($data->jadwal as $item)
                                     <input hidden type="text" name="id_{{ $item->status }}" id="" value="{{ $item->id }}">
                                     <tr class="border">
-                                        <td class="px-4 py-3">
+                                        <td class="px-4 py-3 border bg-gray-300">
                                             @php
                                                 $jam = explode('-',$item->senin);
                                                 $dari = $jam[0];
@@ -111,7 +111,7 @@
                                                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
                                                             </svg>
                                                         </div>
-                                                        <input type="time" value="{{ $dari }}" name="daristatus_{{ $item->status }}_senin" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <input type="time" value="{{ $dari }}" name="daristatus_{{ $item->status }}_senin" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                                     </div>
                                                     <span class="mx-4 text-gray-500">to</span>
                                                     <div class="relative w-1/2">
@@ -120,12 +120,12 @@
                                                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
                                                             </svg>
                                                         </div>
-                                                        <input type="time" value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_senin" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <input type="time" value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_senin" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3">
+                                        <td class="px-4 py-3 border ">
                                             @php
                                                 $jam = explode('-',$item->selasa);
                                                 $dari = $jam[0];
@@ -139,7 +139,7 @@
                                                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
                                                             </svg>
                                                         </div>
-                                                        <input type="time" value="{{ $dari }}" name="daristatus_{{ $item->status }}_selasa" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <input type="time" value="{{ $dari }}" name="daristatus_{{ $item->status }}_selasa" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                                     </div>
                                                     <span class="mx-4 text-gray-500">to</span>
                                                     <div class="relative w-1/2">
@@ -148,12 +148,12 @@
                                                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
                                                             </svg>
                                                         </div>
-                                                        <input type="time" value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_selasa" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <input type="time" value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_selasa" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3">
+                                        <td class="px-4 py-3 border bg-gray-300">
                                             @php
                                                 $jam = explode('-',$item->rabu);
                                                 $dari = $jam[0];
@@ -167,7 +167,7 @@
                                                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
                                                             </svg>
                                                         </div>
-                                                        <input type="time" value="{{ $dari }}" name="daristatus_{{ $item->status }}_rabu" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <input type="time" value="{{ $dari }}" name="daristatus_{{ $item->status }}_rabu" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                                     </div>
                                                     <span class="mx-4 text-gray-500">to</span>
                                                     <div class="relative w-1/2">
@@ -176,12 +176,12 @@
                                                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
                                                             </svg>
                                                         </div>
-                                                        <input type="time" value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_rabu" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <input type="time" value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_rabu" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3">
+                                        <td class="px-4 py-3 border ">
                                             @php
                                                 $jam = explode('-',$item->kamis);
                                                 $dari = $jam[0];
@@ -195,7 +195,7 @@
                                                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
                                                             </svg>
                                                         </div>
-                                                        <input type="time" value="{{ $dari }}" name="daristatus_{{ $item->status }}_kamis" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <input type="time" value="{{ $dari }}" name="daristatus_{{ $item->status }}_kamis" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                                     </div>
                                                     <span class="mx-4 text-gray-500">to</span>
                                                     <div class="relative w-1/2">
@@ -204,12 +204,12 @@
                                                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
                                                             </svg>
                                                         </div>
-                                                        <input type="time" value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_kamis" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <input type="time" value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_kamis" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3">
+                                        <td class="px-4 py-3 border bg-gray-300">
                                             @php
                                                 $jam = explode('-',$item->jumaat);
                                                 $dari = $jam[0];
@@ -223,7 +223,7 @@
                                                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
                                                             </svg>
                                                         </div>
-                                                        <input type="time" value="{{ $dari }}" name="daristatus_{{ $item->status }}_jumaat" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <input type="time" value="{{ $dari }}" name="daristatus_{{ $item->status }}_jumaat" id="dari" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                                     </div>
                                                     <span class="mx-4 text-gray-500">to</span>
                                                     <div class="relative w-1/2">
@@ -232,12 +232,12 @@
                                                                 <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
                                                             </svg>
                                                         </div>
-                                                        <input type="time" value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_jumaat" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                        <input type="time" value="{{ $sampai }}" name="sampaistatus_{{ $item->status }}_jumaat" id="sampai" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3">
+                                        <td class="px-4 py-3 border ">
                                             <x-input-default name="status_{{ $item->status }}[]" type="text" value="{{ old('status',$item->status) }}" class="bg-gray-50" readonly></x-input-default>
                                         </td>
                                     </tr>

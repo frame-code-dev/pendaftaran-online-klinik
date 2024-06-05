@@ -44,7 +44,6 @@ class PetugasController extends Controller
     {
         $validateData = Validator::make($request->all(),[
             'name' => 'required',
-            'username' => 'required|unique:users,username',
             'email' => 'required|unique:users,email',
             'password' => 'required',
             'file_input' => 'required',
@@ -67,12 +66,11 @@ class PetugasController extends Controller
             DB::beginTransaction();
             $petugas = new User;
             $petugas->name = $request->name;
-            $petugas->username = $request->username;
             $petugas->email = $request->email;
             $petugas->password = Hash::make($request->password);
             if ($request->has('file_input') || $request->file('file_input') != null) {
                 $file = $request->file('file_input');
-                $filename = Carbon::now()->translatedFormat('his').Str::slug($request->username).'.'.$file->extension();
+                $filename = Carbon::now()->translatedFormat('his').Str::slug($request->name).'.'.$file->extension();
                 $file->storeAs('public/petugas/'.$filename);
                 $petugas->gambar = $filename;
             }

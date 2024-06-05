@@ -61,13 +61,14 @@
         // Datatable
         $('#datatable').DataTable({
             responsive: true,
-
+            ordering: false,
             "oLanguage": {
                 "sEmptyTable": "Maaf data belum tersedia."
             },
-            "columnDefs": [
-                { "sClass": "dt-body-justify", targets : [1] }
-            ]
+            "columnDefs": [{
+                // "defaultContent": "",
+                // "targets": "_all"
+            }]
         });
 
     </script>

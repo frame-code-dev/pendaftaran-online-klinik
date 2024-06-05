@@ -128,17 +128,17 @@
                         <table class="w-fit overflow-auto text-sm text-left text-gray-500 dark:text-gray-400 border " >
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-4 py-3">Senin</th>
+                                    <th scope="col" class="px-4 py-3 bg-gray-300">Senin</th>
                                     <th scope="col" class="px-4 py-3">Selasa</th>
-                                    <th scope="col" class="px-4 py-3">Rabu</th>
+                                    <th scope="col" class="px-4 py-3 bg-gray-300">Rabu</th>
                                     <th scope="col" class="px-4 py-3">Kamis</th>
-                                    <th scope="col" class="px-4 py-3">Jumaat</th>
+                                    <th scope="col" class="px-4 py-3 bg-gray-300">Jumaat</th>
                                     <th scope="col" class="px-4 py-3">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="border">
-                                    <td class="px-4 py-3 border">
+                                    <td class="px-4 py-3 border bg-gray-300">
                                         <div>
                                             <div class="flex items-center w-full">
                                                 <div class="relative w-1/2">
@@ -184,7 +184,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3 border">
+                                    <td class="px-4 py-3 border bg-gray-300">
                                         <div>
                                             <div class="flex items-center w-full">
                                                 <div class="relative w-1/2">
@@ -231,7 +231,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3 border">
+                                    <td class="px-4 py-3 border bg-gray-300">
                                         <div>
                                             <div class="flex items-center w-full">
                                                 <div class="relative w-1/2">
@@ -259,7 +259,7 @@
                                     </td>
                                 </tr>
                                 <tr class="border">
-                                    <td class="px-4 py-3 border">
+                                    <td class="px-4 py-3 border bg-gray-300">
                                         <div>
                                             <div class="flex items-center w-full">
                                                 <div class="relative w-1/2">
@@ -307,7 +307,7 @@
                                         </div>
 
                                     </td>
-                                    <td class="px-4 py-3 border">
+                                    <td class="px-4 py-3 border bg-gray-300">
                                         <div>
                                             <div class="flex items-center w-full">
                                                 <div class="relative w-1/2">
@@ -353,7 +353,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3 border">
+                                    <td class="px-4 py-3 border bg-gray-300">
                                         <div>
                                             <div class="flex items-center w-full">
                                                 <div class="relative w-1/2">

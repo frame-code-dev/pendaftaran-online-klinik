@@ -14,11 +14,20 @@ class JadwalDokterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $param['title'] = 'List Jadwal Dokter';
         $param['data'] = JadwalDokter::with('dokter')->latest()->get();
-        $param['dokter'] = Dokter::with('jadwal')->latest()->get();
+        $search = $request->get('search');
+        $param['dokter'] = Dokter::with(['jadwal', 'poliklinik'])
+        ->whereHas('poliklinik', function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        })
+        ->when($search, function ($query) use ($search) {
+            $query->orWhere('name', 'like', '%' . $search . '%');
+        })
+        ->latest()
+        ->get();
         $title = 'Delete Jadwal Dokter!';
         $text = "Are you sure you want to delete?";
         confirmDelete($title, $text);

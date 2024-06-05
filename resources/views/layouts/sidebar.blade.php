@@ -50,6 +50,7 @@
                                     Data Jadwal Dokter
                                 </a>
                             </li>
+                            @if (Auth::user()->hasRole('admin'))
                             <li>
                                 <a href="{{ route('poliklinik.index') }}" class="{{ Request::segment(3) == 'poliklinik' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
                                     <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -58,6 +59,7 @@
                                     Data Poliklinik
                                 </a>
                             </li>
+                            @endif
                             <li>
                                 <a href="{{ route('pasien.index') }}" class="{{ Request::segment(3) == 'pasien  ' ? 'active-dropdown' : '' }} flex items-center w-full p-2 text-white transition duration-75 pl-4 group hover:bg-blue-950 dark:text-white dark:hover:bg-gray-700">
                                     <svg class="w-4 h-4 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
