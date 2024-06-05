@@ -85,19 +85,22 @@
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border " >
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-4 py-3 bg-gray-300">Senin</th>
-                                    <th scope="col" class="px-4 py-3">Selasa</th>
-                                    <th scope="col" class="px-4 py-3 bg-gray-300">Rabu</th>
-                                    <th scope="col" class="px-4 py-3">Kamis</th>
-                                    <th scope="col" class="px-4 py-3 bg-gray-300">Jumaat</th>
-                                    <th scope="col" class="px-4 py-3">Status</th>
+                                    <th scope="col" class="px-4 py-3 bg-gray-300">Status</th>
+                                    <th scope="col" class="px-4 py-3 ">Senin</th>
+                                    <th scope="col" class="px-4 py-3 bg-gray-300">Selasa</th>
+                                    <th scope="col" class="px-4 py-3 ">Rabu</th>
+                                    <th scope="col" class="px-4 py-3 bg-gray-300">Kamis</th>
+                                    <th scope="col" class="px-4 py-3 ">Jumaat</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data->jadwal as $item)
                                     <input hidden type="text" name="id_{{ $item->status }}" id="" value="{{ $item->id }}">
                                     <tr class="border">
-                                        <td class="px-4 py-3 border bg-gray-300">
+                                        <td class="px-4 py-3 border w-56 bg-gray-300">
+                                            <x-input-default name="status_{{ $item->status }}[]" type="text" value="{{ old('status',$item->status) }}" class="bg-gray-50" readonly></x-input-default>
+                                        </td>
+                                        <td class="px-4 py-3 border ">
                                             @php
                                                 $jam = explode('-',$item->senin);
                                                 $dari = $jam[0];
@@ -125,7 +128,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3 border ">
+                                        <td class="px-4 py-3 border bg-gray-300">
                                             @php
                                                 $jam = explode('-',$item->selasa);
                                                 $dari = $jam[0];
@@ -153,7 +156,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3 border bg-gray-300">
+                                        <td class="px-4 py-3 border ">
                                             @php
                                                 $jam = explode('-',$item->rabu);
                                                 $dari = $jam[0];
@@ -181,7 +184,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3 border ">
+                                        <td class="px-4 py-3 border bg-gray-300">
                                             @php
                                                 $jam = explode('-',$item->kamis);
                                                 $dari = $jam[0];
@@ -209,7 +212,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3 border bg-gray-300">
+                                        <td class="px-4 py-3 border ">
                                             @php
                                                 $jam = explode('-',$item->jumaat);
                                                 $dari = $jam[0];
@@ -237,9 +240,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3 border ">
-                                            <x-input-default name="status_{{ $item->status }}[]" type="text" value="{{ old('status',$item->status) }}" class="bg-gray-50" readonly></x-input-default>
-                                        </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>
