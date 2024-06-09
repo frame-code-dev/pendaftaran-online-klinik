@@ -72,7 +72,7 @@ class TransaksiVerifikasiController extends Controller
                 ]);
             }
             toast('Pendaftaran diverifikasi','success');
-            return redirect()->route('laporan.kunjungan-pasien.index');
+            return redirect()->route('verifikasi.index');
         }
     }
 
@@ -98,7 +98,7 @@ class TransaksiVerifikasiController extends Controller
                 ]);
             }
             toast('Pendaftaran berhasil di verifikasi.','success');
-            return redirect()->route('laporan.kunjungan-pasien.index');
+            return redirect()->route('verifikasi.index');
         } catch (Exception $th) {
             return $th;
         }

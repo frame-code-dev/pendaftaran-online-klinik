@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Dokter;
 use App\Models\JadwalDokter;
+use App\Models\Poliklinik;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,13 +20,22 @@ class JadwalDokterController extends Controller
     {
         $param['title'] = 'List Jadwal Dokter';
         $param['data'] = JadwalDokter::with('dokter')->latest()->get();
-        $search = $request->get('search');
+        $param['dokter'] = Dokter::latest()->get();
+        $param['poliklinik'] = Poliklinik::latest()->get();
+
+        $dokter = $request->get('dokter');
+        $tanggal = Carbon::parse($request->tanggal)->format('Y-m-d');
+        $poliklinik = $request->get('poliklinik');
+
         $param['dokter'] = Dokter::with(['jadwal', 'poliklinik'])
-        ->whereHas('poliklinik', function ($query) use ($search) {
-            $query->where('name', 'like', '%' . $search . '%');
+        ->when($request->get('poliklinik'), function ($query) use ($poliklinik) {
+            $query->where('poliklinik_id', $poliklinik);
         })
-        ->when($search, function ($query) use ($search) {
-            $query->orWhere('name', 'like', '%' . $search . '%');
+        ->when($request->get('dokter'), function ($query) use ($dokter) {
+            $query->where('id', $dokter);
+        })
+        ->when($request->get('tanggal'), function ($query) use ($tanggal) {
+            $query->where('created_at', $tanggal);
         })
         ->latest()
         ->get();

@@ -46,7 +46,6 @@ class PetugasController extends Controller
             'name' => 'required',
             'email' => 'required|unique:users,email',
             'password' => 'required',
-            'file_input' => 'required',
             'hak_akses' => 'required|not_in:0'
         ],[
             'required' => ':attribute Harus Terisi !',

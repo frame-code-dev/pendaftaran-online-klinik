@@ -98,7 +98,7 @@
                                     <input hidden type="text" name="id_{{ $item->status }}" id="" value="{{ $item->id }}">
                                     <tr class="border">
                                         <td class="px-4 py-3 border w-56 bg-gray-300">
-                                            <x-input-default name="status_{{ $item->status }}[]" type="text" value="{{ old('status',$item->status) }}" class="bg-gray-50" readonly></x-input-default>
+                                            <x-input-default name="status_{{ $item->status }}[]" type="text" value="{{ old('status',$item->status) }}" class="{{ $item->status  == 'umum' ? 'bg-blue-300' : 'bg-gray-800 text-white' }}" style="width: 100px" readonly></x-input-default>
                                         </td>
                                         <td class="px-4 py-3 border ">
                                             @php

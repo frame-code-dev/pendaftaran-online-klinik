@@ -43,7 +43,7 @@
                                 title: 'Kode Pendaftaran tidak ditemukan.'
                             })
                     }else if(data = "sukses"){
-                        window.location.href = `{{ route('laporan.kunjungan-jenis') }}`;
+                        window.location.href = `{{ route('verifikasi.index') }}`;
                     }else{
                         const Toast = Swal.mixin({
                                 toast: true,

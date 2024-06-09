@@ -138,8 +138,8 @@
                             </thead>
                             <tbody>
                                 <tr class="border">
-                                    <td class="px-4 py-3 border bg-gray-300">
-                                        <x-input-default name="status_umum[]" type="text" value="{{ old('status','umum') }}" readonly></x-input-default>
+                                    <td class="px-4 py-3 border bg-gray-300" width="80%">
+                                        <x-input-default class="bg-blue-300" style="width: 100px" name="status_umum[]" type="text" value="{{ old('status','umum') }}" readonly></x-input-default>
                                     </td>
                                     <td class="px-4 py-3 border ">
                                         <div>
@@ -260,8 +260,8 @@
 
                                 </tr>
                                 <tr class="border">
-                                    <td class="px-4 py-3 border w-56 bg-gray-300">
-                                        <x-input-default name="status_bpjs[]" type="text" value="{{ old('status','bpjs') }}" readonly></x-input-default>
+                                    <td class="px-4 py-3 border bg-gray-300">
+                                        <x-input-default name="status_bpjs[]" class="bg-gray-800 text-white" type="text" value="{{ old('status','bpjs') }}" readonly></x-input-default>
                                     </td>
                                     <td class="px-4 py-3 border ">
                                         <div>

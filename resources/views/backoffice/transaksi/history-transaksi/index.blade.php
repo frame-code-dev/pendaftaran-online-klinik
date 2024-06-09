@@ -39,7 +39,7 @@
                             </div>
                             <div class="flex align-bottom content-end items-end">
                                 <div>
-                                    <x-primary-button type="submit">Fitler</x-primary-button>
+                                    <x-primary-button type="submit">Filter</x-primary-button>
                                 </div>
                                 <div>
                                     <a href="{{ route('history-transaksi.pdf', request()->all()) }}" class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">
@@ -69,6 +69,7 @@
                             <th scope="col" class="px-4 py-3">No.RM</th>
                             <th scope="col" class="px-4 py-3">Nama</th>
                             <th scope="col" class="px-4 py-3">Pembayaran</th>
+                            <th scope="col" class="px-4 py-3">Jenis Pendaftaran</th>
                             <th scope="col" class="px-4 py-3">Poliklinik</th>
                             <th scope="col" class="px-4 py-3">Dokter</th>
                             <th scope="col" class="px-4 py-3">Estimasi Dilayani</th>
@@ -85,6 +86,7 @@
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ $item->pasien->no_rm }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->pasien->name) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->jenis_pembayaran) }}</td>
+                                <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->jenis_pendaftaran) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->poliklinik->name) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ ucwords($item->dokter->name) }}</td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">

@@ -28,6 +28,7 @@
                         {{ $title }}
                     </h2>
                 </div>
+                @if (!Auth::user()->hasRole('petugas-pendaftaran'))
                 <div class="layout lg:flex grid grid-cols-1 lg:mt-0 mt-5 justify-end gap-5">
                     <div class="button-wrapper gap-2 flex lg:justify-end">
                         <x-a-primary-button href="{{ route('dokter.create') }}">
@@ -37,6 +38,7 @@
                             Tambah Data</x-a-primary-button>
                     </div>
                 </div>
+                @endif
             </div>
             <div class="card bg-white p-5 mt-4 border rounded-md w-full relative overflow-x-auto">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400" id="datatable">

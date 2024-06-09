@@ -133,6 +133,7 @@
                                 <th>No.RM</th>
                                 <th>Nama</th>
                                 <th>Pembayaran</th>
+                                <th>Jenis Pendaftaran</th>
                                 <th>Poliklinik</th>
                                 <th>Dokter</th>
                                 <th>Estimasi</th>
@@ -148,6 +149,7 @@
                                     <td >{{ $item->pasien->no_rm }}</td>
                                     <td >{{ ucwords($item->pasien->name) }}</td>
                                     <td >{{ ucwords($item->jenis_pembayaran) }}</td>
+                                    <td >{{ ucwords($item->jenis_pendaftaran) }}</td>
                                     <td >{{ ucwords($item->poliklinik->name) }}</td>
                                     <td >{{ ucwords($item->dokter->name) }}</td>
                                     <td >

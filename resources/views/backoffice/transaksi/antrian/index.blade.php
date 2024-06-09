@@ -63,7 +63,7 @@
                             </div>
                             <div class="flex align-bottom content-end items-end">
                                 <div>
-                                    <x-primary-button type="submit">Fitler</x-primary-button>
+                                    <x-primary-button type="submit">Filter</x-primary-button>
                                 </div>
 
                             </div>
