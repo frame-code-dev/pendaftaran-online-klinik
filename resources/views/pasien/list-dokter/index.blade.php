@@ -101,17 +101,20 @@
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 border " >
                                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
+                                        <th scope="col" class="px-4 py-3 border bg-gray-300">Status</th>
                                         <th scope="col" class="px-4 py-3 border">Senin</th>
-                                        <th scope="col" class="px-4 py-3 border">Selasa</th>
+                                        <th scope="col" class="px-4 py-3 border bg-gray-300">Selasa</th>
                                         <th scope="col" class="px-4 py-3 border">Rabu</th>
-                                        <th scope="col" class="px-4 py-3 border">Kamis</th>
+                                        <th scope="col" class="px-4 py-3 border bg-gray-300">Kamis</th>
                                         <th scope="col" class="px-4 py-3 border">Jumaat</th>
-                                        <th scope="col" class="px-4 py-3 border">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data->jadwal as $item)
                                     <tr class="border">
+                                        <td class="px-4 py-3 border bg-gray-300">
+                                            <x-input-default name="status_{{ $item->status }}[]" type="text" value="{{ old('status',$item->status) }}" class="{{ $item->status  == 'umum' ? 'bg-blue-300' : 'bg-gray-800 text-white' }}" style="width: 100px" readonly></x-input-default>
+                                        </td>
                                         <td class="px-4 py-3 border ">
                                             @php
                                                 $jam = explode('-',$item->senin);
@@ -140,7 +143,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3 border ">
+                                        <td class="px-4 py-3 border bg-gray-300">
                                             @php
                                                 $jam = explode('-',$item->selasa);
                                                 $dari = $jam[0];
@@ -196,7 +199,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3 border ">
+                                        <td class="px-4 py-3 border bg-gray-300">
                                             @php
                                                 $jam = explode('-',$item->kamis);
                                                 $dari = $jam[0];
@@ -252,9 +255,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="px-4 py-3 border ">
-                                            <x-input-default name="status_{{ $item->status }}[]" type="text" value="{{ old('status',$item->status) }}" class="bg-gray-50" readonly></x-input-default>
-                                        </td>
+
                                     </tr>
 
                                     @endforeach
