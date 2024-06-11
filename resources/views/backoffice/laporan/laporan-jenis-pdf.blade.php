@@ -150,12 +150,15 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="mt-5">
-                        <h4 class="">Total BPJS :  {{ $count_bpjs }}</h4>
-                    </div>
-                    <div class="mt-3">
-                        <h4 class="">Total Umum : {{ $count_umum }} </h4>
-                    </div>
+                    @if ($jenis == 'bpjs')
+                        <div class="mt-5">
+                            <h4 class="">Total BPJS :  {{ $count_bpjs }}</h4>
+                        </div>
+                    @else
+                        <div class="mt-3">
+                            <h4 class="">Total Umum : {{ $count_umum }} </h4>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

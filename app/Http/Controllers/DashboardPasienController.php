@@ -151,11 +151,11 @@ class DashboardPasienController extends Controller
         // cek kuota dokter
         $param['data']->transform(function ($value) use ($request,$jenis_pembayaran) {
             $current_kuota_online = PendaftaranPasien::where('dokter_id',$value->id)
-                                            ->where('status_pendaftaran','pending')
-                                            ->where('jenis_pembayaran',$jenis_pembayaran)
-                                            ->where('jenis_pendaftaran','online')
-                                            ->whereDate('tanggal_kunjungan',Carbon::parse($request->tanggal)->format('Y-m-d'))
-                                            ->count();
+                                                    ->where('status_pendaftaran','pending')
+                                                    ->where('jenis_pembayaran',$jenis_pembayaran)
+                                                    ->where('jenis_pendaftaran','online')
+                                                    ->whereDate('tanggal_kunjungan',Carbon::parse($request->tanggal)->format('Y-m-d'))
+                                                    ->count();
             $current_kuota_offline = PendaftaranPasien::where('dokter_id',$value->id)
                                                     ->where('status_pendaftaran','pending')
                                                     ->where('jenis_pembayaran',$jenis_pembayaran)
