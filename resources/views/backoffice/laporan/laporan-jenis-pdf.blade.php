@@ -116,7 +116,7 @@
             <div class="col-md-8 mx-auto">
                 <div class="content">
                     <h1 class="text-center p-0 m-0 fw-bold" style="font-size: 18px;">
-                        Laporan History Reservasi
+                        {{ $title }}
                     </h1>
                     <div class="d-flex justify-content-end">
                         <button onclick="history.back()" class="btn btn-primary no-print"></i> Kembali</button>
