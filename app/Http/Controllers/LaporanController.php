@@ -22,7 +22,7 @@ class LaporanController extends Controller
                             $query->where('jenis_pembayaran', $jenis);
                         })
                         ->where('status_verifikasi','sudah-verifikasi')
-                        ->latest()->get();
+                        ->orderByDesc('tanggal_kunjungan')->get();
         return view('backoffice.laporan.laporan-jenis',$param);
     }
 
@@ -39,7 +39,7 @@ class LaporanController extends Controller
                             $query->where('jenis_pembayaran', $jenis);
                         })
                         ->where('status_verifikasi','sudah-verifikasi')
-                        ->latest()->get();
+                        ->orderByDesc('tanggal_kunjungan')->get();
         $param['count_umum'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
                             ->when($request->get('start'), function ($query) use ($start, $end) {
                                 $query->whereBetween('created_at', [$start, $end]);
@@ -79,7 +79,7 @@ class LaporanController extends Controller
                             $query->where('jenis_pembayaran', $jenis);
                         })
                         ->where('status_verifikasi','sudah-verifikasi')
-                        ->latest()
+                        ->orderByDesc('tanggal_kunjungan')
                         ->get();
         $param['count_umum'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
                             ->when($request->get('start'), function ($query) use ($start, $end, $diff_in_days) {
@@ -127,7 +127,7 @@ class LaporanController extends Controller
                         })
                         ->where('jenis_pendaftaran','online')
                         ->where('status_verifikasi','sudah-verifikasi')
-                        ->latest()
+                        ->orderByDesc('tanggal_kunjungan')
                         ->get();
         $param['poliklinik'] = Poliklinik::latest()->get();
         return view('backoffice.laporan.laporan-kunjungan',$param);
@@ -157,7 +157,7 @@ class LaporanController extends Controller
                         })
                         ->where('jenis_pendaftaran','online')
                         ->where('status_verifikasi','sudah-verifikasi')
-                        ->latest()
+                        ->orderByDesc('tanggal_kunjungan')
                         ->get();
         $param['count_pendaftaran_online'] = PendaftaranPasien::with('dokter','poliklinik','pasien')
                                         ->when($request->get('start'), function ($query) use ($start, $end, $diff_in_days) {
@@ -201,7 +201,7 @@ class LaporanController extends Controller
                         })
                         ->where('jenis_pendaftaran','online')
                         ->where('status_verifikasi','sudah-verifikasi')
-                        ->latest()
+                        ->orderByDesc('tanggal_kunjungan')
                         ->get();
         $param['start'] = $start;
         $param['end'] = $end;

@@ -36,7 +36,7 @@ class TransaksHistoryController extends Controller
             ->when($request->get('start'), function ($query) use ($start, $end) {
                 $query->whereBetween('created_at', [$start, $end]);
             })
-            ->orderBy('no_antrian','ASC')->get();
+            ->orderByDesc('tanggal_kunjungan')->get();
         $param['data']->transform(function ($item, $key) {
             $jadwal = JadwalDokter::where('dokter_id',$item->dokter_id)->where('status',$item->jenis_pembayaran)->get();
             $item->jadwal_dokter = $jadwal;
@@ -56,7 +56,7 @@ class TransaksHistoryController extends Controller
             ->when($request->get('start'), function ($query) use ($start, $end) {
                 $query->whereBetween('created_at', [$start, $end]);
             })
-            ->orderBy('no_antrian','ASC')->get();
+            ->orderByDesc('tanggal_kunjungan')->get();
         $param['data']->transform(function ($item, $key) {
             $jadwal = JadwalDokter::where('dokter_id',$item->dokter_id)->where('status',$item->jenis_pembayaran)->get();
             $item->jadwal_dokter = $jadwal;
