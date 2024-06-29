@@ -171,6 +171,7 @@ class DashboardPasienController extends Controller
             }
             return $value;
         });
+
         $param['hari_kunjungan'] = $request->has('tanggal') ? strtolower(Carbon::parse($request->tanggal)->translatedFormat('l')) : strtolower(Carbon::parse(now())->translatedFormat('l'));
         return view('pasien.pendaftaran.dokter',$param);
     }
@@ -245,6 +246,7 @@ class DashboardPasienController extends Controller
         $param['tanggal_kunjungan'] = $tanggal_kunjungan_pasien;
         $param['simple'] = QrCode::size(120)->generate('https://www.binaryboxtuts.com/');
         $param['kodeUnik'] = KodeUnikGenerator::generate();
+
         return view('pasien.pendaftaran.konfirmasi-pendaftaran',$param);
     }
 
@@ -278,7 +280,21 @@ class DashboardPasienController extends Controller
         $param['noAntrian'] = NomorAntrianGenerator::generate($tanggalKunjungan,$dokter_id);
         $nomorAntrian = $param['noAntrian']; // Nomor antrian
         $param['kodeUnik'] = KodeUnikGenerator::generate();
-        $estimasiWaktu = EstimasiWaktuLayanan::estimasi($tanggalKunjungan, $nomorAntrian); // Tanggal kunjungan (format: YYYY-MM-DD)
+        $data = JadwalDokter::where('dokter_id',$dokter_id)->where('status',$jenis_pembayaran)->get();
+        $hari_kunjungan = $tanggalKunjungan ? strtolower(Carbon::parse($tanggalKunjungan)->translatedFormat('l')) : null;
+        $jadwalArray = $data->toArray();
+
+        // Ubah 'Jumat' menjadi 'jumaat' agar sesuai dengan kunci di array
+        $hari_kunjungan = ($hari_kunjungan == 'jumat') ? 'jumaat' : $hari_kunjungan;
+        // Periksa apakah kunci hari ada dalam array, jika ada, set estimasi dokter
+        $estimasi_dokter = '';
+        foreach ($jadwalArray as $key => $value) {
+            $estimasi_dokter = $value[$hari_kunjungan];
+        }
+        $param['estimasi_dokter'] = $estimasi_dokter;
+
+        $estimasiWaktu = EstimasiWaktuLayanan::estimasi($tanggalKunjungan, $nomorAntrian,$estimasi_dokter);
+
         $param['estimasi_waktu'] = $estimasiWaktu->format('H:i:s');
         $set_no_antrian = null;
         if ($param['dokter']->poliklinik->name == 'klinik Integrasi spesialis bedah mulut' || $param['dokter']->poliklinik->name == 'klinik Integrasi spesialis konservasi gigi' || $param['dokter']->poliklinik->name == 'klinik Integrasi spesialis orthodensia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Pedodonsia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Prosthodonsia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Penyakit Mulut' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Periodonsia') {

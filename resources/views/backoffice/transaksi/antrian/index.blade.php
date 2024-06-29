@@ -23,7 +23,33 @@
                    })
                }
            })
+           $('.panggil').on('click', function() {
+               let id = $(this).data('id');
+               console.log(id);
+               getSound(id);
+           })
        })
+        let voices = [];
+
+        function loadVoices() {
+            voices = window.speechSynthesis.getVoices();
+        }
+
+       function getSound(id) {
+            const text = id;
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = text;
+            msg.lang = 'id-ID'; // Kode bahasa untuk Bahasa Indonesia
+
+            // Cari suara wanita dalam daftar suara
+            const voice = voices.find(voice => voice.lang === 'id-ID' && voice.name.toLowerCase().includes('female'));
+
+            // Jika tidak ada suara wanita, gunakan suara wanita pertama yang tersedia
+            msg.voice = voice || voices.find(voice => voice.lang === 'id-ID' && voice.name.toLowerCase().includes('female')) || voices[0];
+
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(msg);
+       }
    </script>
     @endpush
     <div class="p-4 sm:ml-64 pt-20 h-screen">
@@ -120,6 +146,12 @@
                                     @endif
                                 </td>
                                 <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    @php
+                                        $antrian = $item->no_antrian != null ? $item->no_antrian.' '.$item->dokter->name : $item->dokter->name;
+                                        $pesan = 'nomor antrean '.$antrian;
+                                        // $pesan = "firdo jatuh cinta anjayyyyy";
+                                    @endphp
+                                    <button data-id="{{ $pesan }}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 panggil">Panggil</button>
                                     <div class="inline-flex rounded-md shadow-sm">
                                         <a href="{{ route('antrian-klinik.update-manual',['id' => $item->id, 'status' => 'batal']) }}" aria-current="page" class="px-4 py-2 text-sm font-medium text-blue-700 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">
                                             Batal

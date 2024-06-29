@@ -53,6 +53,7 @@
         let provinsi_id = `{{ $data->provinsi_id }}`
         let kabupaten_id = `{{ $data->kabupaten_id }}`
         let kecamatan_id = `{{ $data->kecamatan_id }}`
+        let desa_id = `{{ $data->desa_id }}`
         function clearOptions(id) {
             console.log("on clearOptions :" + id);
 
@@ -130,7 +131,7 @@
         $(selectKab).change(function () {
             var value = $(selectKab).val();
             clearOptions('select2-kecamatan');
-
+            clearOptions('select2-desa');
             if (value) {
                 console.log("on change selectKab");
 
@@ -163,6 +164,116 @@
                     }
                 })
             }
+        });
+        $('#select2-kecamatan').change(function () {
+            var value = $(this).val();
+            clearOptions('select2-desa');
+
+            if (value) {
+                console.log("on change selectKec");
+                console.log('Load Desa di ' + value + '...');
+                $.getJSON(urlKelurahan + value + ".json", function (res) {
+                    res = $.map(res, function (obj) {
+                        obj.text = obj.nama
+                        return obj;
+                    });
+
+                    var data = [{
+                        id: "",
+                        nama: "- Pilih Desa/Kelurahan -",
+                        text: "- Pilih Desa/Kelurahan -"
+                    }].concat(res);
+
+                    $("#select2-desa").select2({
+                        dropdownAutoWidth: true,
+                        width: '100%',
+                        data: data
+                    })
+
+                    if (desa_id) {
+                        $("#select2-desa").val(desa_id).trigger('change');
+                    }
+                })
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // NO RM
+            $('#no_rm').on('keyup', function() {
+                var noRmValue = $('#no_rm').val();
+                var errorNoRm = $('#error_no_rm');
+
+                // Reset error message
+                errorNoRm.text('');
+
+                // Check if the value is numeric
+                if (!/^\d+$/.test(noRmValue)) {
+                    // Display error message
+                    errorNoRm.text('No. RM hanya boleh mengandung angka.');
+                    $('#no_rm').val('');
+                }
+            });
+            // NIK
+            $('#nik').on('keyup', function() {
+                var noRmValue = $('#nik').val();
+                var errorNoRm = $('#error_nik');
+
+                // Reset error message
+                errorNoRm.text('');
+
+                // Check if the value is numeric
+                if (!/^\d+$/.test(noRmValue)) {
+                    // Display error message
+                    errorNoRm.text('NIK hanya boleh mengandung angka.');
+                    $('#nik').val('');
+                }
+            });
+            // RT
+            $('#rt').on('keyup', function() {
+                var noRmValue = $('#rt').val();
+                var errorNoRm = $('#error_rt');
+
+                // Reset error message
+                errorNoRm.text('');
+
+                // Check if the value is numeric
+                if (!/^\d+$/.test(noRmValue)) {
+                    // Display error message
+                    errorNoRm.text('RT hanya boleh mengandung angka.');
+                    $('#rt').val('');
+                }
+            });
+            // RW
+            $('#rw').on('keyup', function() {
+                var noRmValue = $('#rw').val();
+                var errorNoRm = $('#error_rw');
+
+                // Reset error message
+                errorNoRm.text('');
+
+                // Check if the value is numeric
+                if (!/^\d+$/.test(noRmValue)) {
+                    // Display error message
+                    errorNoRm.text('RW hanya boleh mengandung angka.');
+                    $('#rw').val('');
+                }
+            });
+            // NO HP
+            $('#no_hp').on('keyup', function() {
+                var noRmValue = $('#no_hp').val();
+                var errorNoRm = $('#error_no_hp');
+
+                // Reset error message
+                errorNoRm.text('');
+
+                // Check if the value is numeric
+                if (!/^\d+$/.test(noRmValue)) {
+                    // Display error message
+                    errorNoRm.text('No. HP hanya boleh mengandung angka.');
+                    $('#no_hp').val('');
+                }
+            });
         });
     </script>
     @endpush
@@ -215,11 +326,13 @@
                     <div class="grid grid-cols-4 gap-3">
                         <div class="col-span-2">
                             <x-label-default for="" >No. RM <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="no_rm" type="text" value="{{ old('no_rm',$data->no_rm) }}" placeholder="Masukkan No. RM"></x-input-default>
+                            <x-input-default name="no_rm" type="text" value="{{ old('no_rm',$data->no_rm) }}" id="no_rm" placeholder="Masukkan No. RM"></x-input-default>
+                            <div id="error_no_rm" class="text-red-500 mt-2 text-xs"></div>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">NIK <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="nik" type="text" value="{{ old('nik',$data->nik) }}" placeholder="Masukkan NIK"></x-input-default>
+                            <x-input-default name="nik" type="text" value="{{ old('nik',$data->nik) }}" id="nik" placeholder="Masukkan NIK"></x-input-default>
+                            <div id="error_nik" class="text-red-500 mt-2 text-xs"></div>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Nama Lengkap <span class="me-2 text-red-500">*</span></x-label-default>
@@ -239,11 +352,13 @@
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">RT <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="rt" type="text" value="{{ old('rt',$data->rt) }}" placeholder="Masukkan RT"></x-input-default>
+                            <x-input-default name="rt" type="text" value="{{ old('rt',$data->rt) }}" id="rt" placeholder="Masukkan RT"></x-input-default>
+                            <div id="error_rt" class="text-red-500 mt-2 text-xs"></div>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">RW <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="rw" type="text" value="{{ old('rw',$data->rw) }}" placeholder="Masukkan RW"></x-input-default>
+                            <x-input-default name="rw" type="text" value="{{ old('rw',$data->rw) }}" id="rw" placeholder="Masukkan RW"></x-input-default>
+                            <div id="error_rw" class="text-red-500 mt-2 text-xs"></div>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Tempat Lahir <span class="me-2 text-red-500">*</span></x-label-default>
@@ -267,7 +382,8 @@
                         </div>
                         <div>
                             <x-label-default for="" >Desa/Kelurahan <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="desa" type="text" value="{{ old('desa',$data->desa_id) }}" placeholder="Masukkan Desa/Kelurahan"></x-input-default>
+                            <select name="desa" class="select2-data-array browser-default bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="select2-desa"></select>
+
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="" >Agama <span class="me-2 text-red-500">*</span></x-label-default>
@@ -310,7 +426,8 @@
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">No. Handphone <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="no_hp" type="text" value="{{ old('no_hp',$data->no_hp) }}" placeholder="Masukkan No. Handphone"></x-input-default>
+                            <x-input-default name="no_hp" type="text" value="{{ old('no_hp',$data->no_hp) }}" id="no_hp" placeholder="Masukkan No. Handphone"></x-input-default>
+                            <div id="error_no_hp" class="text-red-500 mt-2 text-xs"></div>
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Nama Orang Tua/ Penanggung Jawab <span class="me-2 text-red-500">*</span></x-label-default>

@@ -6,6 +6,7 @@ use App\Helpers\EstimasiWaktuLayanan;
 use App\Helpers\KodeUnikGenerator;
 use App\Helpers\NomorAntrianGenerator;
 use App\Models\Dokter;
+use App\Models\JadwalDokter;
 use App\Models\Pasien;
 use App\Models\PendaftaranPasien;
 use App\Models\Poliklinik;
@@ -47,15 +48,35 @@ class PendaftaranPasienOfflineController extends Controller
             // mendapatkan no antrian
             $noAntrian = NomorAntrianGenerator::generate(null,$request->get('dokter'));
             // mendapatkan estimasi waktu
+            $dokter_id = $request->get('dokter');
             $tanggalKunjungan = Carbon::now();
-            $nomorAntrian = $noAntrian; // Nomor antrian
-            $estimasiWaktu = EstimasiWaktuLayanan::estimasi($tanggalKunjungan, $nomorAntrian); // Tanggal kunjungan (format: YYYY-MM-DD)
+            $jenis_pembayaran = $request->get('cara_pembayaran');
+            $data = JadwalDokter::where('dokter_id',$dokter_id)->where('status',$jenis_pembayaran)->get();
+            $hari_kunjungan = $tanggalKunjungan ? strtolower(Carbon::parse($tanggalKunjungan)->translatedFormat('l')) : null;
+            $jadwalArray = $data->toArray();
+
+            // Ubah 'Jumat' menjadi 'jumaat' agar sesuai dengan kunci di array
+            $hari_kunjungan = ($hari_kunjungan == 'jumat') ? 'jumaat' : $hari_kunjungan;
+            if ($hari_kunjungan == 'minggu' || $hari_kunjungan == 'sabtu') {
+                $message = 'Tanggal yang dipilih tidak valid. Silakan pilih tanggal lain.';
+                toast($message,'error');
+                return redirect()->back();
+            }
+            // Periksa apakah kunci hari ada dalam array, jika ada, set estimasi dokter
+            $estimasi_dokter = '';
+            foreach ($jadwalArray as $key => $value) {
+                $estimasi_dokter = $value[$hari_kunjungan];
+            }
+            $param['estimasi_dokter'] = $estimasi_dokter;
+
+            $estimasiWaktu = EstimasiWaktuLayanan::estimasi($tanggalKunjungan, $noAntrian,$estimasi_dokter);
+
             $param['dokter'] = Dokter::with('poliklinik')->find($request->get('dokter'));
             $set_no_antrian = null;
             if ($param['dokter']->poliklinik->name == 'klinik Integrasi spesialis bedah mulut' || $param['dokter']->poliklinik->name == 'klinik Integrasi spesialis konservasi gigi' || $param['dokter']->poliklinik->name == 'klinik Integrasi spesialis orthodensia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Pedodonsia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Prosthodonsia' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Penyakit Mulut' || $param['dokter']->poliklinik->name == 'Klinik integrasi Spesialis Periodonsia') {
                 $set_no_antrian = null;
             }else{
-                $set_no_antrian = $nomorAntrian;
+                $set_no_antrian = $noAntrian;
             }
             $pendaftaran = new PendaftaranPasien;
             $pendaftaran->kode_pendaftaran = $kodeUnik;

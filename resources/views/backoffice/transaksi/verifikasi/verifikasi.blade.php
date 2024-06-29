@@ -43,7 +43,15 @@
                                 title: 'Kode Pendaftaran tidak ditemukan.'
                             })
                     }else if(data = "sukses"){
-                        window.location.href = `{{ route('verifikasi.index') }}`;
+                        // Play success sound
+                        let audio = document.getElementById('success-audio');
+                        audio.play().then(() => {
+                            window.location.href = `{{ route('verifikasi.index') }}`;
+                        }).catch((error) => {
+                            console.error("Audio play error: ", error);
+                            window.location.href = `{{ route('verifikasi.index') }}`;
+                        });
+
                     }else{
                         const Toast = Swal.mixin({
                                 toast: true,
@@ -101,6 +109,7 @@
                 <div id="default-tab-content">
                     <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         <div id="reader" width="800px"></div>
+                        <audio id="success-audio" src="{{ asset('beep_e90.mp3') }}"></audio> <!-- Ganti dengan path file audio Anda -->
                     </div>
                     <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
                             <form action="{{ route('verifikasi.read.manual') }}" method="POST" class="w-full mx-auto space-y-4" enctype="multipart/form-data">
