@@ -409,12 +409,35 @@
                         </div>
                         <div>
                             <x-label-default for="">Pendidikan <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="pendidikan" type="text" value="{{ old('pendidikan',$data->pendidikan) }}" placeholder="Masukkan Pendidikan"></x-input-default>
+                            <select id="pendidikan" name="pendidikan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="0" {{ old('pendidikan',$data->pendidikan) == '0' ? 'selected' : '0' }}> Pilih Pendidikan</option>
+                                <option value="TK" {{ old('pendidikan',$data->pendidikan) == 'TK' ? 'selected' : 'TK' }}> TK</option>
+                                <option value="SD" {{ old('pendidikan',$data->pendidikan) == 'SD' ? 'selected' : 'SD'}}>  SD</option>
+                                <option value="SMP" {{ old('pendidikan',$data->pendidikan) == 'SMP' ? 'selected' : 'SMP'}}>  SMP</option>
+                                <option value="SMA" {{ old('pendidikan',$data->pendidikan) == 'SMA' ? 'selected' : 'SMA'}}>  SMA</option>
+                                <option value="D1" {{ old('pendidikan',$data->pendidikan) == 'D1' ? 'selected' : 'D1'}}>  D1</option>
+                                <option value="D2" {{ old('pendidikan',$data->pendidikan) == 'D2' ? 'selected' : 'D2'}}>  D2</option>
+                                <option value="D3" {{ old('pendidikan',$data->pendidikan) == 'D3' ? 'selected' : 'D3'}}>  D3</option>
+                                <option value="D4" {{ old('pendidikan',$data->pendidikan) == 'D4' ? 'selected' : 'D4'}}>  D4</option>
+                                <option value="S1" {{ old('pendidikan',$data->pendidikan) == 'S1' ? 'selected' : 'S1'}}>  S1</option>
+                                <option value="S2" {{ old('pendidikan',$data->pendidikan) == 'S2' ? 'selected' : 'S2'}}>  S2</option>
+                                <option value="S3" {{ old('pendidikan',$data->pendidikan) == 'S3' ? 'selected' : 'S3'}}>  S3</option>
+                            </select>
 
                         </div>
                         <div>
                             <x-label-default for="" >Pekerjaan <span class="me-2 text-red-500">*</span></x-label-default>
-                            <x-input-default name="pekerjaan" type="text" value="{{ old('pekerjaan',$data->pekerjaan) }}" placeholder="Masukkan Pekerjaan"></x-input-default>
+                            <select id="pekerjaan" name="pekerjaan" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="0" {{ old('pekerjaan',$data->pekerjaan) == '0' ? 'selected' : '' }}>Pilih Status</option>
+                                <option value="PNS/TNI-POLRI" {{ old('pekerjaan',$data->pekerjaan) == 'PNS/TNI-POLRI' ? 'selected' : ''}}>PNS/TNI-POLRI</option>
+                                <option value="Swasta" {{ old('pekerjaan',$data->pekerjaan) == 'Swasta' ? 'selected' : ''}}>Swasta</option>
+                                <option value="Wiraswasta" {{ old('pekerjaan',$data->pekerjaan) == 'Wiraswasta' ? 'selected' : ''}}>Wiraswasta</option>
+                                <option value="Petani" {{ old('pekerjaan',$data->pekerjaan) == 'Petani' ? 'selected' : ''}}>Petani</option>
+                                <option value="Buruh" {{ old('pekerjaan',$data->pekerjaan) == 'Buruh' ? 'selected' : ''}}>Buruh</option>
+                                <option value="Ibu Rumah Tangga" {{ old('pekerjaan',$data->pekerjaan) == 'Ibu Rumah Tangga' ? 'selected' : ''}}>Ibu Rumah Tangga</option>
+                                <option value="Pelajar" {{ old('pekerjaan',$data->pekerjaan) == 'Pelajar' ? 'selected' : ''}}>Pelajar</option>
+                                <option value="Tidak Bekerja" {{ old('pekerjaan',$data->pekerjaan) == 'Tidak Bekerja' ? 'selected' : ''}}>Tidak Bekerja</option>
+                            </select>
                         </div>
                         <div>
                             <x-label-default for="" >Suku <span class="me-2 text-red-500">*</span></x-label-default>

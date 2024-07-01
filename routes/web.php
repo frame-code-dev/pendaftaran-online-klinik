@@ -130,6 +130,8 @@ Route::prefix('dashboard-pasien')->group(function () {
     Route::get('history-transaksi',[PasienHistoryTransaksiController::class,'index'])->name('pasien.history-transaksi.index');
     // Antrian Klinik
     Route::get('history-transaksi/update',[PasienHistoryTransaksiController::class,'updateStatus'])->name('pasien.history-transaksi.update');
+    // Import data
+    Route::get('import',[ImportDataController::class,'index'])->name('import.create');
 });
 
 Route::middleware('auth')->group(function () {
@@ -138,7 +140,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('import',[ImportDataController::class,'index']);
 // API
 Route::get('pendaftaran-pasien-offline/list-dokter',[PendaftaranPasienOfflineController::class,'dokter'])->name('pendaftaran-offline.list-dokter');
 

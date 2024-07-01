@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('poliklinik', function (Blueprint $table) {
-            $table->id();
-            $table->string('gambar')->nullable();
-            $table->string('name');
+            $table->smallInteger('id',true);
+            $table->string('gambar',50)->nullable();
+            $table->string('name',50);
             $table->text('keterangan')->nullable();
-            $table->bigInteger('user_id');
+            $table->smallInteger('user_id');
             $table->timestamps();
         });
     }

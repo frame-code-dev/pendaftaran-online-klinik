@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('gambar')->nullable()->after('password');
-            $table->string('username')->nullable()->after('gambar');
+            $table->string('gambar',50)->nullable()->after('password');
+            $table->string('username',50)->nullable()->after('gambar');
             $table->enum('status',['aktif','non-aktif'])->default('aktif')->after('username');
         });
     }

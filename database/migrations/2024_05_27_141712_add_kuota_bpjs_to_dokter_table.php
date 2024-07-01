@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('dokter', function (Blueprint $table) {
-            $table->bigInteger('kuota_bpjs')->nullable()->after('kuota');
+            $table->smallInteger('kuota_bpjs')->nullable()->after('kuota');
         });
     }
 

@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dokter', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('poliklinik_id');
-            $table->bigInteger('user_id');
-            $table->string('name');
-            $table->string('gambar');
+            $table->smallInteger('id',true);
+            $table->smallInteger('poliklinik_id');
+            $table->smallInteger('user_id');
+            $table->string('name',50);
+            $table->string('gambar',50);
             $table->date('tanggal');
-            $table->string('jam_praktek');
-            $table->bigInteger('kuota')->default(0);
-            $table->bigInteger('kuota_terisi')->default(0);
+            $table->string('jam_praktek',50);
+            $table->smallInteger('kuota')->default(0);
+            $table->smallInteger('kuota_terisi')->default(0);
             $table->enum('status',['aktif','non-aktif'])->default('aktif');
             $table->enum('jenis_kelamin',['l','p']);
             $table->timestamps();

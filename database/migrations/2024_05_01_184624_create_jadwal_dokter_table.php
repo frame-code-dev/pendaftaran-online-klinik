@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal_dokter', function (Blueprint $table) {
-            $table->id();
+            $table->smallIncrements('id');
             $table->bigInteger('dokter_id')->unsigned();
             $table->enum('status',['bpjs','umum']);
-            $table->string('senin')->nullable();
-            $table->string('selasa')->nullable();
-            $table->string('rabu')->nullable();
-            $table->string('kamis')->nullable();
-            $table->string('jumaat')->nullable();
+            $table->string('senin',50)->nullable();
+            $table->string('selasa',50)->nullable();
+            $table->string('rabu',50)->nullable();
+            $table->string('kamis',50)->nullable();
+            $table->string('jumaat',50)->nullable();
             $table->timestamps();
         });
     }
