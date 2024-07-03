@@ -42,7 +42,32 @@
                 </div>
             </div>
             <div class="card bg-white p-5 mt-4 border rounded-md w-full relative">
+                <form action="{{ route('import.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload file excel</label>
+                            <input name="file" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file">
+                        </div>
+                        <div class="flex justify-start content-center align-middle self-end">
+                            <div>
+                                <x-primary-button type="submit">Simpan</x-primary-button>
+                            </div>
+                            <div>
+                                <a href="{{ asset('excel/Import Data.xlsx') }}" download="Import Data.xlsx" type="button" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm px-5 py-2.5 text-center inline-flex items-center me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                                    <svg class="w-3.5 h-3.5 me-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                                    </svg>
+                                    Download Template
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-5">
+                        <hr>
+                    </div>
 
+                </form>
             </div>
         </section>
     </div>

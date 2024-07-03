@@ -132,6 +132,7 @@ Route::prefix('dashboard-pasien')->group(function () {
     Route::get('history-transaksi/update',[PasienHistoryTransaksiController::class,'updateStatus'])->name('pasien.history-transaksi.update');
     // Import data
     Route::get('import',[ImportDataController::class,'index'])->name('import.create');
+    Route::post('import/store',[ImportDataController::class,'store'])->name('import.store');
 });
 
 Route::middleware('auth')->group(function () {

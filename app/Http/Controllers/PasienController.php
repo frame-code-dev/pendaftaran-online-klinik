@@ -41,7 +41,7 @@ class PasienController extends Controller
     {
         $validateData = Validator::make($request->all(),[
             'no_rm' => 'required|unique:pasien,no_rm',
-            'nik' => 'required|unique:pasien,nik',
+            'nik' => 'required|unique:pasien,nik|max:16|min:16',
             'nama' => 'required',
             'jenis_kelamin' => 'required|not_in:0',
             'alamat' => 'required',
@@ -62,6 +62,12 @@ class PasienController extends Controller
             'no_hp' => 'required',
             'nama_ortu' => 'required',
 
+        ],[
+            'no_rm.required' => 'Nomor Rekam Medis harus diisi',
+            'nik.required' => 'NIK harus diisi',
+            'nik.unique' => 'NIK sudah terdaftar',
+            'nik.max' => 'NIK maksimal 16 karakter',
+            'nik.min' => 'NIK minimal 16 karakter',
         ]);
         if ($validateData->fails()) {
             $html = "<ol class='max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400'>";
@@ -71,7 +77,7 @@ class PasienController extends Controller
             $html .= "</ol>";
 
             alert()->html('Terjadi kesalahan eror!', $html, 'error')->autoClose(5000);
-            return redirect()->route('pasien.index');
+            return redirect()->back();
         }
         DB::beginTransaction();
         try {
