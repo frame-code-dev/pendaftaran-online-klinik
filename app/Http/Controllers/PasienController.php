@@ -39,7 +39,7 @@ class PasienController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData = Validator::make($request->all(),[
+        $request->validate([
             'no_rm' => 'required|unique:pasien,no_rm',
             'nik' => 'required|unique:pasien,nik|max:16|min:16',
             'nama' => 'required',
@@ -68,17 +68,19 @@ class PasienController extends Controller
             'nik.unique' => 'NIK sudah terdaftar',
             'nik.max' => 'NIK maksimal 16 karakter',
             'nik.min' => 'NIK minimal 16 karakter',
+            'required' => ':attribute harus diisi'
         ]);
-        if ($validateData->fails()) {
-            $html = "<ol class='max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400'>";
-            foreach($validateData->errors()->getMessages() as $error) {
-                $html .= "<li>$error[0]</li>";
-            }
-            $html .= "</ol>";
 
-            alert()->html('Terjadi kesalahan eror!', $html, 'error')->autoClose(5000);
-            return redirect()->back();
-        }
+        // if ($validateData->fails()) {
+        //     $html = "<ol class='max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400'>";
+        //     foreach($validateData->errors()->getMessages() as $error) {
+        //         $html .= "<li>$error[0]</li>";
+        //     }
+        //     $html .= "</ol>";
+
+        //     alert()->html('Terjadi kesalahan eror!', $html, 'error')->autoClose(5000);
+        //     return redirect()->back();
+        // }
         DB::beginTransaction();
         try {
             $date = DateTime::createFromFormat('m-d-Y', $request->tgl_lahir)->format('Y-m-d');
@@ -143,7 +145,7 @@ class PasienController extends Controller
     public function update(Request $request, string $id)
     {
         $validateData = Validator::make($request->all(),[
-            'no_rm' => 'required',
+            'no_rm' => 'required|max:16|min:16',
             'nik' => 'required',
             'nama' => 'required',
             'jenis_kelamin' => 'required',

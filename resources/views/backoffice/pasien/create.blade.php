@@ -310,15 +310,30 @@
                             <x-label-default for="" >No. RM <span class="me-2 text-red-500">*</span></x-label-default>
                             <x-input-default name="no_rm" type="text" value="{{ old('no_rm') }}" id="no_rm" placeholder="Masukkan No. RM"></x-input-default>
                             <div id="error_no_rm" class="text-red-500 mt-2 text-xs"></div>
+                            @error('no_rm')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">NIK <span class="me-2 text-red-500">*</span></x-label-default>
                             <x-input-default name="nik" type="text" value="{{ old('nik') }}" id="nik" placeholder="Masukkan NIK"></x-input-default>
                             <div id="error_nik" class="text-red-500 mt-2 text-xs"></div>
+                            @error('nik')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Nama Lengkap <span class="me-2 text-red-500">*</span></x-label-default>
                             <x-input-default name="nama" type="text" value="{{ old('nama') }}" placeholder="Masukkan Nama Lengkap"></x-input-default>
+                            @error('nama')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Jenis Kelamin <span class="me-2 text-red-500">*</span></x-label-default>
@@ -327,45 +342,95 @@
                                 <option value="l" {{ old('jenis_kelamin') == "l" ? 'selected' : '' }}>Laki-Laki</option>
                                 <option value="p" {{ old('jenis_kelamin') == "p" ? 'selected' : '' }}>Perempuan</option>
                             </select>
+                            @error('jenis_kelamin')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-4">
                             <x-label-default for="">Alamat <span class="me-2 text-red-500">*</span></x-label-default>
                             <x-input-textarea rows="4" name="alamat" type="text" value="{{ old('alamat') }}" placeholder="Masukkan Alamat">{{ old('alamat') }}</x-input-textarea>
+                            @error('alamat')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">RT <span class="me-2 text-red-500">*</span></x-label-default>
                             <x-input-default name="rt" type="text" value="{{ old('rt') }}" id="rt" placeholder="Masukkan RT"></x-input-default>
                             <div id="error_rt" class="text-red-500 mt-2 text-xs"></div>
+                            @error('rt')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">RW <span class="me-2 text-red-500">*</span></x-label-default>
                             <x-input-default name="rw" type="text" value="{{ old('rw') }}" id="rw" placeholder="Masukkan RW"></x-input-default>
                             <div id="error_rw" class="text-red-500 mt-2 text-xs"></div>
+                            @error('rw')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Tempat Lahir <span class="me-2 text-red-500">*</span></x-label-default>
                             <x-input-default name="tempat_lahir" type="text" value="{{ old('tempat_lahir') }}" placeholder="Masukkan Tempat Lahir"></x-input-default>
+                            @error('tempat_lahir')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Tanggal Lahir <span class="me-2 text-red-500">*</span></x-label-default>
                             <input type="text" datepicker datepicker-format="mm-dd-yyyy" name="tgl_lahir" id="tgl_lahir" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Masukkan Tanggal Lahir">
+                            @error('tgl_lahir')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div>
                             <x-label-default for="">Provinsi <span class="me-2 text-red-500">*</span></x-label-default>
                             <select name="provinsi" class="select2-data-array browser-default bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="select2-provinsi"></select>
+                            @error('provinsi')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div>
                             <x-label-default for="" >Kabupaten/Kota <span class="me-2 text-red-500">*</span></x-label-default>
                             <select name="kabupaten" class="select2-data-array browser-default bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="select2-kabupaten"></select>
+                            @error('kabupaten')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div>
                             <x-label-default for="" >Kecamatan <span class="me-2 text-red-500">*</span></x-label-default>
                             <select name="kecamatan" class="select2-data-array browser-default bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="select2-kecamatan"></select>
+                            @error('kecamatan')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div>
                             <x-label-default for="" >Desa/Kelurahan <span class="me-2 text-red-500">*</span></x-label-default>
                             {{-- <x-input-default name="desa" type="text" value="{{ old('desa') }}" placeholder="Masukkan Desa/Kelurahan"></x-input-default> --}}
                             <select name="desa" class="select2-data-array browser-default bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="select2-desa"></select>
+                            @error('desa')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="" >Agama <span class="me-2 text-red-500">*</span></x-label-default>
@@ -378,6 +443,11 @@
                                 <option value="buddha">Buddha </option>
                                 <option value="khonghucu">Khonghucu</option>
                             </select>
+                            @error('agama')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Status Kawin <span class="me-2 text-red-500">*</span></x-label-default>
@@ -388,6 +458,11 @@
                                 <option value="3" {{ old('status_nasabah') == '3' ? 'selected' : ''}}>Duda</option>
                                 <option value="4" {{ old('status_nasabah') == '4' ? 'selected' : ''}}>Janda</option>
                             </select>
+                            @error('status_kawin')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div>
                             <x-label-default for="">Pendidikan <span class="me-2 text-red-500">*</span></x-label-default>
@@ -405,7 +480,11 @@
                                 <option value="S2" {{ old('pendidikan') == 'S2' ? 'selected' : 'S2'}}>  S2</option>
                                 <option value="S3" {{ old('pendidikan') == 'S3' ? 'selected' : 'S3'}}>  S3</option>
                             </select>
-
+                            @error('pendidikan')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div>
                             <x-label-default for="" >Pekerjaan <span class="me-2 text-red-500">*</span></x-label-default>
@@ -420,23 +499,48 @@
                                 <option value="Pelajar" {{ old('pekerjaan') == 'Pelajar' ? 'selected' : ''}}>Pelajar</option>
                                 <option value="Tidak Bekerja" {{ old('pekerjaan') == 'Tidak Bekerja' ? 'selected' : ''}}>Tidak Bekerja</option>
                             </select>
+                            @error('pekerjaan')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div>
                             <x-label-default for="" >Suku <span class="me-2 text-red-500">*</span></x-label-default>
                             <x-input-default name="suku" type="text" value="{{ old('suku') }}" placeholder="Masukkan Suku"></x-input-default>
+                            @error('suku')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div>
                             <x-label-default for="" >Bahasa <span class="me-2 text-red-500">*</span></x-label-default>
                             <x-input-default name="bahasa" type="text" value="{{ old('bahasa') }}" placeholder="Masukkan Bahasa"></x-input-default>
+                            @error('bahasa')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">No. Handphone <span class="me-2 text-red-500">*</span></x-label-default>
                             <x-input-default name="no_hp" type="text" value="{{ old('no_hp') }}" id="no_hp" placeholder="Masukkan No. Handphone"></x-input-default>
                             <div id="error_no_hp" class="text-red-500 mt-2 text-xs"></div>
+                            @error('no_hp')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-span-2">
                             <x-label-default for="">Nama Orang Tua/ Penanggung Jawab <span class="me-2 text-red-500">*</span></x-label-default>
                             <x-input-default name="nama_ortu" type="text" value="{{ old('nama_ortu') }}" placeholder="Masukkan Orang Tua/ Penanggung Jawab"></x-input-default>
+                            @error('nama_ortu')
+                                <div class="text-red-500 mt-2 text-xs">
+                                    {{$message}}.
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <hr>
