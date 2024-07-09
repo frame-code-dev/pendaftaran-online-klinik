@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:cancel-doctor-appointments')->dailyAt('09:53')->appendOutputTo(storage_path('logs/inspire.log'));
+        $schedule->command('app:cancel-doctor-appointments')->dailyAt('21:00')->appendOutputTo(storage_path('logs/inspire.log'));
     }
 
     /**

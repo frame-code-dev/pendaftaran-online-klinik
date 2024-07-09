@@ -33,6 +33,7 @@
 
         function loadVoices() {
             voices = window.speechSynthesis.getVoices();
+            console.log(voices);
         }
 
        function getSound(id) {
@@ -40,7 +41,7 @@
             const msg = new SpeechSynthesisUtterance();
             msg.text = text;
             msg.lang = 'id-ID'; // Kode bahasa untuk Bahasa Indonesia
-
+            console.log(voices);
             // Cari suara wanita dalam daftar suara
             const voice = voices.find(voice => voice.lang === 'id-ID' && voice.name.toLowerCase().includes('female'));
 

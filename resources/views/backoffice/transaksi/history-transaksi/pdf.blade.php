@@ -57,11 +57,8 @@
             /* background-color: #424745; */
             }
             @page {
-                size: A4;
                 margin-top: 0;
-                margin-left: 75px;
-                margin-bottom: 0;
-                margin-right: 75px;
+               
             }
             @media print {
                 * {
@@ -136,7 +133,7 @@
                                 <th>Jenis Pendaftaran</th>
                                 <th>Poliklinik</th>
                                 <th>Dokter</th>
-                                <th>Estimasi</th>
+                               
                                 <th>Antrian</th>
                                 <th>Keterangan</th>
                             </tr>
@@ -152,16 +149,6 @@
                                     <td >{{ ucwords($item->jenis_pendaftaran) }}</td>
                                     <td >{{ ucwords($item->poliklinik->name) }}</td>
                                     <td >{{ ucwords($item->dokter->name) }}</td>
-                                    <td >
-                                        @foreach ($item->jadwal_dokter as $item_jadwal)
-                                            @php
-                                                $jadwalArray = $item_jadwal->toArray();
-                                                $hari_kunjungan = strtolower(\Carbon\Carbon::parse($item->tanggal_kunjungan)->translatedFormat('l'));
-                                                $jadwalHari = $jadwalArray[$hari_kunjungan == 'jumat' ? 'jumaat' : $hari_kunjungan] ?? null;
-                                            @endphp
-                                            {{ $jadwalHari != null ? $jadwalHari : '-' }}
-                                        @endforeach
-                                    </td>
                                     <td >{{ $item->no_antrian != null ? $item->no_antrian : '-' }}</td>
                                     <td >{{ ucwords($item->status_pendaftaran) }}</td>
                                 </tr>
